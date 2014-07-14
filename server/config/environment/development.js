@@ -5,6 +5,6 @@
 module.exports = {
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://localhost/fitstats-dev'
+    uri: 'mongodb://xianhuifeng:fxh1988@ds050077.mongolab.com:50077/xianhuitest'
   }
 };
