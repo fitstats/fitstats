@@ -45,6 +45,7 @@ angular.module('fitStatsApp')
        * @param  {Function}
        */
       logout: function() {
+        console.log('hello');
         $cookieStore.remove('token');
         currentUser = {};
       },

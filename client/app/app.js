@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('fitStatsApp', [
+  'nvd3ChartDirectives',
   'ngCookies',
   'ngResource',
   'ngSanitize',

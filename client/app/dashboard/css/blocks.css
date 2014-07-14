@@ -1,0 +1,103 @@
+.panel {
+  border-radius: 0px;
+  border: 0px;
+  box-shadow: 0px 1px 1px 0px rgba(50, 50, 50, 0.25);
+}
+
+.panel .panel-heading {
+  border-radius: 0px;
+  border: 0px;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.panel.weight .panel-heading { background-color: #ad78cc; }
+.panel.heart .panel-heading { background-color: #d57272; }
+.panel.food .panel-heading { background-color: #61ce5c; }
+.panel.exercise .panel-heading { background-color: #d9bc6c; }
+.panel.water .panel-heading { background-color: #59c2e6; }
+
+
+.panel form {
+  margin-bottom: 15px;
+}
+
+.panel form label {
+  display: inline-block;
+  font-size: 1em;
+  line-height: 3.75em;
+  color: #4f5f6f;
+  width: 75px;
+  margin-right: 10px;
+}
+
+.panel form .data-display-and-input {
+  position: relative;
+  display: inline-block;
+  width: calc(100% - 135px);
+}
+
+.data-display-and-input span {
+  color: #4f5f6f;
+}
+
+.data-display-and-input span.display {
+  position: absolute;
+  top: -0.9em;
+  left: 8px;
+  font-size: 2.375em;
+}
+
+.data-display-and-input span.suffix {
+  font-size: 0.5em;
+  padding-left: 4px;
+}
+
+.panel .form-control {
+  display: inline-block;
+}
+
+.panel .form-control[id="bps"] {
+  width: 48%;
+}
+
+.panel .form-control[id="bpd"] {
+  width: 48%;
+  margin-right: 0;
+  float: right;
+}
+
+.panel form .controls {
+  position: relative;
+  display: inline-block;
+}
+
+.panel form button {
+  position: absolute;
+  top: -12px;
+  left: 4px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.panel form i {
+  float: right;
+  margin-right: 0px;
+  opacity: .5;
+}
+
+.panel form i:hover {
+  opacity: 1;
+}
+
+.panel.weight form i { color: #ad78cc; }
+.panel.heart form i { color: #d57272; }
+.panel.food form i { color: #61ce5c; }
+.panel.exercise form i { color: #d9bc6c; }
+.panel.water form i { color: #59c2e6; }
+
+/*  ∆ added to clear bottom of longest panel from footer */
+.panel.food {
+  margin-bottom: 60px;
+}

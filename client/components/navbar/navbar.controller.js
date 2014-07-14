@@ -17,6 +17,11 @@ angular.module('fitStatsApp')
       $location.path('/login');
     };
 
+    $scope.logout = function() {
+      Auth.login();
+      $location.path('/dashboard');
+    };
+
     $scope.isActive = function(route) {
       return route === $location.path();
     };

@@ -1,0 +1,37 @@
+.day-select {
+  position: relative;
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.day-select h2 {
+  margin-top: 0;
+  margin-bottom: 0;
+  color: #4f5f6f;
+  font-size: 1.5em;
+}
+.day-select h4 {
+  font-size: 1em;
+  color: #9fabb8;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+.day-select i.fa-chevron-left {
+  position: absolute;
+  top: 40%;
+  left: 20px;
+  color: #9fabb8;
+}
+
+.day-select i.fa-chevron-right {
+  position: absolute;
+  top: 40%;
+  right: 20px;
+  color: #9fabb8;
+}
+
+.container {
+  /* added to compensate width issues */
+  max-width: 90%;
+}
