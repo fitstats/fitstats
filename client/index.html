@@ -15,6 +15,7 @@
       <!-- bower:css -->
       <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
       <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+      <link rel="stylesheet" type="text/css" href="bower_components/nvd3/nv.d3.css"/>
       <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,client}) app/app.css -->
@@ -23,6 +24,14 @@
       <link rel="stylesheet" href="app/account/login/login.css">
       <link rel="stylesheet" href="app/admin/admin.css">
       <link rel="stylesheet" href="app/app.css">
+      <link rel="stylesheet" href="app/dashboard/css/app.css">
+      <link rel="stylesheet" href="app/dashboard/css/blocks.css">
+      <link rel="stylesheet" href="app/dashboard/css/day-select.css">
+      <link rel="stylesheet" href="app/dashboard/css/navbar.css">
+      <link rel="stylesheet" href="app/dashboard/css/signin.css">
+      <link rel="stylesheet" href="app/dashboard/css/sticky-footer.css">
+      <link rel="stylesheet" href="app/dashboard/css/styles.css">
+      <link rel="stylesheet" href="app/dashboard/dashboard.css">
       <link rel="stylesheet" href="app/main/main.css">
       <!-- endinjector -->
     <!-- endbuild -->
@@ -62,6 +71,10 @@
       <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
       <script src="bower_components/lodash/dist/lodash.compat.js"></script>
       <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+      <script src="bower_components/d3/d3.js"></script>
+      <script src="bower_components/nvd3/nv.d3.js"></script>
+      <script src="bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js"></script>
+
       <!-- endbower -->
     <!-- endbuild -->
 
@@ -74,6 +87,9 @@
           <script src="app/account/signup/signup.controller.js"></script>
           <script src="app/admin/admin.controller.js"></script>
           <script src="app/admin/admin.js"></script>
+          <script src="app/dashboard/dashboard.controller.js"></script>
+          <script src="app/dashboard/dashboard.js"></script>
+          <script src="app/dashboard/dashboard.service.js"></script>
           <script src="app/main/main.controller.js"></script>
           <script src="app/main/main.js"></script>
           <script src="components/auth/auth.service.js"></script>
