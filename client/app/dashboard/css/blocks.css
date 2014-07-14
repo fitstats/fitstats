@@ -96,3 +96,8 @@
 .panel.food form i { color: #61ce5c; }
 .panel.exercise form i { color: #d9bc6c; }
 .panel.water form i { color: #59c2e6; }
+
+/*  ∆ added to clear bottom of longest panel from footer */
+.panel.food {
+  margin-bottom: 60px;
+}

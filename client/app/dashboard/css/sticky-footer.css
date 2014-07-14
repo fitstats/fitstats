@@ -35,3 +35,7 @@ body {
 code {
   font-size: 80%;
 }
+
+.footer-clear {
+  height: 20px;
+}

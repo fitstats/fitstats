@@ -2,15 +2,27 @@
 
 angular.module('fitStatsApp')
 
-  .controller('DashboardCtrl', function ($scope) {
-    $scope.message = 'Hello';
+  .controller('DashboardCtrl', function ($scope, Auth) {
+      //user $location.path to set date
+    //if location.path is "today", then take new Date() converted to YYYYMMDD
+
+    $scope.date = new Date();
+    // $scope.fbDate = $filter("date")($scope.date, 'yyyyMMdd');   // ∆ ????
+    // $scope.fbDate = 20140708;
+    //
+    // $scope.userId = $scope.auth.user.uid;
+    // $scope.user = userFb.user;
+    // $scope.preload = $scope.user.dates[$scope.fbDate];
+    //
+    // $scope.today = syncData('users/' + $scope.userId + '/dates/' + $scope.fbDate);
   })
 
-  .controller('NavController', function($scope, Auth){
-    $scope.logout = function(){
-      Auth.logout();
-    };
-  })
+  //.controller('NavController', function($scope, Auth){
+    // $scope.logout = function(){
+    //   Auth.logout();
+    // };
+    // $scope.userId = Auth.getCurrentUser().name;
+  //})
 
   .controller('WeightController', function($scope, FormFunctions){
     $scope.test = '5';
