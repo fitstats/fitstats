@@ -2,7 +2,7 @@
 
 angular.module('fitStatsApp')
 
-  .controller('DashboardCtrl', function ($scope, Auth) {
+  .controller('DashboardCtrl', function ($scope) {
       //user $location.path to set date
     //if location.path is "today", then take new Date() converted to YYYYMMDD
 
@@ -46,7 +46,7 @@ angular.module('fitStatsApp')
     };
   })
 
-  .controller('BFController', function($scope, FormFunctions){     // ∆ removed $rootScope
+  .controller('BFController', function($scope){     // ∆ removed $rootScope
     $scope.inputMode = false;
     $scope.formData = {};
     // $scope.formData.bf = $scope.preload.bf;            // ∆ scope.preload error
@@ -57,7 +57,7 @@ angular.module('fitStatsApp')
     $scope.submit = function (bf) {                      // added to resolve error: submit
       $scope.today.bf = bf;
       $scope.inputMode = false;
-    }
+    };
 
     //should be refactored into separate factory
     $scope.edit = function(){
@@ -65,7 +65,7 @@ angular.module('fitStatsApp')
     };
   })
 
-  .controller('HRController', function($scope, FormFunctions){    // ∆ removed $rootScope
+  .controller('HRController', function($scope){    // ∆ removed $rootScope
     $scope.inputMode = false;
     $scope.formData = {};
     // $scope.formData.hr = $scope.preload.hr;             // ∆ scope.preload error
@@ -76,7 +76,7 @@ angular.module('fitStatsApp')
     $scope.submit = function (hr) {                        // added to resolve error: submit
       $scope.today.hr = hr;
       $scope.inputMode = false;
-    }
+    };
 
     //should be refactored into separate factory
     $scope.edit = function(){
@@ -84,7 +84,7 @@ angular.module('fitStatsApp')
     };
   })
 
-  .controller('BPController', function($scope, FormFunctions){    // ∆ removed $rootScope
+  .controller('BPController', function($scope){    // ∆ removed $rootScope
     $scope.inputMode = false;
     $scope.formData = {};
     // $scope.formData.bps = $scope.preload.bps;           // ∆ scope.preload error
@@ -102,7 +102,7 @@ angular.module('fitStatsApp')
       $scope.today.bps = $scope.formData.bps;
       $scope.today.bpd = $scope.formData.bpd;
       $scope.inputMode = false;
-    }
+    };
 
     //should be refactored into separate factory
     $scope.edit = function(){
@@ -110,7 +110,7 @@ angular.module('fitStatsApp')
     };
   })
 
-  .controller('FoodController', function($scope, $timeout, FormFunctions){ // ∆ removed $rootScope
+  .controller('FoodController', function($scope, $timeout) { // ∆ removed $rootScope
     $scope.inputMode = false;
     $scope.formData = {};
     // $scope.formData.calories = $scope.preload.calories;  // ∆ scope.preload error
@@ -146,15 +146,15 @@ angular.module('fitStatsApp')
 
     $scope.chartUpdate = function(){
       $scope.macroNutrientData = [
-          { key: "Protein",
+          { key: 'Protein',
             y: $scope.formData.protein
           },
           {
-            key: "Carbs",
+            key: 'Carbs',
              y: $scope.formData.carbs
           },
           {
-            key: "Fat",
+            key: 'Fat',
              y: $scope.formData.fat
           }
       ];

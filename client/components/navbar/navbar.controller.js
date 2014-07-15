@@ -12,14 +12,14 @@ angular.module('fitStatsApp')
     $scope.isAdmin = Auth.isAdmin;
     $scope.getCurrentUser = Auth.getCurrentUser;
 
-    $scope.logout = function() {
-      Auth.logout();
-      $location.path('/login');
+    $scope.login = function() {
+      Auth.login();
+      $location.path('/dashboard');
     };
 
     $scope.logout = function() {
-      Auth.login();
-      $location.path('/dashboard');
+      Auth.logout();
+      $location.path('/');
     };
 
     $scope.isActive = function(route) {
