@@ -57,7 +57,7 @@ angular.module('fitStatsApp')
     $scope.submit = function (bf) {                      // added to resolve error: submit
       $scope.today.bf = bf;
       $scope.inputMode = false;
-    };
+    }
 
     //should be refactored into separate factory
     $scope.edit = function(){
@@ -76,7 +76,7 @@ angular.module('fitStatsApp')
     $scope.submit = function (hr) {                        // added to resolve error: submit
       $scope.today.hr = hr;
       $scope.inputMode = false;
-    };
+    }
 
     //should be refactored into separate factory
     $scope.edit = function(){
