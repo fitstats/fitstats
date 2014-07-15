@@ -1,8 +1,10 @@
+'use strict';
+
 angular.module('fitStatsApp')
 
 .factory('FormFunctions', function($filter){
   var submit = function(formData, field, decimals) {
-    var data = $filter("number")(formData, decimals);
+    var data = $filter('number')(formData, decimals);
     this.today.$child(field).$set(data);    // ∆ error $child
     this.inputMode = false;
   };
