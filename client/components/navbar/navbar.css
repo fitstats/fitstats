@@ -94,7 +94,7 @@
   margin-left: 15px;
 }
 
-.navbar-nav li a, .navbar-toggle {
+.navbar-toggle {
   line-height: 35px;
   height: 35px;
   margin-top: 25px;
@@ -114,4 +114,18 @@
 
 .navbar-nav i {
   margin-right: 10px;
+}
+
+
+.navbar-nav > li > a {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    line-height: 90px;
+}
+
+@media (max-width: 767px) {
+    .navbar-nav > li > a {
+    line-height: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;}
 }
