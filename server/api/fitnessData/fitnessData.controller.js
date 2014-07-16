@@ -1,16 +1,38 @@
 'use strict';
 
-exports.getWeight = function(req, res) {
-  console.log('$$$$$$$$$$$$blahblah');
+exports.requestFitnessStat = function(req, res) {
+  var storedData = {
+    weight: 180,
+    bf: 4.5,
+    hr: 100,
+    bps: 120,
+    bpd: 80,
+    calories: 2400,
+    protein: 180,
+    carbs: 335,
+    fat: 65
+  };
+
+  var dataRequested = req.params['0'];
+  var returnData = storedData[ dataRequested ];
+
+  return res.json({ data: returnData, field:  dataRequested});
 };
 
 
-exports.updateWeight = function(req, res) {
-  console.log(req);
 
+exports.updateFitnessStat = function(req, res) {
+  var data = req.body;
+  // res.end(201);
+  
+  return res.json({data: data});
 };
+
 
 /*    REQ:
+
+// req.params('userId')
+// req.params('date')
 
 { _readableState:
    { highWaterMark: 16384,

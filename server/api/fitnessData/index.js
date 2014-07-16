@@ -5,16 +5,12 @@ var controller = require('./fitnessData.controller');
 
 var router = express.Router();
 
-router.get('/weight', controller.getWeight);
-router.put('/weight', controller.updateWeight);
+
+
+router.get('/:id/:date/*', controller.requestFitnessStat);
+
+router.put('/:id/:date/*', controller.updateFitnessStat);
+
+
 
 module.exports = router;
-
-
-
-
-
-
-// /api/userData/1234/20130918/bf
-// req.params('userId')
-// req.params('date')
