@@ -5,8 +5,8 @@ angular.module('fitStatsApp')
 .factory('FormFunctions', function($filter, $resource, Auth){
 
 
-  var retrieveOneStat = function (queryField, updateControllerFields) {
-    var queryDate = this.date;
+  var retrieveOneStat = function (queryField, updateControllerFields, currentDate) {
+    var queryDate = currentDate;
     var userId = this.userId;
 
     var InputSubmition = $resource('/api/fitnessData/:id/:date/:field', {
@@ -31,12 +31,11 @@ angular.module('fitStatsApp')
 
 
 
-  var submitFieldValue = function(formData, queryField, decimals, updateControllerFields) {
+  var submitFieldValue = function(formData, queryField, updateControllerFields, currentDate) {
 
-    var filteredInputData = $filter('number')(formData, decimals);
-    var queryDate = this.date;
+    var queryDate = currentDate;
 
-    // defining the request
+    // defining the PUT request
     var InputSubmition = $resource('/api/fitnessData/:id/:date/:field', {
       id: '@userId',
       date: '@date',
@@ -54,7 +53,7 @@ angular.module('fitStatsApp')
     inputSubmition.userId = this.userId;
     inputSubmition.date = queryDate;
     inputSubmition.field = queryField;
-    inputSubmition.data = filteredInputData;
+    inputSubmition.data = formData;
 
     // action for when the response is returned
     inputSubmition.$update({}, function (response) {
