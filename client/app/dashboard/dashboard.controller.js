@@ -2,144 +2,162 @@
 
 angular.module('fitStatsApp')
 
-  .controller('DashboardCtrl', function ($scope) {
-      //user $location.path to set date
-    //if location.path is "today", then take new Date() converted to YYYYMMDD
 
-    $scope.date = new Date();
-    // $scope.fbDate = $filter("date")($scope.date, 'yyyyMMdd');   // ∆ ????
-    // $scope.fbDate = 20140708;
-    //
-    // $scope.userId = $scope.auth.user.uid;
-    // $scope.user = userFb.user;
-    // $scope.preload = $scope.user.dates[$scope.fbDate];
-    //
-    // $scope.today = syncData('users/' + $scope.userId + '/dates/' + $scope.fbDate);
-  })
+  .controller('DashboardCtrl', function ($scope, $filter, FormFunctions) {
 
-  //.controller('NavController', function($scope, Auth){
-    // $scope.logout = function(){
-    //   Auth.logout();
-    // };
-    // $scope.userId = Auth.getCurrentUser().name;
-  //})
+    $scope.getDate = function () {
+      if (FormFunctions.rawDate) {
+        $scope.date = FormFunctions.rawDate;
+      } else {
+        FormFunctions.rawDate = new Date();
+        $scope.date = FormFunctions.rawDate;
+        FormFunctions.date = $filter('date')(FormFunctions.rawDate, 'yyyyMMdd');
+      }
+    };
+    $scope.getDate();
 
-  .controller('WeightController', function($scope, FormFunctions){
-    $scope.test = '5';
-    $scope.test2 = FormFunctions.test;
-
-    $scope.inputMode = false;
-    $scope.formData = {};
-    //$scope.formData.weight = $scope.preload.weight;    // ∆ scope.preload error
-    $scope.formData.weight = 180;                        // added to bypass error above
-
-    // $scope.submit = FormFunctions.submit;             // ∆ error in factory
-    $scope.today = {};                                   // added to bypass error: $scope.today.weight
-    $scope.submit = function (weight) {                  // added to resolve error: submit
-      $scope.today.weight = weight;
-      $scope.inputMode = false;
+    $scope.nextDay = function () {
+      // FormFunctions.rawDate++;
+      // FormFunctions.date++;
     };
 
-    //should be refactored into separate factory
+    $scope.previousDay = function() {
+    };
+
+    // ??? user $location.path to set date
+    // ??? if location.path is "today", then take new Date() converted to YYYYMMDD
+  })
+
+
+
+  .controller('WeightController', function($scope, FormFunctions) {
+    $scope.today = {};
+    $scope.formData = {};
+    $scope.inputMode = false;
+
+    $scope.loadViewItem = function(data, field) {
+      $scope.today[field] = data;
+      $scope.formData[field] = data;
+      $scope.inputMode = false;
+    };
+    FormFunctions.retrieveOneStat('weight', $scope.loadViewItem);
+
+    $scope.submit = function(weight, field, decimals) {
+      FormFunctions.submitFieldValue(weight, field, decimals, $scope.loadViewItem);
+    };
+
     $scope.edit = function(){
       $scope.inputMode = true;
     };
   })
 
-  .controller('BFController', function($scope){     // ∆ removed $rootScope
-    $scope.inputMode = false;
-    $scope.formData = {};
-    // $scope.formData.bf = $scope.preload.bf;            // ∆ scope.preload error
-    $scope.formData.bf = 4.5;                             // added to bypass error above
 
-    // $scope.submit = FormFunctions.submit;             // ∆ error in factory
-    $scope.today = {};                                   // added to bypass error: $scope.today.bf
-    $scope.submit = function (bf) {                      // added to resolve error: submit
-      $scope.today.bf = bf;
+
+  .controller('BFController', function($scope, FormFunctions) {
+    $scope.today = {};
+    $scope.formData = {};
+    $scope.inputMode = false;
+
+    $scope.loadViewItem = function(data, field) {
+      $scope.today[field] = data;
+      $scope.formData[field] = data;
       $scope.inputMode = false;
     };
+    FormFunctions.retrieveOneStat('bf', $scope.loadViewItem);
 
-    //should be refactored into separate factory
+    $scope.submit = function (bf, field, decimals) {
+      FormFunctions.submitFieldValue(bf, field, decimals, $scope.loadViewItem);
+    };
+
     $scope.edit = function(){
       $scope.inputMode = true;
     };
   })
 
-  .controller('HRController', function($scope){    // ∆ removed $rootScope
-    $scope.inputMode = false;
-    $scope.formData = {};
-    // $scope.formData.hr = $scope.preload.hr;             // ∆ scope.preload error
-    $scope.formData.hr = 100;                              // added to bypass error above
 
-    // $scope.submit = FormFunctions.submit;               // ∆ error in factory
-    $scope.today = {};                                     // added to bypass error: $scope.today.hr
-    $scope.submit = function (hr) {                        // added to resolve error: submit
-      $scope.today.hr = hr;
+
+  .controller('HRController', function($scope, FormFunctions) {
+    $scope.today = {};
+    $scope.formData = {};
+    $scope.inputMode = false;
+
+    $scope.loadViewItem = function(data, field) {
+      $scope.today[field] = data;
+      $scope.formData[field] = data;
       $scope.inputMode = false;
     };
+    FormFunctions.retrieveOneStat('hr', $scope.loadViewItem);
 
-    //should be refactored into separate factory
+    $scope.submit = function (hr, field, decimals) {
+      FormFunctions.submitFieldValue(hr, field, decimals, $scope.loadViewItem);
+    };
+
     $scope.edit = function(){
       $scope.inputMode = true;
     };
   })
 
-  .controller('BPController', function($scope){    // ∆ removed $rootScope
-    $scope.inputMode = false;
-    $scope.formData = {};
-    // $scope.formData.bps = $scope.preload.bps;           // ∆ scope.preload error
-    $scope.formData.bps = 120;
-    // $scope.formData.bpd = $scope.preload.bpd;           // ∆ scope.preload error
-    $scope.formData.bpd = 80;
 
-    // $scope.submit = FormFunctions.submit;               // ∆ error in factory
-    // $scope.submitBoth = function(){                     // ∆ error in factory
-    //   $scope.submit($scope.formData.bps, "bps", 0);
-    //   $scope.submit($scope.formData.bpd, 'bpd', 0);
-    // };
-    $scope.today = {};                                     // added to bypass error: $scope.today.hr
-    $scope.submitBoth = function () {                      // added to resolve error: submit
+
+  .controller('BPController', function($scope, FormFunctions) {
+    $scope.today = {};
+    $scope.formData = {};
+    $scope.inputMode = false;
+
+    $scope.loadViewItem = function(data, field) {
+      $scope.today[field] = data;
+      $scope.formData[field] = data;
+      $scope.inputMode = false;
+    };
+    FormFunctions.retrieveOneStat('bps', $scope.loadViewItem);
+    FormFunctions.retrieveOneStat('bpd', $scope.loadViewItem);
+
+    $scope.submitBoth = function (decimals) {
       $scope.today.bps = $scope.formData.bps;
       $scope.today.bpd = $scope.formData.bpd;
       $scope.inputMode = false;
+
+      FormFunctions.submitMultipleFields([
+        [ $scope.formData.bps, 'bps', decimals, $scope.loadViewItem ],
+        [ $scope.formData.bpd, 'bpd', decimals, $scope.loadViewItem ]
+      ]);
     };
 
-    //should be refactored into separate factory
     $scope.edit = function(){
       $scope.inputMode = true;
     };
   })
 
-  .controller('FoodController', function($scope, $timeout) { // ∆ removed $rootScope
-    $scope.inputMode = false;
-    $scope.formData = {};
-    // $scope.formData.calories = $scope.preload.calories;  // ∆ scope.preload error
-    // $scope.formData.protein = $scope.preload.protein;    // ∆ scope.preload error
-    // $scope.formData.carbs = $scope.preload.protein;      // ∆ scope.preload error
-    // $scope.formData.fat = $scope.preload.fat;            // ∆ scope.preload error
-    $scope.formData.calories = 0;
-    $scope.formData.protein = 180;
-    $scope.formData.carbs = 335;
-    $scope.formData.fat = 65;
-    //console.log($scope.preload);
 
-    // $scope.submit = FormFunctions.submit;                  // ∆ error in factory
-    // $scope.submitAll = function(){
-    //   $scope.submit($scope.formData.calories, 'calories', 0);
-    //   $scope.submit($scope.formData.protein, 'protein', 0);
-    //   $scope.submit($scope.formData.carbs, 'carbs', 0);
-    //   $scope.submit($scope.formData.fat, 'fat', 0);
-    // };
-    $scope.today = {};                                         // added to bypass error: $scope.today...
-    $scope.submitAll = function(){                             // added to resolve $scope.submit error above
-      $scope.today.calories = $scope.formData.calories;
-      $scope.today.protein = $scope.formData.protein;
-      $scope.today.carbs = $scope.formData.carbs;
-      $scope.today.fat = $scope.formData.fat;
+
+  .controller('FoodController', function($scope, $timeout, FormFunctions) {
+    $scope.today = {};
+    $scope.formData = {};
+    $scope.inputMode = false;
+
+    $scope.loadViewItem = function(data, field) {
+      $scope.today[field] = data;
+      $scope.formData[field] = data;
       $scope.inputMode = false;
     };
+    FormFunctions.retrieveOneStat('calories', $scope.loadViewItem);
+    FormFunctions.retrieveOneStat('protein', $scope.loadViewItem);
+    FormFunctions.retrieveOneStat('carbs', $scope.loadViewItem);
+    FormFunctions.retrieveOneStat('fat', $scope.loadViewItem);
 
-    //should be refactored into separate factory
+    $scope.submitAll = function(decimals) {
+      var calories = Number($scope.formData.protein) + Number($scope.formData.carbs) + Number($scope.formData.fat);
+      $scope.formData.calories = $scope.formData.calories || calories;
+
+
+      FormFunctions.submitMultipleFields([
+        [ $scope.formData.calories, 'calories', decimals, $scope.loadViewItem ],
+        [ $scope.formData.protein, 'protein', decimals, $scope.loadViewItem],
+        [ $scope.formData.carbs, 'carbs', decimals, $scope.loadViewItem ],
+        [ $scope.formData.fat, 'fat', decimals, $scope.loadViewItem ]
+      ]);
+    };
+
     $scope.edit = function(){
       $scope.inputMode = true;
     };
@@ -165,11 +183,13 @@ angular.module('fitStatsApp')
             return colorArray[i];
           };
       };
+
       $scope.xFunction = function(){
           return function(d) {
               return d.key;
           };
       };
+
       $scope.yFunction = function(){
           return function(d) {
               return d.y;
@@ -182,7 +202,9 @@ angular.module('fitStatsApp')
           };
       };
     };
+
     $timeout(function(){
       $scope.chartUpdate();
     }, 500);
+
   });
