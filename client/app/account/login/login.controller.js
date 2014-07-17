@@ -14,7 +14,7 @@ angular.module('fitStatsApp')
           password: $scope.user.password
         })
         .then( function() {
-          // Logged in, redirect to home
+          // Logged in, redirect to dashboard
 
           //get rid of $timeout. currently used because $location.path fires
           //before Auth.isLoggedIn() returns true; something to do with promises

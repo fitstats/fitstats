@@ -195,7 +195,7 @@ module.exports = function (grunt) {
       target: {
         src: '<%= yeoman.client %>/index.html',
         ignorePath: '<%= yeoman.client %>/',
-        exclude: [/bootstrap-sass-official/, /bootstrap.js/]
+        exclude: [/bootstrap-sass-official/]
       }
     },
 
@@ -341,6 +341,12 @@ module.exports = function (grunt) {
             'package.json',
             'server/**/*'
           ]
+        }, {
+          expand: true,
+          dot: true,
+          cwd: '<%= yeoman.client %>/bower_components/fontawesome/fonts/',
+          src: ['*.*'],
+          dest: '<%= yeoman.dist %>/public/assets/fonts'
         }]
       },
       styles: {
