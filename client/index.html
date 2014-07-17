@@ -10,6 +10,10 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
+
+    <!-- Google web font must be placed outside of build:css section so it doesn't get minified -->
+    <link href='http://fonts.googleapis.com/css?family=Cabin:400,500' rel='stylesheet' type='text/css'>
+
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(client) app/vendor.css -->
       <!-- bower:css -->
@@ -27,11 +31,11 @@
       <link rel="stylesheet" href="app/dashboard/css/app.css">
       <link rel="stylesheet" href="app/dashboard/css/blocks.css">
       <link rel="stylesheet" href="app/dashboard/css/day-select.css">
-      <link rel="stylesheet" href="app/dashboard/css/navbar.css">
       <link rel="stylesheet" href="app/dashboard/css/signin.css">
       <link rel="stylesheet" href="app/dashboard/css/sticky-footer.css">
       <link rel="stylesheet" href="app/dashboard/css/styles.css">
       <link rel="stylesheet" href="app/main/main.css">
+      <link rel="stylesheet" href="components/navbar/navbar.css">
       <!-- endinjector -->
     <!-- endbuild -->
   </head>
@@ -64,6 +68,7 @@
       <script src="bower_components/jquery/dist/jquery.js"></script>
       <script src="bower_components/angular/angular.js"></script>
       <script src="bower_components/json3/lib/json3.js"></script>
+      <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
       <script src="bower_components/angular-resource/angular-resource.js"></script>
       <script src="bower_components/angular-cookies/angular-cookies.js"></script>
       <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
