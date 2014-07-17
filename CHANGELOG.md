@@ -1,3 +1,14 @@
+<a name="v0.0.4"></a>
+### v0.0.4 (2014-07-17)
+
+#### Features
+* Configured data routing cycle between view and server.
+* GET requests initiated in dashboard controller, calls factory, submits get request, updates the controller upon success.
+* PUT request invokes dashboard factory, factory connects to server and updates dashboard controller upon success.
+
+
+
+
 <a name="v0.0.3"></a>
 ### v0.0.3 (2014-07-17)
 
