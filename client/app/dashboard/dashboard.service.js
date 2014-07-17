@@ -2,7 +2,7 @@
 
 angular.module('fitStatsApp')
 
-.factory('FormFunctions', function($filter, $resource, Auth, $timeout){
+.factory('FormFunctions', function($filter, $resource, Auth){
 
 
   var retrieveOneStat = function (queryField, updateControllerFields) {
@@ -13,7 +13,7 @@ angular.module('fitStatsApp')
       id: '@id',
       date: '@date',
       field: '@field'
-    })
+    });
 
     InputSubmition.get({ id: userId, date: queryDate, field: queryField })
       .$promise.then(function(response) {
@@ -67,7 +67,7 @@ angular.module('fitStatsApp')
   // html forms that contain multiple 2x input fields
   // - Each index of submitionArray contains all the arguments needed to
   // invoke this.submit for one specific field
-  var submitMultipleFields = function (submitionArray, context) {
+  var submitMultipleFields = function (submitionArray) {
 
         var chainSubmitions = function (index) {
         this.submitFieldValue.apply(this, submitionArray[index]);

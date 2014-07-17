@@ -3,7 +3,7 @@
 angular.module('fitStatsApp')
 
 
-  .controller('DashboardCtrl', function ($scope, $filter, FormFunctions, Auth) {
+  .controller('DashboardCtrl', function ($scope, $filter, FormFunctions) {
 
     $scope.getDate = function () {
       if (FormFunctions.rawDate) {
@@ -39,7 +39,7 @@ angular.module('fitStatsApp')
       $scope.today[field] = data;
       $scope.formData[field] = data;
       $scope.inputMode = false;
-    }
+    };
     FormFunctions.retrieveOneStat('weight', $scope.loadViewItem);
 
     $scope.submit = function(weight, field, decimals) {
@@ -62,7 +62,7 @@ angular.module('fitStatsApp')
       $scope.today[field] = data;
       $scope.formData[field] = data;
       $scope.inputMode = false;
-    }
+    };
     FormFunctions.retrieveOneStat('bf', $scope.loadViewItem);
 
     $scope.submit = function (bf, field, decimals) {
@@ -85,7 +85,7 @@ angular.module('fitStatsApp')
       $scope.today[field] = data;
       $scope.formData[field] = data;
       $scope.inputMode = false;
-    }
+    };
     FormFunctions.retrieveOneStat('hr', $scope.loadViewItem);
 
     $scope.submit = function (hr, field, decimals) {
@@ -108,7 +108,7 @@ angular.module('fitStatsApp')
       $scope.today[field] = data;
       $scope.formData[field] = data;
       $scope.inputMode = false;
-    }
+    };
     FormFunctions.retrieveOneStat('bps', $scope.loadViewItem);
     FormFunctions.retrieveOneStat('bpd', $scope.loadViewItem);
 
@@ -120,7 +120,7 @@ angular.module('fitStatsApp')
       FormFunctions.submitMultipleFields([
         [ $scope.formData.bps, 'bps', decimals, $scope.loadViewItem ],
         [ $scope.formData.bpd, 'bpd', decimals, $scope.loadViewItem ]
-      ], FormFunctions);
+      ]);
     };
 
     $scope.edit = function(){
@@ -139,7 +139,7 @@ angular.module('fitStatsApp')
       $scope.today[field] = data;
       $scope.formData[field] = data;
       $scope.inputMode = false;
-    }
+    };
     FormFunctions.retrieveOneStat('calories', $scope.loadViewItem);
     FormFunctions.retrieveOneStat('protein', $scope.loadViewItem);
     FormFunctions.retrieveOneStat('carbs', $scope.loadViewItem);
@@ -155,7 +155,7 @@ angular.module('fitStatsApp')
         [ $scope.formData.protein, 'protein', decimals, $scope.loadViewItem],
         [ $scope.formData.carbs, 'carbs', decimals, $scope.loadViewItem ],
         [ $scope.formData.fat, 'fat', decimals, $scope.loadViewItem ]
-      ], FormFunctions);
+      ]);
     };
 
     $scope.edit = function(){
