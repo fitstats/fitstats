@@ -12,21 +12,69 @@ exports.requestFitnessStat = function(req, res) {
     carbs: 335,
     fat: 65
   };
-
   var dataRequested = req.params['0'];
-  var returnData = storedData[ dataRequested ];
 
+  var returnData = storedData[ dataRequested ];
+  /*
+  UserData.findById(req.params.id, function (err, userData) {
+
+    if(err) { return handleError(res, err); }
+
+    if(!userData) { return res.send(404); }
+    return res.json(userData.dataRequested);
+  });
+  */
   return res.json({ data: returnData, field:  dataRequested});
 };
 
 
-
 exports.updateFitnessStat = function(req, res) {
   var data = req.body;
-  // res.end(201);
-  
+  /*
+  if(req.body._id) { delete req.body._id; }
+
+  UserData.findById(req.params.id, function (err, userData) {
+    if (err) { return handleError(err); }
+    if(!userData) { return res.send(404); }
+
+    userData[field] = req.body[field];
+    userData.save(function (err) {
+      if (err) { return handleError(err); }
+      return res.json(200, userData);
+    });
+  });
+  */
+
   return res.json({data: data});
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // console.log('GET req: ', req.params);
+  // req.params=>   { '0': 'weight',
+  //   id: '53c6c52f9fc87084680be124',
+  //   date: '20140716'
+  // }
+
+
+  // console.log('PUT req: ', req.body)
+  // req.body => {
+  //   userId: '53c6c52f9fc87084680be124',
+  //   date: '20140716',
+  //   field: 'weight',
+  //   data: '100.0'
+  // }
 
 
 /*    REQ:

@@ -6,11 +6,13 @@
     <!-- Day Selector -->
     <div class="row day-select" ng-controller="DashboardCtrl">
       <div class="col-md-offset-3 col-md-6">
-        <i class="fa fa-chevron-left"></i>
+        <!-- <button><i class="fa fa-chevron-left" ng-click="previousDay()"></i></button> -->
+        <i class="fa fa-chevron-left" ng-click="previousDay()"></i>
         <h2>TODAY</h2>
         <!-- <h4>July 8, 2014</h4> -->
         <h4>{{ date | date: 'MMMM d, yyyy' }}</h4>
-        <i class="fa fa-chevron-right"></i>
+        <!-- <button><i class="fa fa-chevron-right" ng-click="nextDay()"></i> </button> -->
+        <i class="fa fa-chevron-right" ng-click="nextDay()"></i>
       </div>
     </div><!-- end day selector -->
 

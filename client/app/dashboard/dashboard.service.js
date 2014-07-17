@@ -5,41 +5,38 @@ angular.module('fitStatsApp')
 .factory('FormFunctions', function($filter, $resource, Auth, $timeout){
 
 
-  var retrieve = function (field, updateField, date) {
-    var date = this.date;
+  var retrieveOneStat = function (queryField, updateControllerFields) {
+    var queryDate = this.date;
+    var userId = this.userId;
 
     var InputSubmition = $resource('/api/fitnessData/:id/:date/:field', {
-      id: '@userId',
+      id: '@id',
       date: '@date',
       field: '@field'
-    }, {
-      'update': {
-        method: 'GET',
-        isArray: false
-      }
-    });
+    })
 
-    var inputSubmition = new InputSubmition();        //weight.$save()
+    InputSubmition.get({ id: userId, date: queryDate, field: queryField })
+      .$promise.then(function(response) {
 
-    inputSubmition.userId = this.userId;
-    inputSubmition.date = date;
-    inputSubmition.field = field;
+        if (response.$resolved){
+           console.log('Data successfully retrieved:', response.data);
+           var updatedData = response.data;
+           updateControllerFields(updatedData, queryField);
 
-    inputSubmition.$update({}, function (data) {
-        console.log('Data successfully retrieved:', data.data);
-        var data = data.data;
-        updateField(data, field);
-    });
-
+        } else {
+          console.log('Error data does not exist');
+        }
+      });
   };
 
 
 
-  var submit = function(formData, field, decimals, updateField) {
+  var submitFieldValue = function(formData, queryField, decimals, updateControllerFields) {
 
-    var inputData = $filter('number')(formData, decimals);
-    var date = this.date;
+    var filteredInputData = $filter('number')(formData, decimals);
+    var queryDate = this.date;
 
+    // defining the request
     var InputSubmition = $resource('/api/fitnessData/:id/:date/:field', {
       id: '@userId',
       date: '@date',
@@ -53,31 +50,32 @@ angular.module('fitStatsApp')
 
     var inputSubmition = new InputSubmition();
 
+    // populate the request object to be submitted with relevant data
     inputSubmition.userId = this.userId;
-    inputSubmition.date = date;
-    inputSubmition.field = field;
-    inputSubmition.data = inputData;
+    inputSubmition.date = queryDate;
+    inputSubmition.field = queryField;
+    inputSubmition.data = filteredInputData;
 
-
+    // action for when the response is returned
     inputSubmition.$update({}, function (response) {
-      updateField(response.data.data, response.data.field);
+      updateControllerFields(response.data.data, response.data.field);
       console.log('Data successfully submitted:', response.data.field);
     });
   };
 
-
+  // - SubmitMultipleFields separates the field submitions to db from
+  // html forms that contain multiple 2x input fields
+  // - Each index of submitionArray contains all the arguments needed to
+  // invoke this.submit for one specific field
   var submitMultipleFields = function (submitionArray, context) {
-    var that = this;
 
-    var chainSubmitions = function (index) {
-      $timeout(function(){
-        that.submit.apply(context, submitionArray[index]);
+        var chainSubmitions = function (index) {
+        this.submitFieldValue.apply(this, submitionArray[index]);
 
         if (index < submitionArray.length -1) {
           chainSubmitions(index +1);
         }
-      }, 500);
-    };
+    }.bind(this);
 
     chainSubmitions(0);
   };
@@ -85,10 +83,11 @@ angular.module('fitStatsApp')
 
   return {
     userId: Auth.getCurrentUser()._id,
-    date: $filter('date')(new Date(), 'yyyyMMdd'),
-    retrieve: retrieve,
-    submit: submit,
-    submitMultipleFields: submitMultipleFields
+    date: undefined,
+    retrieveOneStat: retrieveOneStat,
+    submitFieldValue: submitFieldValue,
+    submitMultipleFields: submitMultipleFields,
+    rawDate: undefined
   };
 });
 
