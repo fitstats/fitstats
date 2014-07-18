@@ -3,9 +3,9 @@
 angular.module('fitStatsApp')
   .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q) {
     var currentUser = {};
-    if($cookieStore.get('token')) {
-      currentUser = User.get();
-    }
+    // if($cookieStore.get('token')) {
+    //   currentUser = User.get();
+    // }
 
     return {
 
@@ -26,9 +26,12 @@ angular.module('fitStatsApp')
         }).
         success(function(data) {
           $cookieStore.put('token', data.token);
-          currentUser = User.get();
-          deferred.resolve(data);
-          return cb();
+          User.get()
+            .$promise.then(function(userData){
+              currentUser = userData;
+              deferred.resolve(data);
+              return cb();
+            });
         }).
         error(function(err) {
           this.logout();
@@ -37,6 +40,21 @@ angular.module('fitStatsApp')
         }.bind(this));
 
         return deferred.promise;
+
+        // return $http.post('/auth/local', {
+        //   email: user.email,
+        //   password: user.password
+        // }).success(function(data) {
+        //   User.get().$promise.then(function(resp){
+        //     $cookieStore.put('token', data.token);
+        //     currentUser = resp;
+        //     return cb();
+        //   });
+        // }).
+        // error(function(err) {
+        //   this.logout();
+        //   return cb(err);
+        // });
       },
 
       /**
@@ -45,7 +63,6 @@ angular.module('fitStatsApp')
        * @param  {Function}
        */
       logout: function() {
-        console.log('hello');
         $cookieStore.remove('token');
         currentUser = {};
       },
