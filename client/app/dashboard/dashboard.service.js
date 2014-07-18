@@ -2,7 +2,7 @@
 
 angular.module('fitStatsApp')
 
-.factory('FormFunctions', function($filter, $resource, Auth){
+.factory('FormFunctions', function($filter, $resource, User){
 
 
   var retrieveDayStats = function () {
@@ -90,7 +90,7 @@ angular.module('fitStatsApp')
 
 
   return {
-    userId: Auth.getCurrentUser()._id,
+    userId: User.get(),
     retrieveDayStats: retrieveDayStats,
     retrieveOneStat: retrieveOneStat,
     submitFieldValue: submitFieldValue,
