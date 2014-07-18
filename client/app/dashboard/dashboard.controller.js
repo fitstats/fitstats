@@ -28,7 +28,7 @@ angular.module('fitStatsApp')
             $scope.loadViewItem(singleData, field);
           });
         }, function() {
-          console.log('Date retrieve failed: ' + $scope.currentDay);
+          console.log('Date retrieve failed: ' + $scope.date);
           console.log('URL retrieve failed: ' + $scope.urlDate);
           console.log('Raw date retrieve failed: ' + FormFunctions.rawDate);
           console.log('user id retrieve failed: ' + FormFunctions.userId);
