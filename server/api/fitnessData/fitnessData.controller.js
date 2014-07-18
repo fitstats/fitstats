@@ -10,13 +10,11 @@ exports.requestFitnessStat = function(req, res) {
 
   User.findById(req.params['id'], function(err, user){
     if (err) return next(err);
-    //console.log('find a user in requestFitnessStat', user, dataRequested, user.fitnessData.length)
     if( user.fitnessData.length === 0){
       console.log('New user, empty fitnessData');
       res.send(200);
     } else {
       user.fitnessData.forEach(function(value, index, array){//date is value of each item in array
-        //console.log(value['date'] , today)
         if(value['date'] === today){
           res.json({data: value[dataRequested], field: dataRequested}); //response data
         } else {
@@ -43,30 +41,16 @@ exports.updateFitnessStat = function(req, res) {
 
   User.findById(userId, function(err, user){
     if(user.fitnessData.length === 0){
-      var newDateFitnessData = new FitnessData({date: updateDate, updateField: newStat});
-      user.fitnessData.push(newDateFitnessData.toObject());
-      user.save(function(err){
-        if(err) return res.send(401);
-        res.send(200);
-      });
+      addFitnessData(updateDate, updateField, newStat, res);
     } else {
       user.fitnessData.forEach(function(value, index, array){
         if(value['date'] === updateDate ){
           value[updateField] = newStat;
-          user.save(function(err){
-            if(err) return res.send(401);
-            res.send(200);
-          });
-        } else {
-          console.log("This is a new date to be updated", updateDate);
-          var newDateFitnessData = new FitnessData({date: updateDate, updateField: newStat});
-          user.fitnessData.push(newDateFitnessData.toObject());
-          user.save(function(err){
-            if(err) return res.send(401);
-            res.send(200);
-          });
+          saveUserData(user, res);
+          return;
         }
       });
+      addFitnessData(updateDate, updateField, newStat, res);
     }
   }); 
 
@@ -74,6 +58,18 @@ exports.updateFitnessStat = function(req, res) {
 };
 
 
+var addFitnessData = function(updateDate, updateField, newStat, res){
+  var newDateFitnessData = new FitnessData({date: updateDate, updateField: newStat});
+          user.fitnessData.push(newDateFitnessData.toObject());
+          saveUserData(user, res);
+};
+
+var saveUserData = function(user, res){
+  user.save(function(err){
+            if(err) return res.send(401);
+            res.send(200);
+  });
+};
 
   // console.log('GET req: ', req.params);
   // req.params=>   { '0': 'weight',
