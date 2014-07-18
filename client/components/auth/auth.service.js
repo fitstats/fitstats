@@ -3,9 +3,13 @@
 angular.module('fitStatsApp')
   .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q) {
     var currentUser = {};
-    // if($cookieStore.get('token')) {
-    //   currentUser = User.get();
-    // }
+
+    //Should be refactored at some point so that methods that require currentUser will only be fired
+    //after User.get() promise resolves.
+
+    if($cookieStore.get('token')) {
+      currentUser = User.get();
+    }
 
     return {
 
@@ -40,21 +44,6 @@ angular.module('fitStatsApp')
         }.bind(this));
 
         return deferred.promise;
-
-        // return $http.post('/auth/local', {
-        //   email: user.email,
-        //   password: user.password
-        // }).success(function(data) {
-        //   User.get().$promise.then(function(resp){
-        //     $cookieStore.put('token', data.token);
-        //     currentUser = resp;
-        //     return cb();
-        //   });
-        // }).
-        // error(function(err) {
-        //   this.logout();
-        //   return cb(err);
-        // });
       },
 
       /**
@@ -115,6 +104,8 @@ angular.module('fitStatsApp')
        *
        * @return {Object} user
        */
+
+      //can't work until currentUser promise resolves!!! (from lines 10-12)
       getCurrentUser: function() {
         return currentUser;
       },
@@ -125,7 +116,12 @@ angular.module('fitStatsApp')
        * @return {Boolean}
        */
       isLoggedIn: function() {
-        return currentUser.hasOwnProperty('role');
+        //checked for cookie instead of hasOwnProperty, because currentUser is not assigned right away due to
+        //lines 10-12 being asynchronous.
+
+        return $cookieStore.get('token');
+
+        // return currentUser.hasOwnProperty('role');
       },
 
       /**
@@ -133,6 +129,7 @@ angular.module('fitStatsApp')
        *
        * @return {Boolean}
        */
+      //can't work until currentUser promise resolves!!! (from lines 10-12)
       isAdmin: function() {
         return currentUser.role === 'admin';
       },
