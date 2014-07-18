@@ -5,8 +5,16 @@ angular.module('fitStatsApp')
 .factory('FormFunctions', function($filter, $resource, Auth){
 
 
-  var retrieveOneStat = function (queryField, updateControllerFields, currentDate) {
-    var queryDate = currentDate;
+  var retrieveDayStats = function () {
+    return $resource('/api/fitnessData/:id/:date', {
+      id: '@id',
+      date: '@date',
+    });
+  };
+
+
+  var retrieveOneStat = function (queryField, updateControllerFields) {
+    var queryDate = this.date;
     var userId = this.userId;
 
     var InputSubmition = $resource('/api/fitnessData/:id/:date/:field', {
@@ -28,7 +36,6 @@ angular.module('fitStatsApp')
         }
       });
   };
-
 
 
   var submitFieldValue = function(formData, queryField, updateControllerFields, currentDate) {
@@ -62,18 +69,20 @@ angular.module('fitStatsApp')
     });
   };
 
+
+
+  var submitMultipleFields = function (submitionArray) {
   // - SubmitMultipleFields separates the field submitions to db from
   // html forms that contain multiple 2x input fields
   // - Each index of submitionArray contains all the arguments needed to
   // invoke this.submit for one specific field
-  var submitMultipleFields = function (submitionArray) {
 
-        var chainSubmitions = function (index) {
-        this.submitFieldValue.apply(this, submitionArray[index]);
+    var chainSubmitions = function (index) {
+      this.submitFieldValue.apply(this, submitionArray[index]);
 
-        if (index < submitionArray.length -1) {
-          chainSubmitions(index +1);
-        }
+      if (index < submitionArray.length -1) {
+        chainSubmitions(index +1);
+      }
     }.bind(this);
 
     chainSubmitions(0);
@@ -82,7 +91,7 @@ angular.module('fitStatsApp')
 
   return {
     userId: Auth.getCurrentUser()._id,
-    date: undefined,
+    retrieveDayStats: retrieveDayStats,
     retrieveOneStat: retrieveOneStat,
     submitFieldValue: submitFieldValue,
     submitMultipleFields: submitMultipleFields,
