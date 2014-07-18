@@ -153,7 +153,9 @@
 
                   <div class="input" ng-if="inputMode">
                     <input name="calories" type="text" class="form-control" id="calories" placeholder="Calories" ng-model="formData.calories"
-                    ng-if="foodForm.protein.$pristine && foodForm.carbs.$pristine && foodForm.fat.$pristine">
+
+                    ng-show="(foodForm.protein.$pristine && foodForm.carbs.$pristine && foodForm.fat.$pristine)
+                    || (formData.protein == 0 && formData.carbs == 0 && formData.fat == 0)">
                   </div>
                 </div>
 
@@ -166,7 +168,7 @@
 
                   <div class="input" ng-if="inputMode">
                     <input name="protein" type="text" class="form-control" id="protein" placeholder="Protein in grams" ng-model="formData.protein" ng-change="chartUpdate()"
-                    >
+                    ng-show="foodForm.calories.$pristine || formData.calories == 0">
                   </div>
                 </div>
 
@@ -179,7 +181,7 @@
 
                   <div class="input" ng-if="inputMode">
                     <input name="carbs" type="text" class="form-control" id="protein" placeholder="Carbs in grams" ng-model="formData.carbs" ng-change="chartUpdate()"
-                    >
+                    ng-show="foodForm.calories.$pristine || formData.calories == 0">
                   </div>
                 </div>
 
@@ -192,7 +194,7 @@
 
                   <div class="input" ng-if="inputMode">
                     <input name="fat" type="text" class="form-control" id="fat" placeholder="Fat in grams" ng-model="formData.fat" ng-change="chartUpdate()"
-                    >
+                    ng-show="foodForm.calories.$pristine || formData.calories == 0">
                   </div>
                 </div>
 

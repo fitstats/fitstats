@@ -145,6 +145,7 @@ angular.module('fitStatsApp')
     $scope.inputMode = false;
 
     $scope.submitAll = function() {
+      console.log('submit', $scope.foodForm.$pristine);
       if ($scope.formData.protein || $scope.formData.carbs || $scope.formData.fats) {
         $scope.formData.calories =  (Number($scope.formData.protein) * 4) +
                                     (Number($scope.formData.carbs) * 4) +
@@ -158,9 +159,11 @@ angular.module('fitStatsApp')
         [ $scope.formData.carbs, 'carbs', $scope.loadViewItem, $scope.urlDate ],
         [ $scope.formData.fat, 'fat', $scope.loadViewItem, $scope.urlDate ]
       ]);
+
+      console.log($scope.foodForm.$pristine);
     };
 
-    $scope.edit = function(){
+    $scope.edit = function() {
       $scope.inputMode = true;
     };
 
