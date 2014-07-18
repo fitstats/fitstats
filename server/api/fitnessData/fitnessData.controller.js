@@ -12,14 +12,17 @@ exports.requestFitnessStat = function(req, res) {
     if (err) return next(err);
     //console.log('find a user in requestFitnessStat', user, dataRequested, user.fitnessData.length)
     if( user.fitnessData.length === 0){
-      console.log("Welcome back today! Please update your fitness data and drink a lot of water~~");
+      console.log('New user, empty fitnessData');
       res.send(200);
     } else {
       user.fitnessData.forEach(function(value, index, array){//date is value of each item in array
         //console.log(value['date'] , today)
         if(value['date'] === today){
           res.json({data: value[dataRequested], field: dataRequested}); //response data
-        } 
+        } else {
+          console.log('New date, need enter data.');
+          res.send(200);
+        }
       });   
     }
   });
@@ -42,7 +45,10 @@ exports.updateFitnessStat = function(req, res) {
     if(user.fitnessData.length === 0){
       var newDateFitnessData = new FitnessData({date: updateDate, updateField: newStat});
       user.fitnessData.push(newDateFitnessData.toObject());
-      user.save();
+      user.save(function(err){
+        if(err) return res.send(401);
+        res.send(200);
+      });
     } else {
       user.fitnessData.forEach(function(value, index, array){
         if(value['date'] === updateDate ){
@@ -51,9 +57,14 @@ exports.updateFitnessStat = function(req, res) {
             if(err) return res.send(401);
             res.send(200);
           });
-        } else if(!value['date']){
-          console.log('You have no access to this date'+ value['date'] + '\'s data');
-          res.send(200);
+        } else {
+          console.log("This is a new date to be updated", updateDate);
+          var newDateFitnessData = new FitnessData({date: updateDate, updateField: newStat});
+          user.fitnessData.push(newDateFitnessData.toObject());
+          user.save(function(err){
+            if(err) return res.send(401);
+            res.send(200);
+          });
         }
       });
     }
