@@ -3,6 +3,10 @@
 angular.module('fitStatsApp')
   .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q) {
     var currentUser = {};
+
+    //Should be refactored at some point so that methods that require currentUser will only be fired
+    //after User.get() promise resolves.
+
     if($cookieStore.get('token')) {
       currentUser = User.get();
     }
@@ -26,9 +30,12 @@ angular.module('fitStatsApp')
         }).
         success(function(data) {
           $cookieStore.put('token', data.token);
-          currentUser = User.get();
-          deferred.resolve(data);
-          return cb();
+          User.get()
+            .$promise.then(function(userData){
+              currentUser = userData;
+              deferred.resolve(data);
+              return cb();
+            });
         }).
         error(function(err) {
           this.logout();
@@ -45,7 +52,6 @@ angular.module('fitStatsApp')
        * @param  {Function}
        */
       logout: function() {
-        console.log('hello');
         $cookieStore.remove('token');
         currentUser = {};
       },
@@ -98,6 +104,8 @@ angular.module('fitStatsApp')
        *
        * @return {Object} user
        */
+
+      //can't work until currentUser promise resolves!!! (from lines 10-12)
       getCurrentUser: function() {
         return currentUser;
       },
@@ -108,7 +116,12 @@ angular.module('fitStatsApp')
        * @return {Boolean}
        */
       isLoggedIn: function() {
-        return currentUser.hasOwnProperty('role');
+        //checked for cookie instead of hasOwnProperty, because currentUser is not assigned right away due to
+        //lines 10-12 being asynchronous.
+
+        return $cookieStore.get('token');
+
+        // return currentUser.hasOwnProperty('role');
       },
 
       /**
@@ -116,6 +129,7 @@ angular.module('fitStatsApp')
        *
        * @return {Boolean}
        */
+      //can't work until currentUser promise resolves!!! (from lines 10-12)
       isAdmin: function() {
         return currentUser.role === 'admin';
       },

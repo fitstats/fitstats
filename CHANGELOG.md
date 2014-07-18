@@ -1,3 +1,12 @@
+<a name="v0.0.5"></a>
+### v0.0.5 (2014-07-17)
+
+#### Bug Fixes
+* Fix bug where Auth methods called before userData is retrieved from server
+* Login and Signup pages correctly redirect to /dashboard
+* Authentication Interceptor (on state change) works correctly now
+
+
 <a name="v0.0.4"></a>
 ### v0.0.4 (2014-07-17)
 
