@@ -21,12 +21,14 @@ angular.module('fitStatsApp')
       FormFunctions.retrieveDayStats()
         .get({ id: FormFunctions.userId, date: $scope.urlDate})
         .$promise.then(function(response) {
-            console.log('**Data successfully retrieved:', response.data);
+          console.log('**Data successfully retrieved:', response.data);
 
-              $scope.formData = response.data;
-              _.forEach($scope.formData, function (singleData, field) {
-                $scope.loadViewItem(singleData, field);
-              });
+          $scope.formData = response.data;
+          _.forEach($scope.formData, function (singleData, field) {
+            $scope.loadViewItem(singleData, field);
+          });
+        }, function(failReason) {
+          console.log('Date retrieve failed: ' + failReason);
         });
     };
 
@@ -40,7 +42,7 @@ angular.module('fitStatsApp')
         FormFunctions.rawDate = $scope.date;
         $scope.urlDate = $filter('date')(FormFunctions.rawDate, 'yyyyMMdd');
         $scope.retrieveWholeDaysStats();
-      } else if (FormFunctions.rawDate) {
+      } else if (FormFunctions.rawDate instanceof Date) {
         // set the date to the stored raw reference;
         // and align the query date
         var currentCalendarDay =  $filter('date')(new Date(), 'yyyyMMdd');
