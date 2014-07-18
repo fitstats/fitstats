@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var FitnessData = require('../fitnessData/fitnessData.model');
 var crypto = require('crypto');
 
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
@@ -16,6 +17,7 @@ var UserSchema = new Schema({
   hashedPassword: String,
   provider: String,
   salt: String,
+  fitnessData: [FitnessData.schema],
   facebook: {},
   twitter: {},
   github: {},

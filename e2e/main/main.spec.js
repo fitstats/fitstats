@@ -1,5 +1,5 @@
-// 'use strict';
-//
+'use strict';
+
 // describe('Main View', function() {
 //   var page;
 //
@@ -21,3 +21,15 @@
 //     });
 //   });
 // });
+
+describe('Main View', function() {
+  var test;
+
+  beforeEach(function() {
+    test = true;
+  });
+
+  it('should have a dummy test', function {
+    expect(test).toBe(true);
+  });
+});

@@ -7,6 +7,9 @@
 
 var Thing = require('../api/thing/thing.model');
 var User = require('../api/user/user.model');
+var FitnessData = require('../api/fitnessData/fitnessData.model');
+
+var userTest, userAdmin, fitnessDataTest1, fitnessDataTest2, fitnessDataAdmin3, fitnessDataAdmin4;
 
 Thing.find({}).remove(function() {
   Thing.create({
@@ -30,20 +33,78 @@ Thing.find({}).remove(function() {
   });
 });
 
+FitnessData.find({}).remove(function() {
+  fitnessDataTest1 = new FitnessData({
+    date: "20140717",
+    weight: 100,
+    bf: 4.5,
+    hr: 100,
+    bps: 120,
+    bpd: 80,
+    calories: 2400,
+    protein: 180,
+    carbs: 335,
+    fat: 65
+  });
+  fitnessDataTest1.save();
+  fitnessDataTest2 = new FitnessData({
+    date: "20140716",
+    weight: 110,
+    bf: 4.0,
+    hr: 110,
+    bps: 123,
+    bpd: 85,
+    calories: 2450,
+    protein: 150,
+    carbs: 200,
+    fat: 63
+  });
+  fitnessDataTest2.save();
+  fitnessDataAdmin3 = new FitnessData({
+    date: "20140717",
+    weight: 101,
+    bf: 4.5,
+    hr: 100,
+    bps: 120,
+    bpd: 80,
+    calories: 2400,
+    protein: 180,
+    carbs: 335,
+    fat: 65
+  });
+  fitnessDataAdmin3.save();
+  fitnessDataAdmin4 = new FitnessData({
+    date: "20140716",
+    weight: 111,
+    bf: 4.0,
+    hr: 110,
+    bps: 123,
+    bpd: 85,
+    calories: 2450,
+    protein: 150,
+    carbs: 200,
+    fat: 63
+  });
+  fitnessDataAdmin4.save();
+});  
+
 User.find({}).remove(function() {
-  User.create({
+  userTest = new User({
     provider: 'local',
     name: 'Test User',
     email: 'test@test.com',
-    password: 'test'
-  }, {
+    password: 'test',
+  });
+  userTest.fitnessData.push(fitnessDataTest1.toObject(), fitnessDataTest2.toObject());
+  userTest.save();
+  userAdmin = new User({
     provider: 'local',
     role: 'admin',
     name: 'Admin',
     email: 'admin@admin.com',
-    password: 'admin'
-  }, function() {
-      console.log('finished populating users');
-    }
-  );
+    password: 'admin',
+  });
+  userAdmin.fitnessData.push(fitnessDataAdmin3.toObject(), fitnessDataAdmin4.toObject());
+  userAdmin.save();
+
 });
