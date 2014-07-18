@@ -27,7 +27,6 @@ exports.requestFitnessStat = function(req, res) {
 };
 
 
-
 exports.updateFitnessStat = function(req, res) {
 /*req.body { userId: '53c79bec3d293d0000859c72',
   date: '20140717',
