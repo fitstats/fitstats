@@ -1,3 +1,40 @@
+/********* DAY SELECT ********/
+
+.day-select {
+  position: relative;
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.day-select h2 {
+  margin-top: 0;
+  margin-bottom: 0;
+  color: #4f5f6f;
+  font-size: 1.5em;
+}
+.day-select h4 {
+  font-size: 1em;
+  color: #9fabb8;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+.day-select i.fa-chevron-left {
+  position: absolute;
+  top: 40%;
+  left: 20px;
+  color: #9fabb8;
+}
+
+.day-select i.fa-chevron-right {
+  position: absolute;
+  top: 40%;
+  right: 20px;
+  color: #9fabb8;
+}
+
+/********* BLOCKS ********/
+
 .panel {
   border-radius: 0px;
   border: 0px;
@@ -25,10 +62,11 @@
 .panel form label {
   display: inline-block;
   font-size: 1em;
+  font-weight: 400;
   line-height: 3.75em;
   color: #4f5f6f;
   width: 75px;
-  margin-right: 10px;
+  margin: 10px 10px 10px 0;
 }
 
 .panel form .data-display-and-input {
@@ -42,8 +80,8 @@
 }
 
 .data-display-and-input span.display {
-  position: absolute;
-  top: -0.9em;
+  position: relative;
+  top: 4px;
   left: 8px;
   font-size: 2.375em;
 }
@@ -96,8 +134,3 @@
 .panel.food form i { color: #61ce5c; }
 .panel.exercise form i { color: #d9bc6c; }
 .panel.water form i { color: #59c2e6; }
-
-/*  ∆ added to clear bottom of longest panel from footer */
-.panel.food {
-  margin-bottom: 60px;
-}
