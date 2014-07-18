@@ -2,7 +2,15 @@
 
 angular.module('fitStatsApp')
 
-.factory('FormFunctions', function($filter, $resource, Auth){
+.factory('FormFunctions', function($filter, $resource, User){
+
+
+  var retrieveDayStats = function () {
+    return $resource('/api/fitnessData/:id/:date', {
+      id: '@id',
+      date: '@date',
+    });
+  };
 
 
   var retrieveOneStat = function (queryField, updateControllerFields) {
@@ -30,13 +38,11 @@ angular.module('fitStatsApp')
   };
 
 
+  var submitFieldValue = function(formData, queryField, updateControllerFields, currentDate) {
 
-  var submitFieldValue = function(formData, queryField, decimals, updateControllerFields) {
+    var queryDate = currentDate;
 
-    var filteredInputData = $filter('number')(formData, decimals);
-    var queryDate = this.date;
-
-    // defining the request
+    /* defining the PUT request */
     var InputSubmition = $resource('/api/fitnessData/:id/:date/:field', {
       id: '@userId',
       date: '@date',
@@ -50,31 +56,34 @@ angular.module('fitStatsApp')
 
     var inputSubmition = new InputSubmition();
 
-    // populate the request object to be submitted with relevant data
+    /* populate the request object to be submitted with relevant data */
     inputSubmition.userId = this.userId;
     inputSubmition.date = queryDate;
     inputSubmition.field = queryField;
-    inputSubmition.data = filteredInputData;
+    inputSubmition.data = formData;
 
-    // action for when the response is returned
+    /* action for when the response is returned */
     inputSubmition.$update({}, function (response) {
       updateControllerFields(response.data.data, response.data.field);
       console.log('Data successfully submitted:', response.data.field);
     });
   };
 
-  // - SubmitMultipleFields separates the field submitions to db from
-  // html forms that contain multiple 2x input fields
-  // - Each index of submitionArray contains all the arguments needed to
-  // invoke this.submit for one specific field
+
+
   var submitMultipleFields = function (submitionArray) {
+  /**
+   * SubmitMultipleFields separates the field submitions to db from
+   * html forms that contain multiple 2x input fields
+   * Each index of submitionArray contains all the arguments needed to
+   * invoke this.submit for one specific field
+   */
+    var chainSubmitions = function (index) {
+      this.submitFieldValue.apply(this, submitionArray[index]);
 
-        var chainSubmitions = function (index) {
-        this.submitFieldValue.apply(this, submitionArray[index]);
-
-        if (index < submitionArray.length -1) {
-          chainSubmitions(index +1);
-        }
+      if (index < submitionArray.length -1) {
+        chainSubmitions(index +1);
+      }
     }.bind(this);
 
     chainSubmitions(0);
@@ -82,8 +91,8 @@ angular.module('fitStatsApp')
 
 
   return {
-    userId: Auth.getCurrentUser()._id,
-    date: undefined,
+    userId: User.get(),
+    retrieveDayStats: retrieveDayStats,
     retrieveOneStat: retrieveOneStat,
     submitFieldValue: submitFieldValue,
     submitMultipleFields: submitMultipleFields,

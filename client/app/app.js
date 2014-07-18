@@ -10,6 +10,7 @@ angular.module('fitStatsApp', [
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
+      .when('/dashboard', '/dashboard/today')
       .otherwise('/');
 
     $locationProvider.html5Mode(true);

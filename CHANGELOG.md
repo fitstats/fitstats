@@ -1,12 +1,17 @@
 <a name="v0.0.6"></a>
-### v0.0.6 (2014-07-17)
 
-#### Database Feature
-* Add mongoDB database Feature 
-* Update and retrieve data from seed(testUser and AdminUser) successfully
-* Update and retrieve data from new user successfully
-* Fix bug where server do not response when no data from new user
- 
+### v0.0.6 (2014-07-18)
+
+#### Features
+* Date of dashboard can be incremented or decremented, and data displayed updated accordingly.
+* Added input show-hide animation for dashboard nutrition panel.
+* Data GET request on page load is under the Parent controller only, and retrieves whole date's data object.
+
+#### Bug Fixes
+* Database stores raw data only.
+* Dashboard's data filtering occurs only before presenting to user.
+
+
 
 <a name="v0.0.5"></a>
 ### v0.0.5 (2014-07-17)
