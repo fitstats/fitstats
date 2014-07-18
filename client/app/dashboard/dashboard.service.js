@@ -42,7 +42,7 @@ angular.module('fitStatsApp')
 
     var queryDate = currentDate;
 
-    // defining the PUT request
+    /* defining the PUT request */
     var InputSubmition = $resource('/api/fitnessData/:id/:date/:field', {
       id: '@userId',
       date: '@date',
@@ -56,13 +56,13 @@ angular.module('fitStatsApp')
 
     var inputSubmition = new InputSubmition();
 
-    // populate the request object to be submitted with relevant data
+    /* populate the request object to be submitted with relevant data */
     inputSubmition.userId = this.userId;
     inputSubmition.date = queryDate;
     inputSubmition.field = queryField;
     inputSubmition.data = formData;
 
-    // action for when the response is returned
+    /* action for when the response is returned */
     inputSubmition.$update({}, function (response) {
       updateControllerFields(response.data.data, response.data.field);
       console.log('Data successfully submitted:', response.data.field);
@@ -72,11 +72,12 @@ angular.module('fitStatsApp')
 
 
   var submitMultipleFields = function (submitionArray) {
-  // - SubmitMultipleFields separates the field submitions to db from
-  // html forms that contain multiple 2x input fields
-  // - Each index of submitionArray contains all the arguments needed to
-  // invoke this.submit for one specific field
-
+  /**
+   * SubmitMultipleFields separates the field submitions to db from
+   * html forms that contain multiple 2x input fields
+   * Each index of submitionArray contains all the arguments needed to
+   * invoke this.submit for one specific field
+   */
     var chainSubmitions = function (index) {
       this.submitFieldValue.apply(this, submitionArray[index]);
 

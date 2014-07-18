@@ -2,13 +2,13 @@
 
 angular.module('fitStatsApp')
 
-
   .controller('DashboardCtrl', function ($scope, $filter, FormFunctions, $stateParams, $state) {
-    // object with all current Day's data - in filtered format:
+    /**
+     * $scope.currentDay = Object with all current Day's data - in filtered format
+     * $scope.formData = pre-built submittion data - in raw format:
+     */
     $scope.currentDay = {};
-    // pre-built submittion data - in raw format:
     $scope.formData = {};
-    //$scope.queriedDay = {};
 
     $scope.loadViewItem = function(data, field) {
       var decimals = (field === 'weight' || field === 'bf') ? 1 : 0;
@@ -17,40 +17,37 @@ angular.module('fitStatsApp')
     };
 
     $scope.retrieveWholeDaysStats = function () {
-      var userId = FormFunctions.userId; //|| '53c99dd0972f5d201d90ca9f';
+      var userId = FormFunctions.userId;
       FormFunctions.retrieveDayStats()
         .get({ id: userId, date: $scope.urlDate})
-        .$promise.then(function(response) {
-          console.log('**Data successfully retrieved:', response.data);
-          console.log('Date retrieve success: ' + $scope.date);
-          console.log('URL retrieve success: ' + $scope.urlDate);
-          console.log('Raw date retrieve success: ' + FormFunctions.rawDate);
-          console.log('user id retrieve success: ' + FormFunctions.userId);
-          $scope.formData = response.data;
+        .$promise.then(function(successResponse) {
+          $scope.formData = successResponse.data || {};
           _.forEach($scope.formData, function (singleData, field) {
             $scope.loadViewItem(singleData, field);
           });
         }, function() {
-          console.log('Date retrieve failed: ' + $scope.date);
-          console.log('URL retrieve failed: ' + $scope.urlDate);
-          console.log('Raw date retrieve failed: ' + FormFunctions.rawDate);
-          console.log('user id retrieve failed: ' + FormFunctions.userId);
+          console.log('GET request fail for day: '+ $scope.urlDate);
         });
     };
 
     $scope.findCurrentDate = function () {
       if ($stateParams.date === 'today') {
-        // set the date to present,
-        // clone it into Factory for a reference;
-        // and align the query date
+        /**
+         * Set the date to present,
+         * clone it into Factory for a reference;
+         * and align the query date
+         */
         $scope.mainTitle = 'Today';
         $scope.date = new Date();
         FormFunctions.rawDate = $scope.date;
         $scope.urlDate = $filter('date')(FormFunctions.rawDate, 'yyyyMMdd');
         $scope.retrieveWholeDaysStats();
       } else if (FormFunctions.rawDate instanceof Date) {
-        // set the date to the stored raw reference;
-        // and align the query date
+        /**
+         * Set the date to the stored raw reference;
+         * and align the query date
+         *
+         */
         var currentCalendarDay =  $filter('date')(new Date(), 'yyyyMMdd');
         var dateToDisplay = $filter('date')(FormFunctions.rawDate, 'yyyyMMdd');
         $scope.mainTitle = currentCalendarDay === dateToDisplay  ? 'Today':'Date';
@@ -58,6 +55,9 @@ angular.module('fitStatsApp')
         $scope.urlDate = $stateParams.date;
         $scope.retrieveWholeDaysStats();
       } else {
+        /**
+        * For when the page is reloaded by client.
+        */
         $state.go('dashboard', {date: 'today'} );
       }
     };
