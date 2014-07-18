@@ -17,9 +17,9 @@ angular.module('fitStatsApp')
     };
 
     $scope.retrieveWholeDaysStats = function () {
-
+      var userId = FormFunctions.userId || '53c99dd0972f5d201d90ca9f';
       FormFunctions.retrieveDayStats()
-        .get({ id: FormFunctions.userId, date: $scope.urlDate})
+        .get({ id: userId, date: $scope.urlDate})
         .$promise.then(function(response) {
           console.log('**Data successfully retrieved:', response.data);
           console.log('Date retrieve success: ' + $scope.date);
