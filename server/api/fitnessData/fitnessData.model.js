@@ -22,3 +22,4 @@ FitnessDataSchema
 	})
 
 module.exports = mongoose.model('FitnessData', FitnessDataSchema);
+

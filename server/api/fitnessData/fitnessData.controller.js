@@ -64,11 +64,6 @@ exports.updateFitnessStat = function(req, res) {
 
 
 
-
-
-
-
-
   // console.log('GET req: ', req.params);
   // req.params=>   { '0': 'weight',
   //   id: '53c6c52f9fc87084680be124',

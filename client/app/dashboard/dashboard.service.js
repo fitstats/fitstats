@@ -56,7 +56,6 @@ angular.module('fitStatsApp')
     inputSubmition.field = queryField;
     inputSubmition.data = filteredInputData;
 
-    console.log('Before update get called, testing is this running?Yes');
     // action for when the response is returned
     inputSubmition.$update({}, function (response) {
       updateControllerFields(response.data.data, response.data.field);
