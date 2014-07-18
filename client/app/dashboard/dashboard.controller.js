@@ -22,7 +22,10 @@ angular.module('fitStatsApp')
         .get({ id: FormFunctions.userId, date: $scope.urlDate})
         .$promise.then(function(response) {
           console.log('**Data successfully retrieved:', response.data);
-
+          console.log('Date retrieve success: ' + $scope.date);
+          console.log('URL retrieve success: ' + $scope.urlDate);
+          console.log('Raw date retrieve success: ' + FormFunctions.rawDate);
+          console.log('user id retrieve success: ' + FormFunctions.userId);
           $scope.formData = response.data;
           _.forEach($scope.formData, function (singleData, field) {
             $scope.loadViewItem(singleData, field);
