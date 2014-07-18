@@ -6,22 +6,34 @@ var User = require('../user/user.model');
 exports.requestFitnessStat = function(req, res) {
 
   var dataRequested = req.params['0']; //get request params['0'], sample of request params: { '0': 'bf', id: '53c6cc775ca01d42f3373d46', date: '20140716' }
-  var today         = req.params['date']; //get request params['date']
+  var reqDate       = req.params['date']; 
+  var foundDate     = false;
+  var temp;
 
   User.findById(req.params['id'], function(err, user){
     if (err) return next(err);
-    if( user.fitnessData.length === 0){
+
+    if( user.fitnessData.length === 0){ //if new user, then no fitnessdata
       console.log('New user, empty fitnessData');
-      res.send(200);
+      res.send(204);
     } else {
-      user.fitnessData.forEach(function(value, index, array){//date is value of each item in array
-        if(value['date'] === today){
-          res.json({data: value[dataRequested], field: dataRequested}); //response data
-        } else {
-          console.log('New date, need enter data.');
-          res.send(200);
-        }
-      });   
+      user.fitnessData.forEach(function(value, index, array){
+        //console.log(value['date'] , today)
+        if(value['date'] === reqDate){ //if today has data saved, then retrieve data
+          foundDate = true;
+          //console.log('temp is ', value[dataRequested])
+          temp = value[dataRequested];
+          return;
+        } 
+      });
+
+      if(foundDate){
+        //console.log('value is ', temp)
+        res.json({data: temp, field: dataRequested}); 
+      } else {
+        console.log("No data for today, please enter data.")
+        res.send(204);
+      }
     }
   });
 };
@@ -37,19 +49,29 @@ exports.updateFitnessStat = function(req, res) {
   var updateField = data.field;
   var newStat     = data.data;
   var userId      = data.userId;
+  var foundDate   = false;
 
   User.findById(userId, function(err, user){
-    if(user.fitnessData.length === 0){
-      addFitnessData(updateDate, updateField, newStat, res);
+    if(user.fitnessData.length === 0){ //new user, save new date's data
+      console.log("update when length 0: new user");
+      addNewDateFitnessData(updateDate, updateField, newStat, res, user);
     } else {
+      console.log("not new user: ");
       user.fitnessData.forEach(function(value, index, array){
-        if(value['date'] === updateDate ){
+        if(value['date'] === updateDate ){ //if found the date, update data
+          foundDate = true;
+          console.log("date is updateDate", value['date'], updateDate);
           value[updateField] = newStat;
           saveUserData(user, res);
+          //user.save();
           return;
         }
       });
-      addFitnessData(updateDate, updateField, newStat, res);
+
+      if(!foundDate){
+        console.log("Not find date for old user");
+        addNewDateFitnessData(updateDate, updateField, newStat, res, user);
+      }
     }
   }); 
 
@@ -57,18 +79,34 @@ exports.updateFitnessStat = function(req, res) {
 };
 
 
-var addFitnessData = function(updateDate, updateField, newStat, res){
-  var newDateFitnessData = new FitnessData({date: updateDate, updateField: newStat});
-          user.fitnessData.push(newDateFitnessData.toObject());
-          saveUserData(user, res);
+var addNewDateFitnessData = function(updateDate, updateField, newStat, res, user){
+  console.log("waht is updateField", updateField);
+  console.log("{date: updateDate, updateField: newStat}", {date: updateDate, updateField: newStat});
+  var newDateFitnessData = new FitnessData({date: updateDate});
+    newDateFitnessData[updateField] = newStat; 
+    console.log('newDateFitnessData', newDateFitnessData);
+    //saveFitnessData(newDateFitnessData, res);
+    newDateFitnessData.save();
+    user.fitnessData.push(newDateFitnessData.toObject());
+    console.log('after push new Date Fitnessdata, user is ', user);
+    saveUserData(user, res);
+    //user.save();
 };
+
 
 var saveUserData = function(user, res){
   user.save(function(err){
-            if(err) return res.send(401);
-            res.send(200);
+    if(err) return res.send(401);
+    res.json({data: "user data saved"});
   });
 };
+
+// var saveFitnessData = function(newDateFitnessData, res){
+//   newDateFitnessData.save(function(err){
+//     if (err) return res.send(401);
+//     //res.send(200);
+//   });
+// };
 
   // console.log('GET req: ', req.params);
   // req.params=>   { '0': 'weight',

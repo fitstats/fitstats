@@ -48,7 +48,7 @@ FitnessData.find({}).remove(function() {
   });
   fitnessDataTest1.save();
   fitnessDataTest2 = new FitnessData({
-    date: "20140716",
+    date: "20140718",
     weight: 110,
     bf: 4.0,
     hr: 110,
@@ -74,7 +74,7 @@ FitnessData.find({}).remove(function() {
   });
   fitnessDataAdmin3.save();
   fitnessDataAdmin4 = new FitnessData({
-    date: "20140716",
+    date: "20140718",
     weight: 111,
     bf: 4.0,
     hr: 110,
