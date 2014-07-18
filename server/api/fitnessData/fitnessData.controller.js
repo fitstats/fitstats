@@ -14,21 +14,18 @@ exports.requestFitnessStat = function(req, res) {
     if (err) return next(err);
 
     if( user.fitnessData.length === 0){ //if new user, then no fitnessdata
-      console.log('New user, empty fitnessData');
+      console.log('This is a new user, empty fitnessData');
       res.send(204);
     } else {
       user.fitnessData.forEach(function(value, index, array){
-        //console.log(value['date'] , today)
         if(value['date'] === reqDate){ //if today has data saved, then retrieve data
           foundDate = true;
-          //console.log('temp is ', value[dataRequested])
           temp = value[dataRequested];
           return;
         } 
       });
 
       if(foundDate){
-        //console.log('value is ', temp)
         res.json({data: temp, field: dataRequested}); 
       } else {
         console.log("No data for today, please enter data.")
