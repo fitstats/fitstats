@@ -14,6 +14,7 @@ module.exports = function(app) {
 
   //new route: following inputed data by user / dashboard loading.
   app.use('/api/fitnessData', require('./api/fitnessData'));
+  app.use('/api/mfp', require('./api/mfp'));
 
   app.use('/auth', require('./auth'));
 
