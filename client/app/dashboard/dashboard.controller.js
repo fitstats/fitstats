@@ -2,13 +2,21 @@
 
 angular.module('fitStatsApp')
 
-  .controller('DashboardCtrl', function ($scope, $filter, FormFunctions, $stateParams, $state) {
+  .controller('DashboardCtrl', function ($scope, $http, $filter, FormFunctions, $stateParams, $state) {
     /**
      * $scope.currentDay = Object with all current Day's data - in filtered format
      * $scope.formData = pre-built submittion data - in raw format:
      */
     $scope.currentDay = {};
     $scope.formData = {};
+
+    $scope.getMfpData = function(){
+      var mfpUserId = window.prompt('What is is your MFP user ID?');
+      return $http.get('/api/mfp/' + mfpUserId + '/' + $scope.urlDate)
+      .success(function(data){
+        console.log(data);
+      });
+    };
 
     $scope.loadViewItem = function(data, field) {
       var decimals = (field === 'weight' || field === 'bf') ? 1 : 0;

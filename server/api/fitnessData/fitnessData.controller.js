@@ -4,32 +4,25 @@ var FitnessData = require('./fitnessData.model');
 var User = require('../user/user.model');
 
 exports.requestOneDayFitnessStat = function(req, res){
-  //console.log('what is req.params', req.params); //{ id: '[object Object]', date: '20140718' }
-  var requestDate = req.params.date;
+  var requestDate   = req.params.date;
   var requestUserId = req.user._id;
-  var foundDate = false;
+  var foundDate     = false;
   var temp;
-  console.log('reqDate:', requestDate);
-  console.log('reqUser:', req.user._id);
 
-  //add database feature 
   User.findById(requestUserId, function(err, user){
     if (err) return next(err);
-    console.log("find user : ", user);
 
-    if( user.fitnessData.length === 0){ //if new user, then no fitnessdata
-      console.log('This is a new user, empty fitnessData');
+    if (user.fitnessData.length === 0){
       res.send(204);
     } else {
       user.fitnessData.forEach(function(value, index, array){
-        if(value['date'] === requestDate){ //if today has data saved, then retrieve data
+        if(value['date'] === requestDate){ 
           foundDate = true;
           temp = value;
           return;
         } 
       });
-
-      if(foundDate){
+      if (foundDate){
         return res.json({data: temp, date: requestDate}); 
       } else {
         console.log('Client side can alert : No data for today, please enter data.')
@@ -37,14 +30,11 @@ exports.requestOneDayFitnessStat = function(req, res){
       }
     }
   });
-  //return res.json({ data: storedData, date:  requestDate});
 };
 
 
 exports.requestFitnessStat = function(req, res) {
-  console.log("req params is what: ", req.params);
-
-  var dataRequested = req.params['0']; //get request params['0'], sample of request params: { '0': 'bf', id: '53c6cc775ca01d42f3373d46', date: '20140716' }
+  var dataRequested = req.params['0']; 
   var reqDate       = req.params['date']; 
   var foundDate     = false;
   var temp;
@@ -52,22 +42,20 @@ exports.requestFitnessStat = function(req, res) {
   User.findById(req.params['id'], function(err, user){
     if (err) return next(err);
 
-    if( user.fitnessData.length === 0){ //if new user, then no fitnessdata
-      console.log('This is a new user, empty fitnessData');
+    if (user.fitnessData.length === 0){
       res.send(204);
     } else {
       user.fitnessData.forEach(function(value, index, array){
-        if(value['date'] === reqDate){ //if today has data saved, then retrieve data
+        if(value['date'] === reqDate){
           foundDate = true;
           temp = value[dataRequested];
           return;
         } 
       });
-
-      if(foundDate){
+      if (foundDate){
         res.json({data: temp, field: dataRequested}); 
       } else {
-        console.log("No data for today, please enter data.")
+        console.log("Client side: No data for today, please enter data.")
         res.send(204);
       }
     }
@@ -76,12 +64,6 @@ exports.requestFitnessStat = function(req, res) {
 
 
 exports.updateFitnessStat = function(req, res) {
-/*req.body { userId: '53c79bec3d293d0000859c72',
-  date: '20140717',
-  field: 'weight',
-  data: '120.0' }*/
-  console.log("updateing --- res.user : ",req.user);
-  console.log('--res.body: ', req.body);
   var data        = req.body;
   var updateDate  = String(data.date);
   var updateField = data.field;
@@ -90,28 +72,24 @@ exports.updateFitnessStat = function(req, res) {
   var foundDate   = false;
 
   User.findById(userId, function(err, user){
-    if(user.fitnessData.length === 0){ //new user, save new date's data
-      console.log("update when length 0: new user");
+    if (err) return next(err);
+
+    if (user.fitnessData.length === 0){
       addNewDateFitnessData(updateDate, updateField, newStat, res, user);
     } else {
-      console.log("not new user: ");
       user.fitnessData.forEach(function(value, index, array){
-        if(value['date'] === updateDate ){ //if found the date, update data
+        if (value['date'] === updateDate ){
           foundDate = true;
-          console.log("date is updateDate", value['date'], updateDate);
           value[updateField] = newStat;
           saveUserData(user, res);
           return;
         }
       });
-
-      if(!foundDate){
-        console.log("Not find date for old user");
+      if (!foundDate){
         addNewDateFitnessData(updateDate, updateField, newStat, res, user);
       }
     }
   }); 
-
   return res.json({data: data});
 };
 
@@ -127,17 +105,10 @@ var addNewDateFitnessData = function(updateDate, updateField, newStat, res, user
 
 var saveUserData = function(user, res){
   user.save(function(err){
-    if(err) return res.send(401);
+    if (err) return res.send(401);
     res.json({data: "user data saved"});
   });
 };
-
-// var saveFitnessData = function(newDateFitnessData, res){
-//   newDateFitnessData.save(function(err){
-//     if (err) return res.send(401);
-//     //res.send(200);
-//   });
-// };
 
   // console.log('GET req: ', req.params);
   // req.params=>   { '0': 'weight',
