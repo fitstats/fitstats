@@ -49,14 +49,12 @@
   border-radius: 5px;
   margin: 0 auto 0;
   padding: 20px;
-
 }
 
 .hero-chart .chart {
   height: 275px;
   width: 100%;
   font-weight: 400;
-  padding-bottom: 15px; /* to account for .ac-title's padding-bottom */
 }
 
 @media (max-width: 767px) {

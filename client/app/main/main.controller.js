@@ -29,6 +29,7 @@ angular.module('fitStatsApp')
           {'c': [ {'v': '7-18'}, {'v': 173.8, 'f': '173.8 lbs'} ] }
         ]
       },
+      /* more chart options: https://developers.google.com/chart/interactive/docs/gallery/linechart */
       'options': {
         'title': 'Weight Loss Over Time',
         'isStacked': 'true',
