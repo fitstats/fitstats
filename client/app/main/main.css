@@ -1,23 +1,76 @@
-.thing-form {
-    margin: 20px 0;
-}
-
-#banner {
-    border-bottom: none;
-    margin-top: -20px;
-}
-
-#banner h1 {
-    font-size: 60px;
-    line-height: 1;
-    letter-spacing: -1px;
-}
-
 .hero-unit {
     position: relative;
     padding: 30px 15px;
     color: #F5F5F5;
-    text-align: center;
+    text-align: left;
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
     background: #4393B9;
+    font-weight: 400;
+}
+
+.hero-unit h1 {
+    font-size: 3em;
+    letter-spacing: -1px;
+    margin-bottom: 35px;
+}
+
+.hero-unit p.lead {
+  font-size: 1.5em;
+  line-height: 1.75em;
+  color: #d3e5ed;
+  text-shadow: none;
+  margin-bottom: 35px;
+}
+
+.hero-unit .buttons {
+  margin-bottom: 25px;
+}
+
+.buttons button {
+  display: inline;
+}
+
+.buttons button {
+  margin-right: 15px;
+}
+
+.buttons button i, .buttons button img {
+  margin-right: 0.8em;
+}
+
+.hero-unit p.faded {
+  font-size: 1.15em;
+  color: #8fc1d9;
+  margin-bottom: 0;
+}
+
+.hero-chart {
+  background: #70afcd;
+  border-radius: 5px;
+  margin: 0 auto 0;
+  padding: 20px;
+
+}
+
+.hero-chart .chart {
+  height: 275px;
+  width: 100%;
+  font-weight: 400;
+  padding-bottom: 15px; /* to account for .ac-title's padding-bottom */
+}
+
+@media (max-width: 767px) {
+  .buttons button {
+    display: block;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .buttons button:last-child {
+    margin-bottom: 0px;
+  }
+
+  .hero-unit p.faded {
+    text-align: center;
+  }
 }
