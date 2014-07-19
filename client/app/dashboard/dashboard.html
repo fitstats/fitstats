@@ -136,14 +136,14 @@
       <div class="col-md-4">
 
         <!-- Food Block -->
-        <div class="panel panel-default food">
+        <div class="panel panel-default food" ng-controller="FoodController">
 
-            <div class="panel-heading">FOOD</div>
+            <div class="panel-heading">FOOD <button ng-click="getMfpData()"><i class="fa fa-cloud-download"></i></button></div>
 
             <div class="panel-body">
 
               <!-- Food form -->
-              <form name="foodForm" role="form" ng-controller="FoodController" ng-submit='submitAll()'>
+              <form name="foodForm" role="form" ng-submit='submitAll()'>
                 <label for="calories">Calories:</label>
 
                 <div class="data-display-and-input">
