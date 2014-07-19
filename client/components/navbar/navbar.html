@@ -16,8 +16,8 @@
         <li ng-class="{active: isActive('/stats')}"><a href="/stats"><i class="fa fa-bar-chart-o"></i>Stats</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li ng-show="!isLoggedIn()" ng-class="{active: isActive('/signup')}"><a href="/signup">Signup</a></li>
         <li ng-show="!isLoggedIn()" ng-class="{active: isActive('/login')}"><a href="/login">Login</a></li>
+        <li ng-show="!isLoggedIn()" ng-class="{active: isActive('/signup')}"><a href="/signup" class="signup">Signup</a></li>
         <li ng-show="isLoggedIn()" ng-class="{active: isActive('/settings')}"><a href="/settings">{{ getCurrentUser().name }} Settings</a></li>
         <li ng-show="isLoggedIn()"><a href="" ng-click="logout()">Logout</a></li>
       </ul>
