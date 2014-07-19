@@ -1,3 +1,16 @@
+<a name="v0.0.7"></a>
+### v0.0.7 (2014-07-18)
+
+#### Features
+* Implemented MyFitnessPal Scraper (currently prompts user for ID, logs to console)
+
+#### Organization
+* Reorganized and refactored client CSS files
+
+#### Bug Fixes
+* Fix CSS layout and positioning bugs in Dashboard
+
+
 <a name="v0.0.6"></a>
 ### v0.0.6 (2014-07-18)
 
@@ -9,8 +22,6 @@
 #### Bug Fixes
 * Database stores raw data only.
 * Dashboard's data filtering occurs only before presenting to user.
-
-
 
 
 <a name="v0.0.5"></a>
