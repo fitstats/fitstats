@@ -4,15 +4,15 @@
   <div class="container">
 
     <!-- Day Selector -->
-    <div class="row day-select" ng-controller="DashboardCtrl">
+    <div class="row day-select">
       <div class="col-md-offset-3 col-md-6">
         <!-- <button><i class="fa fa-chevron-left" ng-click="previousDay()"></i></button> -->
-        <i class="fa fa-chevron-left" ng-click="previousDay()"></i>
-        <h2>TODAY</h2>
+        <button class="date-button"><i class="fa fa-chevron-left" ng-click="previousDay()"></i></button>
+        <button class="date-button" ng-click="resetDate()"><h2>{{  mainTitle }}</h2></button>
         <!-- <h4>July 8, 2014</h4> -->
-        <h4>{{ date | date: 'MMMM d, yyyy' }}</h4>
+        <h4>{{ date | date: 'EEE MMMM d, yyyy' }}</h4>
         <!-- <button><i class="fa fa-chevron-right" ng-click="nextDay()"></i> </button> -->
-        <i class="fa fa-chevron-right" ng-click="nextDay()"></i>
+        <button class="date-button"><i class="fa fa-chevron-right" ng-click="nextDay()"></i></button>
       </div>
     </div><!-- end day selector -->
 
@@ -27,12 +27,12 @@
             <div class="panel-body">
 
               <!-- weight form -->
-              <form role="form" ng-controller="WeightController" ng-submit='submit(formData.weight, "weight", 1)'>
+              <form role="form" ng-controller="WeightController" ng-submit='submit(formData.weight, "weight")'>
                 <label for="weight">Weight:</label>
 
                 <div class="data-display-and-input">
                   <div class="display" ng-if="!inputMode">
-                    <span class="display">{{ today.weight }}<span class="suffix">lbs</span></span>
+                    <span class="display">{{ currentDay.weight }}<span class="suffix">lbs</span></span>
 
                   </div>
 
@@ -49,12 +49,12 @@
               </form><!-- end weight form -->
 
               <!-- body fat form -->
-              <form role="form" ng-controller="BFController" ng-submit='submit(formData.bf, "bf", 1)'>
+              <form role="form" ng-controller="BFController" ng-submit='submit(formData.bf, "bf")'>
                 <label for="bf">Body Fat:</label>
 
                 <div class="data-display-and-input">
                   <div class="display" ng-if="!inputMode">
-                    <span class="display">{{ today.bf }}<span class="suffix">%</span></span>
+                    <span class="display">{{ currentDay.bf }}<span class="suffix">%</span></span>
                   </div>
 
                   <div class="input" ng-if="inputMode">
@@ -82,12 +82,12 @@
             <div class="panel-body">
 
               <!-- heart rate form -->
-              <form role="form" ng-controller="HRController" ng-submit='submit(formData.hr, "hr", 0)'>
+              <form role="form" ng-controller="HRController" ng-submit='submit(formData.hr, "hr")'>
                 <label for="hr">Resting HR:</label>
 
                 <div class="data-display-and-input">
                   <div class="display" ng-if="!inputMode">
-                    <span class="display">{{ today.hr }}<span class="suffix">bpm</span></span>
+                    <span class="display">{{ currentDay.hr }}<span class="suffix">bpm</span></span>
                   </div>
 
                   <div class="input" ng-if="inputMode">
@@ -104,12 +104,12 @@
               </form><!-- end heart rate form
 
               <!-- blood pressure form -->
-              <form role="form" ng-controller="BPController" ng-submit='submitBoth(0)'>
+              <form role="form" ng-controller="BPController" ng-submit='submitBoth()'>
                 <label for="bps">BP:</label>
 
                 <div class="data-display-and-input">
                   <div class="display" ng-if="!inputMode">
-                    <span class="display">{{ today.bps }} / {{ today.bpd }}<span class="suffix">mmHg</span></span>
+                    <span class="display">{{ currentDay.bps }} / {{ currentDay.bpd }}<span class="suffix">mmHg</span></span>
                   </div>
 
                   <div class="input" ng-if="inputMode">
@@ -143,16 +143,19 @@
             <div class="panel-body">
 
               <!-- Food form -->
-              <form role="form" ng-controller="FoodController" ng-submit='submitAll(0)'>
+              <form name="foodForm" role="form" ng-controller="FoodController" ng-submit='submitAll()'>
                 <label for="calories">Calories:</label>
 
                 <div class="data-display-and-input">
                   <div class="display" ng-if="!inputMode">
-                    <span class="display">{{ today.calories }}<span class="suffix">kcal</span></span>
+                    <span class="display">{{ currentDay.calories }}<span class="suffix">kcal</span></span>
                   </div>
 
                   <div class="input" ng-if="inputMode">
-                    <input type="text" class="form-control" id="calories" placeholder="Calories" ng-model="formData.calories">
+                    <input name="calories" type="text" class="form-control" id="calories" placeholder="Calories" ng-model="formData.calories"
+
+                    ng-show="(foodForm.protein.$pristine && foodForm.carbs.$pristine && foodForm.fat.$pristine)
+                    || (formData.protein == 0 && formData.carbs == 0 && formData.fat == 0)">
                   </div>
                 </div>
 
@@ -160,11 +163,12 @@
 
                 <div class="data-display-and-input">
                   <div class="display" ng-if="!inputMode">
-                    <span class="display">{{ today.protein }}<span class="suffix">g</span></span>
+                    <span class="display">{{ currentDay.protein }}<span class="suffix">g</span></span>
                   </div>
 
                   <div class="input" ng-if="inputMode">
-                    <input type="text" class="form-control" id="protein" placeholder="Protein in grams" ng-model="formData.protein" ng-change="chartUpdate()">
+                    <input name="protein" type="text" class="form-control" id="protein" placeholder="Protein in grams" ng-model="formData.protein" ng-change="chartUpdate()"
+                    ng-show="foodForm.calories.$pristine || formData.calories == 0">
                   </div>
                 </div>
 
@@ -172,11 +176,12 @@
 
                 <div class="data-display-and-input">
                   <div class="display" ng-if="!inputMode">
-                    <span class="display">{{ today.carbs }}<span class="suffix">g</span></span>
+                    <span class="display">{{ currentDay.carbs }}<span class="suffix">g</span></span>
                   </div>
 
                   <div class="input" ng-if="inputMode">
-                    <input type="text" class="form-control" id="protein" placeholder="Carbs in grams" ng-model="formData.carbs" ng-change="chartUpdate()">
+                    <input name="carbs" type="text" class="form-control" id="protein" placeholder="Carbs in grams" ng-model="formData.carbs" ng-change="chartUpdate()"
+                    ng-show="foodForm.calories.$pristine || formData.calories == 0">
                   </div>
                 </div>
 
@@ -184,11 +189,12 @@
 
                 <div class="data-display-and-input">
                   <div class="display" ng-if="!inputMode">
-                    <span class="display">{{ today.fat }}<span class="suffix">g</span></span>
+                    <span class="display">{{ currentDay.fat }}<span class="suffix">g</span></span>
                   </div>
 
                   <div class="input" ng-if="inputMode">
-                    <input type="text" class="form-control" id="fat" placeholder="Fat in grams" ng-model="formData.fat" ng-change="chartUpdate()">
+                    <input name="fat" type="text" class="form-control" id="fat" placeholder="Fat in grams" ng-model="formData.fat" ng-change="chartUpdate()"
+                    ng-show="foodForm.calories.$pristine || formData.calories == 0">
                   </div>
                 </div>
 

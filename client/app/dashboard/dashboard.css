@@ -119,6 +119,14 @@
   outline: none;
 }
 
+.date-button {
+  top: -12px;
+  left: 4px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
 .panel form i {
   float: right;
   margin-right: 0px;

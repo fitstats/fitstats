@@ -1,6 +1,5 @@
 'use strict';
 
-exports.requestFitnessStat = function(req, res) {
   var storedData = {
     weight: 180,
     bf: 4.5,
@@ -12,6 +11,17 @@ exports.requestFitnessStat = function(req, res) {
     carbs: 335,
     fat: 65
   };
+
+exports.requestOneDayFitnessStat = function (req, res) {
+  var requestDate = req.params.date;
+  console.log('reqDate:', requestDate);
+  return res.json({ data: storedData, date:  requestDate});
+};
+
+
+
+
+exports.requestFitnessStat = function(req, res) {
   var dataRequested = req.params['0'];
 
   var returnData = storedData[ dataRequested ];
