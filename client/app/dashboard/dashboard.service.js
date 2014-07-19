@@ -6,8 +6,8 @@ angular.module('fitStatsApp')
 
 
   var retrieveDayStats = function () {
-    return $resource('/api/fitnessData/:id/:date', {
-      id: '@id',
+    return $resource('/api/fitnessData/:date', {
+      //id: '@id',
       date: '@date',
     });
   };
@@ -15,15 +15,15 @@ angular.module('fitStatsApp')
 
   var retrieveOneStat = function (queryField, updateControllerFields) {
     var queryDate = this.date;
-    var userId = this.userId;
+    //var userId = this.userId;
 
-    var InputSubmition = $resource('/api/fitnessData/:id/:date/:field', {
-      id: '@id',
+    var InputSubmition = $resource('/api/fitnessData/:date/:field', {
+      //id: '@id',
       date: '@date',
       field: '@field'
     });
 
-    InputSubmition.get({ id: userId, date: queryDate, field: queryField })
+    InputSubmition.get({ date: queryDate, field: queryField })
       .$promise.then(function(response) {
 
         if (response.$resolved){
@@ -43,8 +43,8 @@ angular.module('fitStatsApp')
     var queryDate = currentDate;
 
     /* defining the PUT request */
-    var InputSubmition = $resource('/api/fitnessData/:id/:date/:field', {
-      id: '@userId',
+    var InputSubmition = $resource('/api/fitnessData/:date/:field', {
+      //id: '@userId',
       date: '@date',
       field: '@field'
     }, {
@@ -57,7 +57,7 @@ angular.module('fitStatsApp')
     var inputSubmition = new InputSubmition();
 
     /* populate the request object to be submitted with relevant data */
-    inputSubmition.userId = this.userId;
+    //inputSubmition.userId = this.userId;
     inputSubmition.date = queryDate;
     inputSubmition.field = queryField;
     inputSubmition.data = formData;

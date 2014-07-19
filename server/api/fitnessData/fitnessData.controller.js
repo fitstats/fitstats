@@ -3,7 +3,46 @@
 var FitnessData = require('./fitnessData.model');
 var User = require('../user/user.model');
 
+exports.requestOneDayFitnessStat = function(req, res){
+  //console.log('what is req.params', req.params); //{ id: '[object Object]', date: '20140718' }
+  var requestDate = req.params.date;
+  var requestUserId = req.user._id;
+  var foundDate = false;
+  var temp;
+  console.log('reqDate:', requestDate);
+  console.log('reqUser:', req.user._id);
+
+  //add database feature 
+  User.findById(requestUserId, function(err, user){
+    if (err) return next(err);
+    console.log("find user : ", user);
+
+    if( user.fitnessData.length === 0){ //if new user, then no fitnessdata
+      console.log('This is a new user, empty fitnessData');
+      res.send(204);
+    } else {
+      user.fitnessData.forEach(function(value, index, array){
+        if(value['date'] === requestDate){ //if today has data saved, then retrieve data
+          foundDate = true;
+          temp = value;
+          return;
+        } 
+      });
+
+      if(foundDate){
+        return res.json({data: temp, date: requestDate}); 
+      } else {
+        console.log('Client side can alert : No data for today, please enter data.')
+        res.send(204); 
+      }
+    }
+  });
+  //return res.json({ data: storedData, date:  requestDate});
+};
+
+
 exports.requestFitnessStat = function(req, res) {
+  console.log("req params is what: ", req.params);
 
   var dataRequested = req.params['0']; //get request params['0'], sample of request params: { '0': 'bf', id: '53c6cc775ca01d42f3373d46', date: '20140716' }
   var reqDate       = req.params['date']; 
@@ -41,11 +80,13 @@ exports.updateFitnessStat = function(req, res) {
   date: '20140717',
   field: 'weight',
   data: '120.0' }*/
+  console.log("updateing --- res.user : ",req.user);
+  console.log('--res.body: ', req.body);
   var data        = req.body;
   var updateDate  = String(data.date);
   var updateField = data.field;
   var newStat     = data.data;
-  var userId      = data.userId;
+  var userId      = req.user._id;
   var foundDate   = false;
 
   User.findById(userId, function(err, user){
@@ -60,7 +101,6 @@ exports.updateFitnessStat = function(req, res) {
           console.log("date is updateDate", value['date'], updateDate);
           value[updateField] = newStat;
           saveUserData(user, res);
-          //user.save();
           return;
         }
       });
@@ -77,17 +117,11 @@ exports.updateFitnessStat = function(req, res) {
 
 
 var addNewDateFitnessData = function(updateDate, updateField, newStat, res, user){
-  console.log("waht is updateField", updateField);
-  console.log("{date: updateDate, updateField: newStat}", {date: updateDate, updateField: newStat});
   var newDateFitnessData = new FitnessData({date: updateDate});
     newDateFitnessData[updateField] = newStat; 
-    console.log('newDateFitnessData', newDateFitnessData);
-    //saveFitnessData(newDateFitnessData, res);
     newDateFitnessData.save();
     user.fitnessData.push(newDateFitnessData.toObject());
-    console.log('after push new Date Fitnessdata, user is ', user);
     saveUserData(user, res);
-    //user.save();
 };
 
 

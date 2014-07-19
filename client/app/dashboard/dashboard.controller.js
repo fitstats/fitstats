@@ -17,9 +17,9 @@ angular.module('fitStatsApp')
     };
 
     $scope.retrieveWholeDaysStats = function () {
-      var userId = FormFunctions.userId;
+      //var userId = FormFunctions.userId;
       FormFunctions.retrieveDayStats()
-        .get({ id: userId, date: $scope.urlDate})
+        .get({date: $scope.urlDate})
         .$promise.then(function(successResponse) {
           $scope.formData = successResponse.data || {};
           _.forEach($scope.formData, function (singleData, field) {

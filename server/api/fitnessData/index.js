@@ -6,11 +6,11 @@ var auth = require('../../auth/auth.service');
 
 var router = express.Router();
 
-//router.get('/:id/:date', auth.isAuthenticated(), controller.requestOneDayFitnessStat);
+router.get('/:date', auth.isAuthenticated(), controller.requestOneDayFitnessStat);
 
-router.get('/:id/:date/*', auth.isAuthenticated(), controller.requestFitnessStat);
+//router.get('/:id/:date/*', auth.isAuthenticated(), controller.requestFitnessStat);
 
-router.put('/:id/:date/*', auth.isAuthenticated(), controller.updateFitnessStat);
+router.put('/:date/*', auth.isAuthenticated(), controller.updateFitnessStat);
 
 
 
