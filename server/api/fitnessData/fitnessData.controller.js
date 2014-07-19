@@ -1,75 +1,114 @@
 'use strict';
 
-  var storedData = {
-    weight: 180,
-    bf: 4.5,
-    hr: 100,
-    bps: 120,
-    bpd: 80,
-    calories: 2400,
-    protein: 180,
-    carbs: 335,
-    fat: 65
-  };
+var FitnessData = require('./fitnessData.model');
+var User = require('../user/user.model');
 
-exports.requestOneDayFitnessStat = function (req, res) {
-  var requestDate = req.params.date;
-  console.log('reqDate:', requestDate);
-  return res.json({ data: storedData, date:  requestDate});
+exports.requestOneDayFitnessStat = function(req, res){
+  var requestDate   = req.params.date;
+  var requestUserId = req.user._id;
+  var foundDate     = false;
+  var temp;
+
+  User.findById(requestUserId, function(err, user){
+    if (err) return next(err);
+
+    if (user.fitnessData.length === 0){
+      res.send(204);
+    } else {
+      user.fitnessData.forEach(function(value, index, array){
+        if(value['date'] === requestDate){ 
+          foundDate = true;
+          temp = value;
+          return;
+        } 
+      });
+      if (foundDate){
+        return res.json({data: temp, date: requestDate}); 
+      } else {
+        console.log('Client side can alert : No data for today, please enter data.')
+        res.send(204); 
+      }
+    }
+  });
 };
 
 
-
-
 exports.requestFitnessStat = function(req, res) {
-  var dataRequested = req.params['0'];
+  var dataRequested = req.params['0']; 
+  var reqDate       = req.params['date']; 
+  var foundDate     = false;
+  var temp;
 
-  var returnData = storedData[ dataRequested ];
-  /*
-  UserData.findById(req.params.id, function (err, userData) {
+  User.findById(req.params['id'], function(err, user){
+    if (err) return next(err);
 
-    if(err) { return handleError(res, err); }
-
-    if(!userData) { return res.send(404); }
-    return res.json(userData.dataRequested);
+    if (user.fitnessData.length === 0){
+      res.send(204);
+    } else {
+      user.fitnessData.forEach(function(value, index, array){
+        if(value['date'] === reqDate){
+          foundDate = true;
+          temp = value[dataRequested];
+          return;
+        } 
+      });
+      if (foundDate){
+        res.json({data: temp, field: dataRequested}); 
+      } else {
+        console.log("Client side: No data for today, please enter data.")
+        res.send(204);
+      }
+    }
   });
-  */
-  return res.json({ data: returnData, field:  dataRequested});
 };
 
 
 exports.updateFitnessStat = function(req, res) {
-  var data = req.body;
-  /*
-  if(req.body._id) { delete req.body._id; }
+  var data        = req.body;
+  var updateDate  = String(data.date);
+  var updateField = data.field;
+  var newStat     = data.data;
+  var userId      = req.user._id;
+  var foundDate   = false;
 
-  UserData.findById(req.params.id, function (err, userData) {
-    if (err) { return handleError(err); }
-    if(!userData) { return res.send(404); }
+  User.findById(userId, function(err, user){
+    if (err) return next(err);
 
-    userData[field] = req.body[field];
-    userData.save(function (err) {
-      if (err) { return handleError(err); }
-      return res.json(200, userData);
-    });
-  });
-  */
-
+    if (user.fitnessData.length === 0){
+      addNewDateFitnessData(updateDate, updateField, newStat, res, user);
+    } else {
+      user.fitnessData.forEach(function(value, index, array){
+        if (value['date'] === updateDate ){
+          foundDate = true;
+          value[updateField] = newStat;
+          saveUserData(user, res);
+          return;
+        }
+      });
+      if (!foundDate){
+        addNewDateFitnessData(updateDate, updateField, newStat, res, user);
+      }
+    }
+  }); 
   return res.json({data: data});
 };
 
 
+var addNewDateFitnessData = function(updateDate, updateField, newStat, res, user){
+  var newDateFitnessData = new FitnessData({date: updateDate});
+    newDateFitnessData[updateField] = newStat; 
+    newDateFitnessData.save();
+    user.fitnessData.push(newDateFitnessData.toObject());
+    saveUserData(user, res);
+};
 
 
-
-
-
-
-
-
-
-
-
+var saveUserData = function(user, res){
+  user.save(function(err){
+    if (err) return res.send(401);
+    res.json({data: "user data saved"});
+  });
+};
 
   // console.log('GET req: ', req.params);
   // req.params=>   { '0': 'weight',

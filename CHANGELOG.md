@@ -1,3 +1,14 @@
+
+<a name="v0.0.8"></a>
+### v0.0.8 (2014-07-18)
+
+#### Features
+* Added database feature 
+
+#### Bug Fixes
+* change request data from seperate field to one day field successfully
+
+
 <a name="v0.0.7"></a>
 ### v0.0.7 (2014-07-18)
 
@@ -12,6 +23,7 @@
 
 
 <a name="v0.0.6"></a>
+
 ### v0.0.6 (2014-07-18)
 
 #### Features
@@ -31,8 +43,6 @@
 * Fix bug where Auth methods called before userData is retrieved from server
 * Login and Signup pages correctly redirect to /dashboard
 * Authentication Interceptor (on state change) works correctly now
-
-
 
 
 
