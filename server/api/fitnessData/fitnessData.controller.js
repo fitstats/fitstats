@@ -4,32 +4,45 @@ var FitnessData = require('./fitnessData.model');
 var User = require('../user/user.model');
 
 exports.requestOneDayFitnessStat = function(req, res){
-  var requestDate   = req.params.date;
-  var requestUserId = req.user._id;
-  var foundDate     = false;
-  var temp;
+  // var requestDate   = req.params.date;
+  // var requestUserId = req.user._id;
+  // var foundDate     = false;
+  // var temp;
 
-  User.findById(requestUserId, function(err, user){
-    if (err) return next(err);
+  // User.findById(requestUserId, function(err, user){
+  //   if (err) return next(err);
 
-    if (user.fitnessData.length === 0){
-      res.send(204);
-    } else {
-      user.fitnessData.forEach(function(value, index, array){
-        if(value['date'] === requestDate){ 
-          foundDate = true;
-          temp = value;
-          return;
-        } 
-      });
-      if (foundDate){
-        return res.json({data: temp, date: requestDate}); 
-      } else {
-        console.log('Client side can alert : No data for today, please enter data.')
-        res.send(204); 
-      }
-    }
+  //   if (user.fitnessData.length === 0){
+  //     res.send(204);
+  //   } else {
+  //     user.fitnessData.forEach(function(value, index, array){
+  //       if(value['date'] === requestDate){ 
+  //         foundDate = true;
+  //         temp = value;
+  //         return;
+  //       } 
+  //     });
+  //     if (foundDate){
+  //       return res.json({data: temp, date: requestDate}); 
+  //     } else {
+  //       console.log('Client side can alert : No data for today, please enter data.')
+  //       res.send(204); 
+  //     }
+  //   }
+  // });
+
+  var requestDate = req.params.date;
+  //console.log('userId:', req.user._id);
+  //console.log('date:', requestDate);
+
+  FitnessData.findOne({userId: req.user._id, date: requestDate}, function (err, userFitnessData) {
+    if (err) { return res.send(500, err); }
+    
+    console.log('userFitnessData returned by promise: ', userFitnessData);
+    
+    res.json({data: userFitnessData});
   });
+
 };
 
 
@@ -64,34 +77,56 @@ exports.requestFitnessStat = function(req, res) {
 
 
 exports.updateFitnessStat = function(req, res) {
+  var userId      = req.user._id;
   var data        = req.body;
   var updateDate  = String(data.date);
   var updateField = data.field;
   var newStat     = data.data;
-  var userId      = req.user._id;
-  var foundDate   = false;
+  
+  FitnessData.findOne({userId: userId, date: updateDate}, function (err, userFitnessData) {
+    if (err) { return res.send(500, err); }
+    
+    console.log('userFitnessData returned by promise: ', userFitnessData);
+    // day exists
+    if (userFitnessData) {
+      userFitnessData[updateField] = newStat;
+      userFitnessData.save();
 
-  User.findById(userId, function(err, user){
-    if (err) return next(err);
-
-    if (user.fitnessData.length === 0){
-      addNewDateFitnessData(updateDate, updateField, newStat, res, user);
     } else {
-      user.fitnessData.forEach(function(value, index, array){
-        if (value['date'] === updateDate ){
-          foundDate = true;
-          value[updateField] = newStat;
-          saveUserData(user, res);
-          return;
-        }
-      });
-      if (!foundDate){
-        addNewDateFitnessData(updateDate, updateField, newStat, res, user);
-      }
+      var newFitnessObj = {};
+      newFitnessObj.userId = userId;
+      newFitnessObj.date   = updateDate;
+      newFitnessObj[updateField] = newStat;
+
+      FitnessData.create(newFitnessObj);
     }
-  }); 
-  return res.json({data: data});
+      return res.json({data: data});
+
+  });
 };
+
+  // var foundDate   = false;
+
+  // User.findById(userId, function(err, user){
+  //   if (err) return next(err);
+
+  //   if (user.fitnessData.length === 0){
+  //     addNewDateFitnessData(updateDate, updateField, newStat, res, user);
+  //   } else {
+  //     user.fitnessData.forEach(function(value, index, array){
+  //       if (value['date'] === updateDate ){
+  //         foundDate = true;
+  //         value[updateField] = newStat;
+  //         saveUserData(user, res);
+  //         return;
+  //       }
+  //     });
+  //     if (!foundDate){
+  //       addNewDateFitnessData(updateDate, updateField, newStat, res, user);
+  //     }
+  //   }
+  // }); 
+  // return res.json({data: data});
 
 
 var addNewDateFitnessData = function(updateDate, updateField, newStat, res, user){
