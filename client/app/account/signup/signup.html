@@ -25,6 +25,24 @@
           </p>
         </div>
 
+        <div class="form-group" ng-class="{ 'has-success': form.mfp.$valid && submitted,
+                                            'has-error': form.mfp.$invalid && submitted }">
+
+          <input type="mfp" name="mfp" class="form-control" placeholder="MyFitnessPal ID" ng-model="user.mfpId"
+                 required
+                 mongoose-error/>
+          <p class="help-block" ng-show="form.mfp.$error.email && submitted">
+            Oops looks like your MFP profile is set to private. <a href="">Click here</a> for instructions.
+          </p>
+          <p class="help-block" ng-show="form.mfp.$error.required && submitted">
+            What's your email address?
+          </p>
+          <p class="help-block" ng-show="form.mfp.$error.mongoose">
+            {{ errors.mfpId }}
+          </p>
+        </div>
+
+
         <div class="form-group" ng-class="{ 'has-success': form.email.$valid && submitted,
                                             'has-error': form.email.$invalid && submitted }">
 
@@ -57,11 +75,6 @@
             {{ errors.password }}
           </p>
         </div>
-
-
-
-
-
 
         <button class="btn btn-lg btn-success btn-block" type="submit">Sign Up</button>
       </form>
