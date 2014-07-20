@@ -3,8 +3,8 @@ html {
   min-height: 100%;
 }
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+  /* Margin bottom by footer height + 25px of extra padding */
+  margin-bottom: 85px;
 }
 .footer {
   position: absolute;
@@ -13,11 +13,6 @@ body {
   /* Set the fixed height of the footer here */
   height: 60px;
   background-color: #535353;
-
-  /* ∆ added: resolves footer escaping below the page view limit*/
-  padding-top: 0px !important;
-  padding-bottom: 60px !important;
-
 }
 
 .container .text-muted {

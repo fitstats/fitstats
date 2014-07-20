@@ -38,10 +38,25 @@
   margin-right: 0.8em;
 }
 
-.hero-unit p.faded {
+.buttons button img {
+  position: relative;
+  top: -2px;
+  height: 1.2em;
+}
+
+.hero-unit a.faded {
   font-size: 1.15em;
   color: #8fc1d9;
   margin-bottom: 0;
+}
+
+.hero-unit a:visited {
+  color: #8fc1d9;
+}
+
+.hero-unit a:hover {
+  text-decoration: none;
+  color: #badae9;
 }
 
 .hero-chart {
@@ -57,7 +72,62 @@
   font-weight: 400;
 }
 
+.sub-section h2 {
+  margin-top: 30px;
+  line-height: 60px;
+  color: #4393b9;
+}
+
+.features ul {
+  padding-left: 25px;
+}
+
+.features li {
+  font-size: 18px;
+  height: 30px;
+  margin-bottom: 15px;
+  color: #535353;
+  list-style: none;
+}
+
+.features li i {
+  display: inline-block;
+  width: 20px;
+  text-align: center;
+  margin-right: 15px;
+}
+
+.partners .partner {
+  float: left;
+  height: 64px;
+  width: 100%;
+  background-color: white;
+  margin-right: 26px;
+  margin-bottom: 26px;
+}
+
+.partner img {
+  display: block;
+  margin: 8px auto 0;
+}
+
+.partner.mfp {
+  background-color: #0072bc;
+}
+
+.partner p {
+  text-align: center;
+  line-height: 64px; /* height of .partner */
+  font-size: 16px;
+  color: #737373;
+}
+
 @media (max-width: 767px) {
+
+  .hero-chart {
+    display: none;
+  }
+
   .buttons button {
     display: block;
     width: 100%;
@@ -70,5 +140,27 @@
 
   .hero-unit p.faded {
     text-align: center;
+  }
+
+  .sub-section h2 {
+    margin-left: 15px;
+    margin-top: 15px;
+  }
+}
+
+@media (max-width: 991px) {
+  .hero-chart {
+    margin-top: 30px;
+  }
+
+  .features {
+    padding-bottom: 15px;
+    border-bottom: 1px solid #8fc1d9;
+  }
+}
+
+@media (max-width: 1199px) {
+  .buttons button {
+    margin-bottom: 12px;
   }
 }
