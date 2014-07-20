@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var FitnessDataSchema = new Schema({
+  'userId': Schema.ObjectId,
   'date': String,
   'weight': Number,
   'bf': Number,
@@ -16,10 +17,10 @@ var FitnessDataSchema = new Schema({
   'fat': Number
 });
 
-FitnessDataSchema
-	.pre('save', function(next) {
-		next();
-	})
+// FitnessDataSchema
+// 	.pre('save', function(next) {
+// 		next();
+// 	})
 
 module.exports = mongoose.model('FitnessData', FitnessDataSchema);
 
