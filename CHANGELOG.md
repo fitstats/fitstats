@@ -1,3 +1,19 @@
+<a name="v0.0.10"></a>
+### v0.0.10 (2014-07-19)
+
+#### Features
+* Redesign front page
+* Redesign login page
+* Redesign signup page
+* Add MyFitnessPal ID field to signup form
+
+#### Bug Fixes
+* Fix font-awesome minification bug in grunt deploy script
+
+#### Dependencies
+* Add Google Chart dependency
+
+
 <a name="v0.0.9"></a>
 ### v0.0.9 (2014-07-19)
 
@@ -10,7 +26,7 @@
 ### v0.0.8 (2014-07-18)
 
 #### Features
-* Added database feature 
+* Added database feature
 
 #### Bug Fixes
 * change request data from seperate field to one day field successfully
