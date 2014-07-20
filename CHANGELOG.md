@@ -1,3 +1,10 @@
+<a name="v0.0.9"></a>
+### v0.0.9 (2014-07-19)
+
+#### Features
+* Change database schema from embedded document to document reference type.
+
+
 
 <a name="v0.0.8"></a>
 ### v0.0.8 (2014-07-18)
