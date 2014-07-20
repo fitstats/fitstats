@@ -1,23 +1,79 @@
-.btn-facebook {
-  color: #fff;
-  background-color: #3B5998;
-  border-color: #133783;
+.form-signin {
+  margin-top: 30px;
+  padding: 25px;
+  background-color: white;
+  box-shadow: 0px 1px 1px 0px rgba(50, 50, 50, 0.25);
+  max-width: 555px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.btn-twitter {
-  color: #fff;
-  background-color: #2daddc;
-  border-color: #0271bf;
+.form-signin-heading {
+  margin-top: 0px;
+  text-align: center;
+  margin-bottom: 20px;
+  color: ##535353;
 }
 
-.btn-github {
-  color: #fff;
-  background-color: #fafafa;
-  border-color: #ccc;
+.form-signin .form-control {
+  position: relative;
+  height: auto;
+  box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 10px;
 }
 
-.btn-google-plus {
-  color: #fff;
-  background-color: #dd4b39;
-  border-color: #c53727;
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+
+.form-signin input[type="email"] {
+  margin-bottom: 6px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.form-signin a i, a img {
+  margin-right: 0.8em;
+}
+
+.form-signin a img {
+  position: relative;
+  top: -2px;
+  height: 1.2em;
+}
+
+.form-signin p.separator {
+  margin-top: 16px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.form-signin a.register {
+  display: block;
+  text-align: center;
+  margin-top: 8px;
+  margin-bottom: 30px;
+}
+
+.form-signin .oauth-buttons a:first-child {
+  margin-right: 8px;
+}
+
+@media (max-width: 767px) {
+  .form-signin .oauth-buttons a {
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .form-signin .oauth-buttons a:first-child {
+    margin-right: 0;
+  }
 }
