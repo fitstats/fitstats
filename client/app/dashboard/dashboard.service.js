@@ -12,34 +12,9 @@ angular.module('fitStatsApp')
   };
 
 
-  var retrieveOneStat = function (queryField, updateControllerFields) {
-    var queryDate = this.date;
-
-    var InputSubmition = $resource('/api/fitnessData/:date/:field', {
-      //id: '@id',
-      date: '@date',
-      field: '@field'
-    });
-
-    InputSubmition.get({ date: queryDate, field: queryField })
-      .$promise.then(function(response) {
-
-        if (response.$resolved){
-          var updatedData = response.data;
-          updateControllerFields(updatedData, queryField);
-
-        } else {
-          console.log('Error data does not exist');
-        }
-      });
-  };
-
-
   var submitFieldValue = function(formData, queryField, updateControllerFields, currentDate) {
-
     var queryDate = currentDate;
 
-    /* defining the PUT request */
     var InputSubmition = $resource('/api/fitnessData/:date/:field', {
       date: '@date',
       field: '@field'
@@ -67,10 +42,10 @@ angular.module('fitStatsApp')
 
   var submitMultipleFields = function (submitionArray) {
   /**
-   * SubmitMultipleFields separates the field submitions to db from
-   * html forms that contain multiple 2x input fields
+   * SubmitMultipleFields separates the html form submitions for those that
+   * that contain multiple (2+) input fields.
    * Each index of submitionArray contains all the arguments needed to
-   * invoke this.submit for one specific field
+   * invoke this.submit for one specific field in that form.
    */
     var chainSubmitions = function (index) {
       this.submitFieldValue.apply(this, submitionArray[index]);
@@ -86,10 +61,37 @@ angular.module('fitStatsApp')
 
   return {
     userId: User.get(),
+    rawDate: undefined,
     retrieveDayStats: retrieveDayStats,
-    retrieveOneStat: retrieveOneStat,
     submitFieldValue: submitFieldValue,
     submitMultipleFields: submitMultipleFields,
-    rawDate: undefined
   };
 });
+
+
+
+/*
+=> no longer in use:
+Though may again be needed for the single field timelog graph...
+
+var retrieveOneStat = function (queryField, updateControllerFields) {
+  var queryDate = this.date;
+
+  var InputSubmition = $resource('/api/fitnessData/:date/:field', {
+    date: '@date',
+    field: '@field'
+  });
+
+  InputSubmition.get({ date: queryDate, field: queryField })
+    .$promise.then(function(response) {
+
+      if (response.$resolved){
+        var updatedData = response.data;
+        updateControllerFields(updatedData, queryField);
+
+      } else {
+        console.log('Error data does not exist');
+      }
+    });
+};
+*/

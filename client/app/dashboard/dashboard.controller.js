@@ -15,22 +15,29 @@ angular.module('fitStatsApp')
       var mfpUserId = window.prompt('What is is your MFP user ID?');
       return $http.get('/api/mfp/' + mfpUserId + '/' + $scope.urlDate)
       .success( function(data) {
-        if (data.data.calories || data.data.protein || data.data.carbs || data.data.fat) {
-          $scope.formData.calories =  ( (Number(data.data.protein) * 4) +
-                                      (Number(data.data.carbs) * 4) +
-                                      (Number(data.data.fat) * 9) ) || undefined;
+        console.log(data.data);
+        if (!data.data.private) {
+          if (data.data.calories || data.data.protein || data.data.carbs || data.data.fat) {
+            $scope.formData.calories =  ( (Number(data.data.protein) * 4) +
+                                        (Number(data.data.carbs) * 4) +
+                                        (Number(data.data.fat) * 9) ) || undefined;
 
-          $scope.formData.protein = data.data.protein || undefined;
-          $scope.formData.carbs = data.data.carbs || undefined;
-          $scope.formData.fat = data.data.fat || undefined;
+            $scope.formData.protein = data.data.protein || undefined;
+            $scope.formData.carbs = data.data.carbs || undefined;
+            $scope.formData.fat = data.data.fat || undefined;
 
-          FormFunctions.submitMultipleFields([
-            [ data.data.calories, 'calories', $scope.loadViewItem, $scope.urlDate ],
-            [ data.data.protein, 'protein', $scope.loadViewItem, $scope.urlDate],
-            [ data.data.carbs, 'carbs', $scope.loadViewItem, $scope.urlDate ],
-            [ data.data.fat, 'fat', $scope.loadViewItem, $scope.urlDate ]
-          ]);
-        } else { debugger; };
+            FormFunctions.submitMultipleFields([
+              [ data.data.calories, 'calories', $scope.loadViewItem, $scope.urlDate ],
+              [ data.data.protein, 'protein', $scope.loadViewItem, $scope.urlDate],
+              [ data.data.carbs, 'carbs', $scope.loadViewItem, $scope.urlDate ],
+              [ data.data.fat, 'fat', $scope.loadViewItem, $scope.urlDate ]
+            ]);
+          } else {
+            alert('No data for this day');
+          }
+        } else {
+          alert('This profile is private');
+        }
 
       });
     };

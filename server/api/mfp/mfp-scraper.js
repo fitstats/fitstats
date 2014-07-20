@@ -49,6 +49,12 @@ module.exports.scrapeMfpData = function(mfpUserId, date, options, callback) {
     var $ = cheerio.load(body);
     // console.log(body);
 
+    // check that the profile is public:
+    var privateProfileCheck = $('#main').find('#settings').find('h1').text();
+    if (privateProfileCheck === 'This Food Diary is Private') {
+      return callback( { private: true } );
+    }
+
     //set fields to be scraped
     var fields = {};
     options.forEach(function(field){
