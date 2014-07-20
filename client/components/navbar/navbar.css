@@ -2,7 +2,7 @@
 
 .navbar-default {
 	background-color: #515f6f;
-	border-color: #3b4753;
+	border-color: #485F75;
 }
 .navbar-default .navbar-brand {
 	color: #ecf0f1;
@@ -121,7 +121,12 @@
     padding-top: 0px;
     padding-bottom: 0px;
     line-height: 35px;
-    margin-top: 30px;
+    margin-top: 27px;
+}
+
+.signup {
+	border: 1px solid #73818e;
+	border-radius: 5px;
 }
 
 @media (max-width: 767px) {
@@ -131,4 +136,8 @@
     padding-bottom: 10px;
     margin-top: 0;
   }
+
+	.signup {
+		border: none;
+	}
 }

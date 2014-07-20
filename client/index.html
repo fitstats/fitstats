@@ -11,22 +11,21 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
 
-    <!-- Google web font must be placed outside of build:css section so it doesn't get minified -->
-    <link href='http://fonts.googleapis.com/css?family=Cabin:400,500' rel='stylesheet' type='text/css'>
+    <!-- Google web font and font-awesome must be placed outside of build:css section so it doesn't get minified -->
+    <link href='http://fonts.googleapis.com/css?family=Cabin:400,600' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
 
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(client) app/vendor.css -->
       <!-- bower:css -->
       <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
-      <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
       <link rel="stylesheet" href="bower_components/nvd3/src/nv.d3.css" />
       <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,client}) app/app.css -->
     <link rel="stylesheet" href="app/app.css">
       <!-- injector:css -->
-      <link rel="stylesheet" href="app/account/login/login.css">
-      <link rel="stylesheet" href="app/account/login/signin (for re-do).css">
+      <link rel="stylesheet" href="app/account/account.css">
       <link rel="stylesheet" href="app/admin/admin.css">
       <link rel="stylesheet" href="app/app.css">
       <link rel="stylesheet" href="app/dashboard/dashboard.css">
@@ -75,6 +74,7 @@
       <script src="bower_components/d3/d3.js"></script>
       <script src="bower_components/nvd3/nv.d3.js"></script>
       <script src="bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js"></script>
+      <script src="bower_components/angular-google-chart/ng-google-chart.js"></script>
       <!-- endbower -->
     <!-- endbuild -->
 

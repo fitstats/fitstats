@@ -1,0 +1,80 @@
+.form-account-auth {
+  margin-top: 30px;
+  padding: 25px;
+  background-color: white;
+  box-shadow: 0px 1px 1px 0px rgba(50, 50, 50, 0.25);
+  max-width: 555px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.form-account-auth-heading {
+  margin-top: 0px;
+  text-align: center;
+  margin-bottom: 25px;
+  color: ##535353;
+}
+
+.form-account-auth label {
+  font-size: 16px;
+  color: #555;
+}
+
+.form-account-auth .form-control {
+  position: relative;
+  height: auto;
+  box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.form-account-auth .form-control:focus {
+  z-index: 2;
+}
+
+.form-account-auth input {
+  margin-bottom: 4px;
+}
+
+.form-account-auth input:last-child {
+  margin-bottom: 10px;
+}
+
+.form-account-auth a i, a img {
+  margin-right: 0.8em;
+}
+
+.form-account-auth a img {
+  position: relative;
+  top: -2px;
+  height: 1.2em;
+}
+
+.form-account-auth p.separator {
+  margin-top: 16px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.form-account-auth a.register {
+  display: block;
+  text-align: center;
+  margin-top: 8px;
+  margin-bottom: 30px;
+}
+
+.form-account-auth .oauth-buttons a:first-child {
+  margin-right: 8px;
+}
+
+@media (max-width: 767px) {
+  .form-account-auth .oauth-buttons a {
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .form-account-auth .oauth-buttons a:first-child {
+    margin-right: 0;
+  }
+}

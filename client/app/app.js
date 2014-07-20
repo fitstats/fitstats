@@ -6,7 +6,8 @@ angular.module('fitStatsApp', [
   'ngResource',
   'ngSanitize',
   'ui.bootstrap',
-  'ui.router'
+  'ui.router',
+  'googlechart'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

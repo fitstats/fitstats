@@ -12,7 +12,9 @@ angular.module('fitStatsApp')
         Auth.createUser({
           name: $scope.user.name,
           email: $scope.user.email,
-          password: $scope.user.password
+          password: $scope.user.password,
+          mfpId: $scope.user.mfpId
+          //add additional user fields to Auth.createUser (mfp_id, dob, gender, height)
         })
         .then( function() {
           // Account created, redirect to home

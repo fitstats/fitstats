@@ -1,21 +1,62 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<header class="hero-unit" id="banner">
+<header class="hero-unit">
   <div class="container">
-    <h1>'Allo, 'Allo!</h1>
-    <p class="lead">Kick-start your next web app with Angular Fullstack</p>
-    <img src="assets/images/yeoman.png" alt="I'm Yeoman">
+    <div class="row">
+
+      <div class="col-md-6 hero-text">
+        <h1>Unify your Fit Life</h1>
+        <p class="lead">Finally, a single place to collect, view, and analyze your fitness data from apps you already use.</p>
+        <div class="buttons">
+          <button class="btn btn-lg btn-fitbit"><img src="/assets/images/icon-fitbit.png">Register with Fitbit</button>
+          <button class="btn btn-lg btn-facebook"><i class="fa fa-facebook"></i>Register with Facebook</button>
+        </div>
+        <p class="faded"><a href="/signup">Create a Free Account Using Email</a></p>
+      </div>
+
+      <div class="col-md-6">
+        <div class="hero-chart">
+          <div google-chart chart="weightLossChart" style="height: 275px; width: 100%;"></div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </header>
 
-<div class="container">
+<div class="container sub-section">
   <div class="row">
-    <div class="col-lg-12">
-      <h1 class="page-header">Features:</h1>
-      <ul class="nav nav-tabs nav-stacked col-lg-6" ng-repeat="thing in awesomeThings">
-        <li><a href="#" tooltip="{{thing.info}}">{{thing.name}}</a></li>
+
+    <div class="col-md-6 features">
+      <h2>Features:</h2>
+      <ul>
+        <li><i class="fa fa-user"></i>Weight and Body Fat % Tracking</li>
+        <li><i class="fa fa-heart"></i>Heart Rate and Blood Pressure Tracking</li>
+        <li><i class="fa fa-cutlery"></i>Calorie and Macronutrient Tracking</li>
+        <li><i class="fa fa-road"></i>Step Count Tracking</li>
+        <li><i class="fa fa-bar-chart-o"></i>Custom reports</li>
       </ul>
     </div>
+
+    <div class="col-md-6 partners">
+      <h2>Integrates With:</h2>
+
+      <div class="row">
+
+        <div class="col-md-5 col-md-offset-1 col-xs-10 col-xs-offset-1">
+          <div class="partner mfp"> <img src="/assets/images/logo-mfp.jpg" alt="MyFitnessPal"> </div>
+        </div>
+
+        <div class="col-md-5 col-md-offset-0 col-xs-10 col-xs-offset-1">
+          <div class="partner fitbit"> <img src="/assets/images/logo-fitbit.jpg" alt="Fitbit"></div> </div>
+
+        <div class="col-md-5 col-md-offset-1 col-xs-10 col-xs-offset-1">
+          <div class="partner"><p>More coming soon!</p></div>
+        </div>
+      </div>
+
+    </div>
+
   </div>
 </div>
 
