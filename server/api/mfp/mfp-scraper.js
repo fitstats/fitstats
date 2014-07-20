@@ -82,6 +82,7 @@ module.exports.scrapeMfpData = function(mfpUserId, date, options, callback) {
       }
     }
     console.log(url);
+    console.log(fieldData);
     callback(fieldData);
   });
 };

@@ -1,0 +1,13 @@
+{
+  "name": "angular-date-dropdowns",
+  "version": "0.1.1",
+  "main": "directive.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ],
+  "dependencies": {
+    "angular": "~1.2.1"
+  }
+}

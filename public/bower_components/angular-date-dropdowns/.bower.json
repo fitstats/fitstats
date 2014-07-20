@@ -1,0 +1,24 @@
+{
+  "name": "angular-date-dropdowns",
+  "version": "0.1.1",
+  "main": "directive.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ],
+  "dependencies": {
+    "angular": "~1.2.1"
+  },
+  "homepage": "https://github.com/rorymadden/angular-date-dropdowns",
+  "_release": "0.1.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.1.1",
+    "commit": "20200e1231917be2672218df4763e3e3c7bc2dc4"
+  },
+  "_source": "git://github.com/rorymadden/angular-date-dropdowns.git",
+  "_target": "~0.1.1",
+  "_originalSource": "angular-date-dropdowns",
+  "_direct": true
+}
