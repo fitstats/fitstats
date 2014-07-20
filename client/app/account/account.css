@@ -1,4 +1,4 @@
-.form-signin {
+.form-account-auth {
   margin-top: 30px;
   padding: 25px;
   background-color: white;
@@ -8,14 +8,14 @@
   margin-right: auto;
 }
 
-.form-signin-heading {
+.form-account-auth-heading {
   margin-top: 0px;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   color: ##535353;
 }
 
-.form-signin .form-control {
+.form-account-auth .form-control {
   position: relative;
   height: auto;
   box-sizing: border-box;
@@ -24,56 +24,52 @@
   margin-bottom: 10px;
 }
 
-.form-signin .form-control:focus {
+.form-account-auth .form-control:focus {
   z-index: 2;
 }
 
-.form-signin input[type="email"] {
-  margin-bottom: 6px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
+.form-account-auth input {
+  margin-bottom: 4px;
 }
 
-.form-signin input[type="password"] {
+.form-account-auth input:last-child {
   margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
 }
 
-.form-signin a i, a img {
+.form-account-auth a i, a img {
   margin-right: 0.8em;
 }
 
-.form-signin a img {
+.form-account-auth a img {
   position: relative;
   top: -2px;
   height: 1.2em;
 }
 
-.form-signin p.separator {
+.form-account-auth p.separator {
   margin-top: 16px;
   text-align: center;
   margin-bottom: 16px;
 }
 
-.form-signin a.register {
+.form-account-auth a.register {
   display: block;
   text-align: center;
   margin-top: 8px;
   margin-bottom: 30px;
 }
 
-.form-signin .oauth-buttons a:first-child {
+.form-account-auth .oauth-buttons a:first-child {
   margin-right: 8px;
 }
 
 @media (max-width: 767px) {
-  .form-signin .oauth-buttons a {
+  .form-account-auth .oauth-buttons a {
     display: block;
     margin-bottom: 8px;
   }
 
-  .form-signin .oauth-buttons a:first-child {
+  .form-account-auth .oauth-buttons a:first-child {
     margin-right: 0;
   }
 }
