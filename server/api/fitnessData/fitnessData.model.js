@@ -3,6 +3,7 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
+//create FitnessDataSchema
 var FitnessDataSchema = new Schema({
   'userId': Schema.ObjectId,
   'date': String,
@@ -16,11 +17,6 @@ var FitnessDataSchema = new Schema({
   'carbs': Number,
   'fat': Number
 });
-
-// FitnessDataSchema
-// 	.pre('save', function(next) {
-// 		next();
-// 	})
 
 module.exports = mongoose.model('FitnessData', FitnessDataSchema);
 
