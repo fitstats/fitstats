@@ -18,13 +18,8 @@
 
 ## Requirements
 - Yeoman
-- Node
-- Express 3.x
+- Grunt Command Line Tools
 - MongoDB
-- Mongoose
-- Angular
-- Grunt Task-Runner
-- Google Chart API
 
 ## Development
 
@@ -68,6 +63,17 @@ Keeping your app secrets and other sensitive information in source control isn't
 ### [Project Structure](https://github.com/DaftMonk/generator-angular-fullstack#project-structure)
 
 ### [Testing](https://github.com/DaftMonk/generator-angular-fullstack/blob/master/readme.md#testing)
+To run your local version of the app, do the following:
+```sh
+mongod #Mongo must be running
+grunt serve
+```
+
+`grunt serve` will monitor your files for changes, but will not inject any new
+dependencies (css files, js files, etc) into index.html for you. In order for them
+to be added, you'll have to quit the process (Ctrl+C) and run `grunt serve` again.
+
+
 
 
 
