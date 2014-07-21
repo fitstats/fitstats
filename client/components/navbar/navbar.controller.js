@@ -23,6 +23,10 @@ angular.module('fitStatsApp')
     };
 
     $scope.isActive = function(route) {
+      if ( route === '/dashboard' && $location.path().indexOf('/dashboard') !== -1 ) {
+        return '/dashboard';
+      }
+
       return route === $location.path();
     };
   });
