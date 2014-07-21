@@ -3,50 +3,44 @@
 var FitnessData = require('./fitnessData.model');
 var User = require('../user/user.model');
 
+/*
+*Function requestOneDayFitnessStat, response ond day fitnessdata from database
+*/
 exports.requestOneDayFitnessStat = function(req, res){
+
   var requestDate = req.params.date;
 
+  //Find one day's FitnessData based on userId and date.
   FitnessData.findOne({userId: req.user._id, date: requestDate}, function (err, userFitnessData) {
+
     if (err) { return res.send(500, err); }
 
-    // console.log('userFitnessData returned by promise: ', userFitnessData);
-
+    //Find data, send response
+    console.log('Find FitnessData: ', userFitnessData);
     res.json({data: userFitnessData});
+
   });
-
 };
 
-
+/*
+*Function requestFitnessStat, response specific field of fitnessdata from database
+*For example: request weight field of Date 07182014
+*/
 exports.requestFitnessStat = function(req, res) {
-  // var dataRequested = req.params['0'];
-  // var reqDate       = req.params['date'];
-  // var foundDate     = false;
-  // var temp;
-  //
-  // User.findById(req.params['id'], function(err, user){
-  //   if (err) return next(err);
-  //
-  //   if (user.fitnessData.length === 0){
-  //     res.send(204);
-  //   } else {
-  //     user.fitnessData.forEach(function(value, index, array){
-  //       if(value['date'] === reqDate){
-  //         foundDate = true;
-  //         temp = value[dataRequested];
-  //         return;
-  //       }
-  //     });
-  //     if (foundDate){
-  //       res.json({data: temp, field: dataRequested});
-  //     } else {
-  //       console.log("Client side: No data for today, please enter data.")
-  //       res.send(204);
-  //     }
-  //   }
-  // });
+  var reqestDate = req.params.date;
+  var data = req.params.data;
+
+  //fetch data from database
+  //your code here....:)
+
+
+  //send response
+  res.json({data: data, field: dataRequested});
 };
 
-
+/*
+*Function updateFitnessStat, first update database of specific data and then return updated data
+*/
 exports.updateFitnessStat = function(req, res) {
   var userId      = req.user._id;
   var data        = req.body;
@@ -54,42 +48,32 @@ exports.updateFitnessStat = function(req, res) {
   var updateField = data.field;
   var newStat     = data.data;
 
+  //Find one day's FitnessData based on userId and date.
   FitnessData.findOne({userId: userId, date: updateDate}, function (err, userFitnessData) {
     if (err) { return res.send(500, err); }
 
-    console.log('userFitnessData returned by promise: ', userFitnessData);
+    console.log('Find FitnessData: ', userFitnessData);
+
+    // if the date exists
     if (userFitnessData) {
-      /* day exists */
+
+      //update userFitnessData model and save
       userFitnessData[updateField] = newStat;
       userFitnessData.save();
 
-    } else {
-      /* day does not exist - create new date object to be stored */
+    } else {//if the date does not exist, meaning a new date is being updated
+
+      //create newFitnessObj
       var newFitnessObj = {};
       newFitnessObj.userId = userId;
       newFitnessObj.date   = updateDate;
       newFitnessObj[updateField] = newStat;
 
+      //create a new FitnessData model
       FitnessData.create(newFitnessObj);
     }
+      //send response and return updated data
       return res.json({data: data});
 
   });
 };
-
-
-/*
-  console.log('GET req: ', req.params);
-  req.params=>   { '0': 'weight',
-    id: '53c6c52f9fc87084680be124',
-    date: '20140716'
-  }
-
-  console.log('PUT req: ', req.body)
-  req.body => {
-    userId: '53c6c52f9fc87084680be124',
-    date: '20140716',
-    field: 'weight',
-    data: '100.0'
-  }
-*/

@@ -14,6 +14,7 @@ angular.module('fitStatsApp')
 
     $scope.loadViewItem = function(data, field) {
       $scope.currentDayRawClone[field] = data;
+      $scope.formData[field] = data;
       var decimals = (field === 'weight' || field === 'bf') ? 1 : 0;
       var filteredData = $filter('number')(data, decimals);
       $scope.currentDay[field] = filteredData;
