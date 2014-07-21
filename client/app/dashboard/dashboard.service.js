@@ -2,7 +2,8 @@
 
 angular.module('fitStatsApp')
 
-.factory('FormFunctions', function($filter, $resource, User){
+.factory('FormFunctions', function($filter, $resource, User, $http){
+
 
 
   var retrieveDayStats = function () {
@@ -10,6 +11,8 @@ angular.module('fitStatsApp')
       date: '@date',
     });
   };
+
+
 
 
   var submitFieldValue = function(formData, queryField, updateControllerFields, currentDate) {
@@ -24,7 +27,6 @@ angular.module('fitStatsApp')
         isArray: false
       }
     });
-
     var inputSubmition = new InputSubmition();
 
     /* populate the request object to be submitted with relevant data */
@@ -39,8 +41,7 @@ angular.module('fitStatsApp')
   };
 
 
-
-  var submitMultipleFields = function (submitionArray) {
+  var submitMultipleFields = function (submitionArray) {debugger;
   /**
    * SubmitMultipleFields separates the html form submitions for those that
    * that contain multiple (2+) input fields.
@@ -57,6 +58,9 @@ angular.module('fitStatsApp')
 
     chainSubmitions(0);
   };
+
+
+
 
 
   return {
