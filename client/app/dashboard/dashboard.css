@@ -3,6 +3,7 @@
 .day-select {
   position: relative;
   text-align: center;
+  padding-top: 20px;
   padding-bottom: 20px;
 }
 
@@ -10,16 +11,18 @@
   margin-top: 0;
   margin-bottom: 0;
   color: #4f5f6f;
-  font-size: 1.5em;
+  font-size: 2em;
+  text-align: center;
 }
 .day-select h4 {
-  font-size: 1em;
+  font-size: 1.4em;
   color: #9fabb8;
   margin-top: 10px;
   margin-bottom: 0;
 }
 
 .day-select i.fa-chevron-left {
+  font-size: 1.8em;
   position: absolute;
   top: 40%;
   left: 20px;
@@ -27,6 +30,7 @@
 }
 
 .day-select i.fa-chevron-right {
+  font-size: 1.8em;
   position: absolute;
   top: 40%;
   right: 20px;
@@ -45,7 +49,7 @@
   border-radius: 0px;
   border: 0px;
   color: white;
-  margin-bottom: 10px;
+  margin-bottom: 1px;
 }
 
 .panel.weight .panel-heading { background-color: #ad78cc; }
@@ -120,8 +124,6 @@
 }
 
 .date-button {
-  top: -12px;
-  left: 4px;
   background-color: transparent;
   border: none;
   outline: none;
@@ -142,3 +144,32 @@
 .panel.food form i { color: #61ce5c; }
 .panel.exercise form i { color: #d9bc6c; }
 .panel.water form i { color: #59c2e6; }
+
+
+.panel.food .mfp-button {
+  position: relative;
+  top: -2px;
+  float: right;
+  margin-bottom: 4px;
+  border: none;
+  outline: none;
+  color: white;
+  background-color: #24A43D;
+  box-shadow: 0px 1px 1px 0px rgba(50, 50, 50, 0.25);
+  border-radius: 4px;
+}
+
+.panel.food .mfp-button:hover {
+  color: white;
+  background-color: #108D28;
+}
+
+.panel.food .mfp-button:active {
+  color: white;
+  background-color: #108D28;
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+}
+
+.panel.food .mfp-button i {
+  margin-left: 4px;
+}
