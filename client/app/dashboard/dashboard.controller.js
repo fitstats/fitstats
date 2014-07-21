@@ -168,7 +168,6 @@ angular.module('fitStatsApp')
       } else {
         mfpUserId = window.prompt('What is is your MFP user ID?');
       }
-      console.log('/api/mfp/' + mfpUserId + '/' + $scope.urlDate);
       $http.get('/api/mfp/' + mfpUserId + '/' + $scope.urlDate)
       .success( function(data) {
         if (!data.data.private) {
@@ -177,7 +176,6 @@ angular.module('fitStatsApp')
             data.data.calories =  ( (Number(data.data.protein) * 4) +
                                         (Number(data.data.carbs) * 4) +
                                         (Number(data.data.fat) * 9) ) || undefined;
-            console.log('data scrapped', data.data);
             DashboardFactory.submitMultipleFields(data.data, $scope.loadViewItem, $scope.urlDate);
 
           } else {
