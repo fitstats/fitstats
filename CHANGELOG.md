@@ -1,3 +1,17 @@
+<a name="v0.0.11"></a>
+### v0.0.11 (2014-07-20)
+
+#### Features
+* Add MFP id to user schema and provide accessibility from dashboard
+* Add ability to scrape directly without prompting user if MFPid is available
+* Add ability to refresh and call and connect to any date requested in the url
+
+#### Bug Fixes
+* Refactored child controllers - parent controller organization
+* Refactored of Dashboard controller - factory connections
+* Improved nutrition field input submission
+
+
 <a name="v0.0.10"></a>
 ### v0.0.10 (2014-07-19)
 
