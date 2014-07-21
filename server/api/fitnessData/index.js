@@ -8,6 +8,9 @@ var router = express.Router();
 
 router.get('/:date', auth.isAuthenticated(), controller.requestOneDayFitnessStat);
 
+/*
+*Comment: This route can be used when fetching specific data, see requestFitnessStat function
+*/
 //router.get('/:id/:date/*', auth.isAuthenticated(), controller.requestFitnessStat);
 
 router.put('/:date/*', auth.isAuthenticated(), controller.updateFitnessStat);

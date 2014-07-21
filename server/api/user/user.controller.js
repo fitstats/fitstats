@@ -93,6 +93,21 @@ exports.me = function(req, res, next) {
   });
 };
 
+exports.getMFP = function(req, res) {
+  var userId = req.user._id;
+  var mfpId = req.params.mfpId;
+  User.findOne({
+    _id: userId
+  }, function (err, user_mfpId) {
+    if (err) { return res.send(500, err); }
+
+    res.json({ data: user_mfpId.mfpId });
+
+  });
+};
+
+
+
 /**
  * Authentication callback
  */
