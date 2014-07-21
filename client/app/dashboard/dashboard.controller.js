@@ -3,7 +3,7 @@
 angular.module('fitStatsApp')
 
   /* PARENT CONTROLLER OF DASHBOARD */
-  .controller('DashboardCtrl', function ($scope, $filter, FormFunctions, $stateParams, $state, $http, $timeout) {
+  .controller('DashboardCtrl', function ($scope, $filter, DashboardFactory, $stateParams, $state, $http, $timeout) {
 
     /* $scope.currentDay -> how a date's data is presented to the user (filtered format) */
     $scope.currentDay = {};
@@ -25,8 +25,9 @@ angular.module('fitStatsApp')
     /* inputModes -> stores which inputs are in active states ( field: true => visible) */
     $scope.inputModes = {};
 
+
     /* loadViewItem -> when a field's value has been updated - updates all the value formats linked to a field.*/
-    $scope.loadViewItem = function(data, field) { debugger;
+    $scope.loadViewItem = function(data, field) {
       $scope.currentDayRawClone[field] = data;
       $scope.formData[field] = data;
 
@@ -43,9 +44,10 @@ angular.module('fitStatsApp')
       }
     };
 
+
     /* retrieveWholeDaysStats -> connected to findCurrentDate - run on every new page loads*/
     $scope.retrieveWholeDaysStats = function () {
-      FormFunctions.retrieveDayStats()
+      DashboardFactory.retrieveDayStats()
         .get({date: $scope.urlDate})
         .$promise.then(function(successResponse) {
           $scope.formData = successResponse.data || {};
@@ -57,8 +59,9 @@ angular.module('fitStatsApp')
         });
     };
 
+
     /* findCurrentDate -> executes when a dashboard page first loads / is refreshed
-     * sets the view context to the expected date as defined by the url or date reference in FormFunctions
+     * sets the view context to the expected date as defined by the url or date reference in DashboardFactory
      */
     $scope.findCurrentDate = function () {
 
@@ -70,20 +73,20 @@ angular.module('fitStatsApp')
          */
         $scope.mainTitle = 'Today';
         $scope.date = new Date();
-        FormFunctions.rawDate = $scope.date;
-        $scope.urlDate = $filter('date')(FormFunctions.rawDate, 'yyyyMMdd');
+        DashboardFactory.rawDate = $scope.date;
+        $scope.urlDate = $filter('date')(DashboardFactory.rawDate, 'yyyyMMdd');
         $scope.retrieveWholeDaysStats();
 
-      } else if (FormFunctions.rawDate instanceof Date) {
+      } else if (DashboardFactory.rawDate instanceof Date) {
         /**
          * Set the date to the stored raw reference;
          * and align the query date
          */
         var currentCalendarDay =  $filter('date')(new Date(), 'yyyyMMdd');
-        var dateToDisplay = $filter('date')(FormFunctions.rawDate, 'yyyyMMdd');
+        var dateToDisplay = $filter('date')(DashboardFactory.rawDate, 'yyyyMMdd');
 
         $scope.mainTitle = currentCalendarDay === dateToDisplay  ? 'Today':'Date';
-        $scope.date = FormFunctions.rawDate;
+        $scope.date = DashboardFactory.rawDate;
         $scope.urlDate = $stateParams.date;
         $scope.retrieveWholeDaysStats();
 
@@ -99,7 +102,7 @@ angular.module('fitStatsApp')
 
           $scope.mainTitle = 'Today';
           $scope.date = presentDate;
-          FormFunctions.rawDate = $scope.date;
+          DashboardFactory.rawDate = $scope.date;
           $scope.urlDate = refreshedDate;
           $scope.retrieveWholeDaysStats();
 
@@ -110,7 +113,7 @@ angular.module('fitStatsApp')
 
           $scope.mainTitle = 'Date';
           $scope.date = new Date(year, month, day);
-          FormFunctions.rawDate = $scope.date;
+          DashboardFactory.rawDate = $scope.date;
           $scope.urlDate = refreshedDate;
           $scope.retrieveWholeDaysStats();
         }
@@ -121,17 +124,18 @@ angular.module('fitStatsApp')
     };
     $scope.findCurrentDate();
 
+
     /* date changes update the factory's raw date to that expected and
      * reloads the views + controller modules in accordance */
     $scope.nextDay = function () {
-      FormFunctions.rawDate.setDate(FormFunctions.rawDate.getDate() + 1);
-      var newUrlState = $filter('date')(FormFunctions.rawDate, 'yyyyMMdd');
+      DashboardFactory.rawDate.setDate(DashboardFactory.rawDate.getDate() + 1);
+      var newUrlState = $filter('date')(DashboardFactory.rawDate, 'yyyyMMdd');
       $state.go('dashboard', {date: newUrlState} );
     };
 
     $scope.previousDay = function() {
-      FormFunctions.rawDate.setDate(FormFunctions.rawDate.getDate() - 1);
-      var newUrlState = $filter('date')(FormFunctions.rawDate, 'yyyyMMdd');
+      DashboardFactory.rawDate.setDate(DashboardFactory.rawDate.getDate() - 1);
+      var newUrlState = $filter('date')(DashboardFactory.rawDate, 'yyyyMMdd');
       $state.go('dashboard', {date: newUrlState} );
     };
 
@@ -139,15 +143,17 @@ angular.module('fitStatsApp')
       $state.go('dashboard', {date: 'today'} );
     };
 
+
     /* shared methods between child controllers */
     $scope.edit = function(field) {
       $scope.inputModes[field] = true;
     };
 
     $scope.submit = function(value, field) {
-      FormFunctions.submitFieldValue(value, field, $scope.loadViewItem, $scope.urlDate);
+      DashboardFactory.submitFieldValue(value, field, $scope.loadViewItem, $scope.urlDate);
       $scope.inputModes[field] = false;
     };
+
 
     /***
      * getMfpData -> Scrapes data from user's MFP's account for current date
@@ -157,28 +163,23 @@ angular.module('fitStatsApp')
     $scope.getMfpData = function() {
       var mfpUserId;
 
-      if (typeof FormFunctions.mfpId.data === 'string') {
-        mfpUserId = FormFunctions.mfpId.data;
+      if (typeof DashboardFactory.mfpId.data === 'string') {
+        mfpUserId = DashboardFactory.mfpId.data;
       } else {
         mfpUserId = window.prompt('What is is your MFP user ID?');
       }
 
       $http.get('/api/mfp/' + mfpUserId + '/' + $scope.urlDate)
       .success( function(data) {
-        console.log(data.data);
         if (!data.data.private) {
           if (data.data.calories || data.data.protein || data.data.carbs || data.data.fat) {
 
-            data.calories =  ( (Number(data.data.protein) * 4) +
+            data.data.calories =  ( (Number(data.data.protein) * 4) +
                                         (Number(data.data.carbs) * 4) +
                                         (Number(data.data.fat) * 9) ) || undefined;
 
-            FormFunctions.submitMultipleFields([
-              [ data.calories, 'calories', $scope.loadViewItem, $scope.urlDate ],
-              [ data.data.protein, 'protein', $scope.loadViewItem, $scope.urlDate],
-              [ data.data.carbs, 'carbs', $scope.loadViewItem, $scope.urlDate ],
-              [ data.data.fat, 'fat', $scope.loadViewItem, $scope.urlDate ]
-            ]);
+            DashboardFactory.submitMultipleFields(data.data, $scope.loadViewItem, $scope.urlDate);
+
           } else {
             window.alert('No data for this day');
           }
@@ -240,8 +241,7 @@ angular.module('fitStatsApp')
   })
 
 
-  /* Children Controllers: */
-
+  /* CHILDREN CONTROLLERS: */
   .controller('WeightController', function($scope) {
     $scope.inputModes.weight = $scope.currentDay.weight ? false : true;
   })
@@ -260,23 +260,23 @@ angular.module('fitStatsApp')
 
 
 
-  .controller('BPController', function($scope, FormFunctions) {
+  .controller('BPController', function($scope, DashboardFactory) {
     $scope.inputModes.bp = $scope.currentDay.bps || $scope.currentDay.bpd ? false : true;      // ∆ check for both ???
 
     $scope.submitBoth = function () {
       $scope.inputModes.bp = false;
 
-      FormFunctions.submitMultipleFields([
-        [ $scope.formData.bps, 'bps', $scope.loadViewItem, $scope.urlDate ],
-        [ $scope.formData.bpd, 'bpd', $scope.loadViewItem, $scope.urlDate ]
-      ]);
+      DashboardFactory.submitMultipleFields( {
+        bps: $scope.formData.bps,
+        bpd: $scope.formData.bpd
+      }, $scope.loadViewItem, $scope.urlDate);
     };
 
   })
 
 
 
-  .controller('FoodController', function($scope, $timeout, FormFunctions) {
+  .controller('FoodController', function($scope, $timeout, DashboardFactory) {
     $scope.inputModes.nutrition = $scope.currentDay.calories || ($scope.currentDay.protein || $scope.currentDay.carbs || $scope.currentDay.fat) ? false : true;
 
     $scope.submitAll = function() {
@@ -297,12 +297,12 @@ angular.module('fitStatsApp')
                                     (Number($scope.formData.fat) * 9);
       }
 
-      FormFunctions.submitMultipleFields([
-        [ $scope.formData.calories, 'calories', $scope.loadViewItem, $scope.urlDate ],
-        [ $scope.formData.protein, 'protein', $scope.loadViewItem, $scope.urlDate],
-        [ $scope.formData.carbs, 'carbs', $scope.loadViewItem, $scope.urlDate ],
-        [ $scope.formData.fat, 'fat', $scope.loadViewItem, $scope.urlDate ]
-      ]);
+      DashboardFactory.submitMultipleFields({
+        calories: $scope.formData.calories,
+        protein: $scope.formData.protein,
+        carbs: $scope.formData.carbs,
+        fat: $scope.formData.fat,
+      }, $scope.loadViewItem, $scope.urlDate);
 
     };
   });

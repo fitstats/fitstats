@@ -2,6 +2,8 @@
 
 angular.module('fitStatsApp')
   .controller('MainCtrl', function ($scope) {
+
+
     $scope.weightLossChart = {
       'type': 'LineChart',
       'displayed': true,
