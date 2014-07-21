@@ -19,14 +19,17 @@ angular.module('fitStatsApp')
     /***
      * currentDayRawClone -> used in FoodController's submitAll to identify which fields have been altered
      * calories or [ protein / carbs / fat ]
-    */
+     */
     $scope.currentDayRawClone = {};
 
     /* inputModes -> stores which inputs are in active states ( field: true => visible) */
     $scope.inputModes = {};
 
 
-    /* loadViewItem -> when a field's value has been updated - updates all the value formats linked to a field.*/
+    /* When a child controller's field value has been updated
+     * loadViewItem -> updates all the value formats linked to that field.
+     * This callback makes a child scope accessible within DashboardFactory's GET PUSH success responses
+     */
     $scope.loadViewItem = function(data, field) {
       $scope.currentDayRawClone[field] = data;
       $scope.formData[field] = data;
@@ -47,16 +50,7 @@ angular.module('fitStatsApp')
 
     /* retrieveWholeDaysStats -> connected to findCurrentDate - run on every new page loads*/
     $scope.retrieveWholeDaysStats = function () {
-      DashboardFactory.retrieveDayStats()
-        .get({date: $scope.urlDate})
-        .$promise.then(function(successResponse) {
-          $scope.formData = successResponse.data || {};
-          _.forEach($scope.formData, function (singleData, field) {
-            $scope.loadViewItem(singleData, field);
-          });
-        }, function() {
-          console.log('GET request fail for day: '+ $scope.urlDate);
-        });
+      DashboardFactory.retrieveDayStats($scope.loadViewItem, $scope.urlDate)
     };
 
 
@@ -144,47 +138,28 @@ angular.module('fitStatsApp')
     };
 
 
+
+
+
+
     /* shared methods between child controllers */
     $scope.edit = function(field) {
       $scope.inputModes[field] = true;
     };
 
     $scope.submit = function(value, field) {
-      DashboardFactory.submitFieldValue(value, field, $scope.loadViewItem, $scope.urlDate);
+      DashboardFactory.updateDatabase(value, field, $scope.loadViewItem, $scope.urlDate);
       $scope.inputModes[field] = false;
     };
 
 
     /***
      * getMfpData -> Scrapes data from user's MFP's account for current date
-     * ∆ should be in factory, issues with invoking submitMultipleFields followed by submitFieldValue
-     * as the 'this' context gets mutated within submitFieldValuewithin following submitMultipleFields' .apply()
+     * ∆ should be in factory, issues with invoking updateDatabase followed by updateDatabase's
+     * as the 'this' context gets mutated within updateDatabase within following updateDatabase's .apply()
      */
     $scope.getMfpData = function() {
-      var mfpUserId;
-
-      if (typeof DashboardFactory.mfpId.data === 'string') {
-        mfpUserId = DashboardFactory.mfpId.data;
-      } else {
-        mfpUserId = window.prompt('What is is your MFP user ID?');
-      }
-      $http.get('/api/mfp/' + mfpUserId + '/' + $scope.urlDate)
-      .success( function(data) {
-        if (!data.data.private) {
-          if (data.data.calories || data.data.protein || data.data.carbs || data.data.fat) {
-
-            data.data.calories =  ( (Number(data.data.protein) * 4) +
-                                        (Number(data.data.carbs) * 4) +
-                                        (Number(data.data.fat) * 9) ) || undefined;
-            DashboardFactory.submitMultipleFields(data.data, $scope.loadViewItem, $scope.urlDate);
-
-          } else {
-            window.alert('No data for this day');
-          }
-        } else {
-          window.alert('This profile is private');
-        }
-      });
+      DashboardFactory.fetchMfpData($scope.loadViewItem, $scope.urlDate);
     };
 
 
@@ -264,10 +239,10 @@ angular.module('fitStatsApp')
     $scope.submitBoth = function () {
       $scope.inputModes.bp = false;
 
-      DashboardFactory.submitMultipleFields( {
+      DashboardFactory.updateDatabase( {
         bps: $scope.formData.bps,
         bpd: $scope.formData.bpd
-      }, $scope.loadViewItem, $scope.urlDate);
+      }, 'multifields', $scope.loadViewItem, $scope.urlDate);
     };
 
   })
@@ -295,12 +270,12 @@ angular.module('fitStatsApp')
                                     (Number($scope.formData.fat) * 9);
       }
 
-      DashboardFactory.submitMultipleFields({
+      DashboardFactory.updateDatabase({
         calories: $scope.formData.calories,
         protein: $scope.formData.protein,
         carbs: $scope.formData.carbs,
         fat: $scope.formData.fat,
-      }, $scope.loadViewItem, $scope.urlDate);
+      }, 'multifields', $scope.loadViewItem, $scope.urlDate);
 
     };
   });
