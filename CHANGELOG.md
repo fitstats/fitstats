@@ -1,5 +1,5 @@
-<a name="v0.0.11"></a>
-### v0.0.11 (2014-07-20)
+<a name="v0.1.0"></a>
+### v0.1.0 (2014-07-20)
 
 #### Features
 * Add MFP id to user schema and provide accessibility from dashboard
