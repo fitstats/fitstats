@@ -28,6 +28,8 @@
 
 ## Development
 
+See [CHANGELOG.md](CHANGELOG.md) for the latest software releases and changes.
+
 FitStats is built using the [AngularJS Full-Stack Generator v2.0.4](https://github.com/DaftMonk/generator-angular-fullstack)
 
 These are the generator parameters selected for FitStats:
@@ -68,6 +70,7 @@ Keeping your app secrets and other sensitive information in source control isn't
 ### [Testing](https://github.com/DaftMonk/generator-angular-fullstack/blob/master/readme.md#testing)
 
 
+
 ## Tasks
 
 See the projects backlog in Asana [here](https://app.asana.com/0/14549853388807/14549853388807)
@@ -75,3 +78,6 @@ See the projects backlog in Asana [here](https://app.asana.com/0/14549853388807/
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+
+## Deployment (Microsoft Azure)
+See [DEPLOYMENT.md](DEPLOYMENT.md) for instructions on how to setup your project for deployment on Microsoft Azure.
