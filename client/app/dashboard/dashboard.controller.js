@@ -2,34 +2,49 @@
 
 angular.module('fitStatsApp')
 
-  .controller('DashboardCtrl', function ($scope, $filter, FormFunctions, $stateParams, $state, $http) {
+  /* PARENT CONTROLLER OF DASHBOARD */
+  .controller('DashboardCtrl', function ($scope, $filter, FormFunctions, $stateParams, $state, $http, $timeout) {
 
-    /* $scope.currentDay = Object with all current Day's data - in filtered format */
+    /* $scope.currentDay -> how a date's data is presented to the user (filtered format) */
     $scope.currentDay = {};
-    /* $scope.formData = pre-built submittion data - in raw format */
-    $scope.currentDayRawClone = {};
+
+    /***
+     * $scope.formData -> unfiltered version of $scope.currentDay ...
+     * purpose -> matches the input models
+     * pre-populates the submittion field where data exists
+     * ensures data is submitted to db without filters
+     */
     $scope.formData = {};
-    /* stores which inputs are in active ( true = visible) states */
+
+    /***
+     * currentDayRawClone -> used in FoodController's submitAll to identify which fields have been altered
+     * calories or [ protein / carbs / fat ]
+    */
+    $scope.currentDayRawClone = {};
+
+    /* inputModes -> stores which inputs are in active states ( field: true => visible) */
     $scope.inputModes = {};
 
-    $scope.loadViewItem = function(data, field) {
+    /* loadViewItem -> when a field's value has been updated - updates all the value formats linked to a field.*/
+    $scope.loadViewItem = function(data, field) { debugger;
       $scope.currentDayRawClone[field] = data;
       $scope.formData[field] = data;
-      var decimals = (field === 'weight' || field === 'bf') ? 1 : 0;
-      var filteredData = $filter('number')(data, decimals);
-      $scope.currentDay[field] = filteredData;
 
-      if (field === 'bps' || field === 'bpd'){
+      var decimals = (field === 'weight' || field === 'bf') ? 1 : 0;
+      $scope.currentDay[field] = $filter('number')(data, decimals);
+
+      if (field === 'bps' || field === 'bpd') {
         $scope.inputModes.bp = false;
       } else if (field === 'calories' || field === 'protein' || field === 'cabs' || field === 'fat') {
         $scope.inputModes.nutrition = false;
+        $scope.chartUpdate();
       } else {
         $scope.inputModes[field] = false;
       }
     };
 
+    /* retrieveWholeDaysStats -> connected to findCurrentDate - run on every new page loads*/
     $scope.retrieveWholeDaysStats = function () {
-      //var userId = FormFunctions.userId;
       FormFunctions.retrieveDayStats()
         .get({date: $scope.urlDate})
         .$promise.then(function(successResponse) {
@@ -42,13 +57,16 @@ angular.module('fitStatsApp')
         });
     };
 
+    /* findCurrentDate -> executes when a dashboard page first loads / is refreshed
+     * sets the view context to the expected date as defined by the url or date reference in FormFunctions
+     */
     $scope.findCurrentDate = function () {
 
       if ($stateParams.date === 'today') {
         /**
          * Set the date to present,
-         * clone it into Factory for a reference;
-         * and align the query date
+         * clone it into Factory for a reference,
+         * and align the date's format for database querying
          */
         $scope.mainTitle = 'Today';
         $scope.date = new Date();
@@ -60,7 +78,6 @@ angular.module('fitStatsApp')
         /**
          * Set the date to the stored raw reference;
          * and align the query date
-         *
          */
         var currentCalendarDay =  $filter('date')(new Date(), 'yyyyMMdd');
         var dateToDisplay = $filter('date')(FormFunctions.rawDate, 'yyyyMMdd');
@@ -72,7 +89,7 @@ angular.module('fitStatsApp')
 
       } else if (!isNaN(Number($stateParams.date) %1)) {
         /**
-        * For when the page is reloaded by client.
+        * For when the page is refreshed or url date is edited by client.
         */
         var presentDate = new Date();
         var presentDateFiltered = $filter('date')(presentDate, 'yyyyMMdd');
@@ -98,11 +115,14 @@ angular.module('fitStatsApp')
           $scope.retrieveWholeDaysStats();
         }
       } else {
+        /* if all else fails, redirect back today's context */
         $state.go('dashboard', {date: 'today'} );
       }
     };
     $scope.findCurrentDate();
 
+    /* date changes update the factory's raw date to that expected and
+     * reloads the views + controller modules in accordance */
     $scope.nextDay = function () {
       FormFunctions.rawDate.setDate(FormFunctions.rawDate.getDate() + 1);
       var newUrlState = $filter('date')(FormFunctions.rawDate, 'yyyyMMdd');
@@ -119,6 +139,7 @@ angular.module('fitStatsApp')
       $state.go('dashboard', {date: 'today'} );
     };
 
+    /* shared methods between child controllers */
     $scope.edit = function(field) {
       $scope.inputModes[field] = true;
     };
@@ -128,6 +149,11 @@ angular.module('fitStatsApp')
       $scope.inputModes[field] = false;
     };
 
+    /***
+     * getMfpData -> Scrapes data from user's MFP's account for current date
+     * ∆ should be in factory, issues with invoking submitMultipleFields followed by submitFieldValue
+     * as the 'this' context gets mutated within submitFieldValuewithin following submitMultipleFields' .apply()
+     */
     $scope.getMfpData = function() {
       var mfpUserId;
 
@@ -161,6 +187,56 @@ angular.module('fitStatsApp')
         }
       });
     };
+
+
+    /***
+     * Originally located in the nutrition panel - ∆ would not update after MFP data scrapping
+     * unless invoked following data scrapping within loadViewItem.
+     * Moved here as parent controller does not have access to child scope.
+    */
+    $scope.chartUpdate = function() {
+
+      $scope.macroNutrientData = [
+          { key: 'Protein',
+            y: $scope.formData.protein
+          },
+          {
+            key: 'Carbs',
+             y: $scope.formData.carbs
+          },
+          {
+            key: 'Fat',
+             y: $scope.formData.fat
+          }
+      ];
+      var colorArray = ['#61ce5c', '#59c2e6', '#d57272'];
+
+      $scope.colorFunction = function() {
+        return function(d, i) {
+            return colorArray[i];
+          };
+      };
+      $scope.xFunction = function(){
+          return function(d) {
+              return d.key;
+          };
+      };
+      $scope.yFunction = function(){
+          return function(d) {
+              return d.y;
+          };
+      };
+      $scope.descriptionFunction = function(){
+          return function(d){
+              return d.key;
+          };
+      };
+    };
+
+    $timeout(function(){
+      $scope.chartUpdate();
+    }, 500);
+
   })
 
 
@@ -229,50 +305,4 @@ angular.module('fitStatsApp')
       ]);
 
     };
-
-    $scope.chartUpdate = function(){
-      $scope.macroNutrientData = [
-          { key: 'Protein',
-            y: $scope.formData.protein
-          },
-          {
-            key: 'Carbs',
-             y: $scope.formData.carbs
-          },
-          {
-            key: 'Fat',
-             y: $scope.formData.fat
-          }
-      ];
-
-      var colorArray = ['#61ce5c', '#59c2e6', '#d57272'];
-      $scope.colorFunction = function() {
-        return function(d, i) {
-            return colorArray[i];
-          };
-      };
-
-      $scope.xFunction = function(){
-          return function(d) {
-              return d.key;
-          };
-      };
-
-      $scope.yFunction = function(){
-          return function(d) {
-              return d.y;
-          };
-      };
-
-      $scope.descriptionFunction = function(){
-          return function(d){
-              return d.key;
-          };
-      };
-    };
-
-    $timeout(function(){
-      $scope.chartUpdate();
-    }, 500);
-
   });

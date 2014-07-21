@@ -52,7 +52,7 @@ exports.updateFitnessStat = function(req, res) {
   FitnessData.findOne({userId: userId, date: updateDate}, function (err, userFitnessData) {
     if (err) { return res.send(500, err); }
 
-    console.log('Find FitnessData: ', userFitnessData);
+    console.log('Find + update FitnessData: ', userFitnessData);
 
     // if the date exists
     if (userFitnessData) {

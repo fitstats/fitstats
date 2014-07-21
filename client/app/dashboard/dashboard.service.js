@@ -14,11 +14,10 @@ angular.module('fitStatsApp')
 
 
 
-
   var submitFieldValue = function(formData, queryField, updateControllerFields, currentDate) {
     var queryDate = currentDate;
 
-    var InputSubmition = $resource('/api/fitnessData/:date/:field', {
+    var InputSubmission = $resource('/api/fitnessData/:date/:field', {
       date: '@date',
       field: '@field'
     }, {
@@ -27,36 +26,38 @@ angular.module('fitStatsApp')
         isArray: false
       }
     });
-    var inputSubmition = new InputSubmition();
+    var inputSubmission = new InputSubmission();
 
     /* populate the request object to be submitted with relevant data */
-    inputSubmition.date = queryDate;
-    inputSubmition.field = queryField;
-    inputSubmition.data = formData;
+    inputSubmission.date = queryDate;
+    inputSubmission.field = queryField;
+    inputSubmission.data = formData;
 
     /* action for when the response is returned */
-    inputSubmition.$update({}, function (response) {
+    inputSubmission.$update({}, function (response) {
       updateControllerFields(response.data.data, response.data.field);
     });
   };
 
 
-  var submitMultipleFields = function (submitionArray) {debugger;
+  var submitMultipleFields = function (submitionArray) {
   /**
-   * SubmitMultipleFields separates the html form submitions for those that
-   * that contain multiple (2+) input fields.
-   * Each index of submitionArray contains all the arguments needed to
-   * invoke this.submit for one specific field in that form.
+   * 'SubmitMultipleFields' separates the html input submissions for single forms that
+   * that contain (>=2) input fields.
+   * Each index of 'submitionArray' contains all the arguments needed to
+   * invoke 'FormFunctions.submit' for one specific field.
+   *
+   * ∆ Missing logic in the server to submit multiple fields at once.
    */
-    var chainSubmitions = function (index) {
+    var chainSubmission = function (index) {
       this.submitFieldValue.apply(this, submitionArray[index]);
 
       if (index < submitionArray.length -1) {
-        chainSubmitions(index +1);
+        chainSubmission(index +1);
       }
     }.bind(this);
 
-    chainSubmitions(0);
+    chainSubmission(0);
   };
 
 
@@ -64,39 +65,13 @@ angular.module('fitStatsApp')
 
 
   return {
-    userId: User.get(),
+    /* mfpId: ready access to mfpId on signin for: DashboardCtrl's getMfpData method */
+    mfpId: User.getMFP(),
+    /* rawDate: to be sync'ed to the current page's date */
     rawDate: undefined,
     retrieveDayStats: retrieveDayStats,
     submitFieldValue: submitFieldValue,
+    /* submitMultipleFields feeds multiple joined fields one by one to submitFieldValue */
     submitMultipleFields: submitMultipleFields,
-    mfpId: User.getMFP(),
   };
 });
-
-
-
-/*
-=> no longer in use:
-Though may again be needed for the single field timelog graph...
-
-var retrieveOneStat = function (queryField, updateControllerFields) {
-  var queryDate = this.date;
-
-  var InputSubmition = $resource('/api/fitnessData/:date/:field', {
-    date: '@date',
-    field: '@field'
-  });
-
-  InputSubmition.get({ date: queryDate, field: queryField })
-    .$promise.then(function(response) {
-
-      if (response.$resolved){
-        var updatedData = response.data;
-        updateControllerFields(updatedData, queryField);
-
-      } else {
-        console.log('Error data does not exist');
-      }
-    });
-};
-*/
