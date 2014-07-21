@@ -53,7 +53,7 @@ FitnessData.find({}).remove(function() {
       //Create two FinessData model instances
       FitnessData.create({
         userId: userId,
-        date: '20140718',
+        date: '20140719',
         weight: 181,
         bf: 4.6,
         hr: 101,
@@ -65,7 +65,7 @@ FitnessData.find({}).remove(function() {
         fat: 66
       }, {
         userId: userId,
-        date: '20140719',
+        date: '20140720',
         weight: 180,
         bf: 4.5,
         hr: 100,
@@ -75,6 +75,18 @@ FitnessData.find({}).remove(function() {
         protein: 180,
         carbs: 335,
         fat: 65
+      },{
+        userId: userId,
+        date: '20140721',
+        weight: 179,
+        bf: 4.4,
+        hr: 99,
+        bps: 119,
+        bpd: 80,
+        calories: 2401,
+        protein: 181,
+        carbs: 335,
+        fat: 66
       }, function(err, fitnessData) {
         FitnessData.find({userId: userId}, function(err, data) {
           console.log('Fitnessdata', data);
@@ -96,7 +108,7 @@ FitnessData.find({}).remove(function() {
       //Create two FinessData model instances
       FitnessData.create({
         userId: userId,
-        date: '20140718',
+        date: '20140719',
         weight: 183,
         bf: 4.8,
         hr: 103,
@@ -108,7 +120,7 @@ FitnessData.find({}).remove(function() {
         fat: 68
       }, {
         userId: userId,
-        date: '20140719',
+        date: '20140720',
         weight: 182,
         bf: 4.7,
         hr: 102,
@@ -118,6 +130,18 @@ FitnessData.find({}).remove(function() {
         protein: 182,
         carbs: 337,
         fat: 67
+      },{
+        userId: userId,
+        date: '20140721',
+        weight: 180,
+        bf: 4.5,
+        hr: 100,
+        bps: 120,
+        bpd: 80,
+        calories: 2400,
+        protein: 180,
+        carbs: 335,
+        fat: 65
       }, function(err, fitnessData) {
         FitnessData.find({userId: userId}, function(err, data) {
           console.log('Fitnessdata', data);
