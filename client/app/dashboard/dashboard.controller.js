@@ -24,7 +24,8 @@ angular.module('fitStatsApp')
     /* stores which inputs are in active states ( if (inputModes[field]) { dom input === visible } */
     $scope.inputModes = {};
 
-    /* When a child controller's field value has been updated
+    /***
+     * When a child controller's field value has been updated
      * loadViewItem -> updates all the value formats linked to that field.
      * This callback makes a child scope accessible within DashboardFactory's GET PUSH success responses
      */
@@ -93,7 +94,7 @@ angular.module('fitStatsApp')
      * Originally located in the nutrition panel - ∆ would not update after MFP data scraping
      * unless invoked following data updating within loadViewItem().
      * Moved here as parent controller does not have access to children scopes.
-    */
+     */
     $scope.chartUpdate = function() {
 
       $scope.macroNutrientData = [
