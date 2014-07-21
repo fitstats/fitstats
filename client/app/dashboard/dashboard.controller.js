@@ -3,28 +3,26 @@
 angular.module('fitStatsApp')
 
   /* PARENT CONTROLLER OF DASHBOARD */
-  .controller('DashboardCtrl', function ($scope, $filter, DashboardFactory, $stateParams, $state, $http, $timeout) {
+  .controller('DashboardCtrl', function ($scope, $filter, DashboardFactory, $stateParams, $state, $http, $timeout, DashboardDateFactory) {
 
-    /* $scope.currentDay -> how a date's data is presented to the user (filtered format) */
+    /* holds date's field data in filtered format (for html serving) */
     $scope.currentDay = {};
 
     /***
-     * $scope.formData -> unfiltered version of $scope.currentDay ...
-     * purpose -> matches the input models
-     * pre-populates the submittion field where data exists
+     * unfiltered version of $scope.currentDay ...
+     * These matches the input models, pre-populates the submittion field where data exists
      * ensures data is submitted to db without filters
      */
     $scope.formData = {};
 
     /***
-     * currentDayRawClone -> used in FoodController's submitAll to identify which fields have been altered
-     * calories or [ protein / carbs / fat ]
+     * currentDayRawClone -> used in FoodController.submitAll() to identify which fields have been altered
+     * calories || (protein, carbs, fat) fields
      */
     $scope.currentDayRawClone = {};
 
-    /* inputModes -> stores which inputs are in active states ( field: true => visible) */
+    /* stores which inputs are in active states ( if (inputModes[field]) { dom input === visible } */
     $scope.inputModes = {};
-
 
     /* When a child controller's field value has been updated
      * loadViewItem -> updates all the value formats linked to that field.
@@ -50,123 +48,51 @@ angular.module('fitStatsApp')
 
     /* retrieveWholeDaysStats -> connected to findCurrentDate - run on every new page loads*/
     $scope.retrieveWholeDaysStats = function () {
-      DashboardFactory.retrieveDayStats($scope.loadViewItem, $scope.urlDate)
+      DashboardFactory.retrieveDayStats($scope.loadViewItem, $scope.urlDate);
     };
 
+    $scope.updateDateContext = function (title, date, rawDate, urlDate) {
+      $scope.mainTitle = title;
+      $scope.date = date;
+      DashboardFactory.rawDate = rawDate;
+      $scope.urlDate = urlDate;
 
-    /* findCurrentDate -> executes when a dashboard page first loads / is refreshed
-     * sets the view context to the expected date as defined by the url or date reference in DashboardFactory
-     */
-    $scope.findCurrentDate = function () {
-
-      if ($stateParams.date === 'today') {
-        /**
-         * Set the date to present,
-         * clone it into Factory for a reference,
-         * and align the date's format for database querying
-         */
-        $scope.mainTitle = 'Today';
-        $scope.date = new Date();
-        DashboardFactory.rawDate = $scope.date;
-        $scope.urlDate = $filter('date')(DashboardFactory.rawDate, 'yyyyMMdd');
-        $scope.retrieveWholeDaysStats();
-
-      } else if (DashboardFactory.rawDate instanceof Date) {
-        /**
-         * Set the date to the stored raw reference;
-         * and align the query date
-         */
-        var currentCalendarDay =  $filter('date')(new Date(), 'yyyyMMdd');
-        var dateToDisplay = $filter('date')(DashboardFactory.rawDate, 'yyyyMMdd');
-
-        $scope.mainTitle = currentCalendarDay === dateToDisplay  ? 'Today':'Date';
-        $scope.date = DashboardFactory.rawDate;
-        $scope.urlDate = $stateParams.date;
-        $scope.retrieveWholeDaysStats();
-
-      } else if (!isNaN(Number($stateParams.date) %1)) {
-        /**
-        * For when the page is refreshed or url date is edited by client.
-        */
-        var presentDate = new Date();
-        var presentDateFiltered = $filter('date')(presentDate, 'yyyyMMdd');
-        var refreshedDate = $stateParams.date;
-
-        if (presentDateFiltered === refreshedDate) {
-
-          $scope.mainTitle = 'Today';
-          $scope.date = presentDate;
-          DashboardFactory.rawDate = $scope.date;
-          $scope.urlDate = refreshedDate;
-          $scope.retrieveWholeDaysStats();
-
-        } else {
-          var year = refreshedDate.slice(0, 4);
-          var month = (refreshedDate.slice(4, 6) -1);
-          var day = refreshedDate.slice(6);
-
-          $scope.mainTitle = 'Date';
-          $scope.date = new Date(year, month, day);
-          DashboardFactory.rawDate = $scope.date;
-          $scope.urlDate = refreshedDate;
-          $scope.retrieveWholeDaysStats();
-        }
-      } else {
-        /* if all else fails, redirect back today's context */
-        $state.go('dashboard', {date: 'today'} );
-      }
-    };
-    $scope.findCurrentDate();
-
-
-    /* date changes update the factory's raw date to that expected and
-     * reloads the views + controller modules in accordance */
-    $scope.nextDay = function () {
-      DashboardFactory.rawDate.setDate(DashboardFactory.rawDate.getDate() + 1);
-      var newUrlState = $filter('date')(DashboardFactory.rawDate, 'yyyyMMdd');
-      $state.go('dashboard', {date: newUrlState} );
+      $scope.retrieveWholeDaysStats();
     };
 
-    $scope.previousDay = function() {
-      DashboardFactory.rawDate.setDate(DashboardFactory.rawDate.getDate() - 1);
-      var newUrlState = $filter('date')(DashboardFactory.rawDate, 'yyyyMMdd');
-      $state.go('dashboard', {date: newUrlState} );
-    };
+    /* executes when a dashboard page first loads / is refreshed
+     * sets the view context to the expected date as defined by the url or date reference in DashboardFactory */
+    DashboardDateFactory.findCurrentDate($scope.updateDateContext);
 
-    $scope.resetDate = function () {
-      $state.go('dashboard', {date: 'today'} );
-    };
+    $scope.nextDay = DashboardDateFactory.nextDay;
 
+    $scope.previousDay = DashboardDateFactory.previousDay;
 
+    $scope.resetDate = DashboardDateFactory.resetDate;
 
 
-
-
-    /* shared methods between child controllers */
+    /* Used by all child controllers */
     $scope.edit = function(field) {
       $scope.inputModes[field] = true;
     };
 
+    /* Used by all child controllers */
     $scope.submit = function(value, field) {
       DashboardFactory.updateDatabase(value, field, $scope.loadViewItem, $scope.urlDate);
       $scope.inputModes[field] = false;
     };
 
 
-    /***
-     * getMfpData -> Scrapes data from user's MFP's account for current date
-     * ∆ should be in factory, issues with invoking updateDatabase followed by updateDatabase's
-     * as the 'this' context gets mutated within updateDatabase within following updateDatabase's .apply()
-     */
+    /* getMfpData -> Scrapes data from user's MFP's account for current date */
     $scope.getMfpData = function() {
       DashboardFactory.fetchMfpData($scope.loadViewItem, $scope.urlDate);
     };
 
 
     /***
-     * Originally located in the nutrition panel - ∆ would not update after MFP data scrapping
-     * unless invoked following data scrapping within loadViewItem.
-     * Moved here as parent controller does not have access to child scope.
+     * Originally located in the nutrition panel - ∆ would not update after MFP data scraping
+     * unless invoked following data updating within loadViewItem().
+     * Moved here as parent controller does not have access to children scopes.
     */
     $scope.chartUpdate = function() {
 
@@ -214,11 +140,11 @@ angular.module('fitStatsApp')
   })
 
 
-  /* CHILDREN CONTROLLERS: */
+
+  /* CHILDREN CONTROLLERS: One per input form */
   .controller('WeightController', function($scope) {
     $scope.inputModes.weight = $scope.currentDay.weight ? false : true;
   })
-
 
 
   .controller('BFController', function($scope) {
@@ -226,15 +152,13 @@ angular.module('fitStatsApp')
   })
 
 
-
   .controller('HRController', function($scope) {
     $scope.inputModes.hr = $scope.currentDay.hr ? false : true;
   })
 
 
-
   .controller('BPController', function($scope, DashboardFactory) {
-    $scope.inputModes.bp = $scope.currentDay.bps || $scope.currentDay.bpd ? false : true;      // ∆ check for both ???
+    $scope.inputModes.bp = $scope.currentDay.bps || $scope.currentDay.bpd ? false : true;      // ∆ do we need to check for both ???
 
     $scope.submitBoth = function () {
       $scope.inputModes.bp = false;
