@@ -31,19 +31,19 @@
                 <label for="weight">Weight:</label>
 
                 <div class="data-display-and-input">
-                  <div class="display" ng-if="!inputMode">
+                  <div class="display" ng-if="!inputModes.weight">
                     <span class="display">{{ currentDay.weight }}<span class="suffix">lbs</span></span>
 
                   </div>
 
-                  <div class="input" ng-if="inputMode">
-                    <input type="text" class="form-control" id="weight" placeholder="Weight in lbs" ng-model="formData.weight">
+                  <div class="input" ng-if="inputModes.weight">
+                    <input type="number" class="form-control" id="weight" placeholder="Weight in lbs" ng-model="formData.weight">
                   </div>
                 </div>
 
                 <div class="controls">
-                  <button type="submit" ng-if="inputMode && formData.weight"><i class="fa fa-floppy-o"></i></button>
-                  <button><i class="fa fa-pencil edit" ng-if="!inputMode" ng-click="edit()"></i></button>
+                  <button type="submit" ng-if="inputModes.weight && formData.weight"><i class="fa fa-floppy-o"></i></button>
+                  <button><i class="fa fa-pencil edit" ng-if="!inputModes.weight" ng-click="edit('weight')"></i></button>
                 </div>
 
               </form><!-- end weight form -->
@@ -53,19 +53,19 @@
                 <label for="bf">Body Fat:</label>
 
                 <div class="data-display-and-input">
-                  <div class="display" ng-if="!inputMode">
+                  <div class="display" ng-if="!inputModes.bf">
                     <span class="display">{{ currentDay.bf }}<span class="suffix">%</span></span>
                   </div>
 
-                  <div class="input" ng-if="inputMode">
-                    <input type="text" class="form-control" id="bf" placeholder="Body Fat as %" ng-model="formData.bf">
+                  <div class="input" ng-if="inputModes.bf">
+                    <input type="number" class="form-control" id="bf" placeholder="Body Fat as %" ng-model="formData.bf">
 
                   </div>
                 </div>
 
                 <div class="controls">
-                  <button type="submit" ng-if="inputMode && formData.bf"><i class="fa fa-floppy-o"></i></button>
-                  <button><i class="fa fa-pencil edit" ng-if="!inputMode" ng-click="edit()"></i></button>
+                  <button type="submit" ng-if="inputModes.bf && formData.bf"><i class="fa fa-floppy-o"></i></button>
+                  <button><i class="fa fa-pencil edit" ng-if="!inputModes.bf" ng-click="edit('bf')"></i></button>
                 </div>
 
               </form>
@@ -86,19 +86,19 @@
                 <label for="hr">Resting HR:</label>
 
                 <div class="data-display-and-input">
-                  <div class="display" ng-if="!inputMode">
+                  <div class="display" ng-if="!inputModes.hr">
                     <span class="display">{{ currentDay.hr }}<span class="suffix">bpm</span></span>
                   </div>
 
-                  <div class="input" ng-if="inputMode">
-                    <input type="text" class="form-control" id="hr" placeholder="Heart Rate in BPM" ng-model="formData.hr">
+                  <div class="input" ng-if="inputModes.hr">
+                    <input type="number" class="form-control" id="hr" placeholder="Heart Rate in BPM" ng-model="formData.hr">
 
                   </div>
                 </div>
 
                 <div class="controls">
-                  <button type="submit" ng-if="inputMode && formData.hr"><i class="fa fa-floppy-o"></i></button>
-                  <button><i class="fa fa-pencil edit" ng-if="!inputMode" ng-click="edit()"></i></button>
+                  <button type="submit" ng-if="inputModes.hr && formData.hr"><i class="fa fa-floppy-o"></i></button>
+                  <button><i class="fa fa-pencil edit" ng-if="!inputModes.hr" ng-click="edit('hr')"></i></button>
                 </div>
 
               </form><!-- end heart rate form
@@ -108,20 +108,20 @@
                 <label for="bps">BP:</label>
 
                 <div class="data-display-and-input">
-                  <div class="display" ng-if="!inputMode">
+                  <div class="display" ng-if="!inputModes.bp">
                     <span class="display">{{ currentDay.bps }} / {{ currentDay.bpd }}<span class="suffix">mmHg</span></span>
                   </div>
 
-                  <div class="input" ng-if="inputMode">
-                    <input type="text" class="form-control" id="bps" placeholder="Systolic" ng-model="formData.bps">
-                    <input type="text" class="form-control" id="bpd" placeholder="Diastolic" ng-model="formData.bpd">
+                  <div class="input" ng-if="inputModes.bp">
+                    <input type="number" class="form-control" id="bps" placeholder="Systolic" ng-model="formData.bps">
+                    <input type="number" class="form-control" id="bpd" placeholder="Diastolic" ng-model="formData.bpd">
 
                   </div>
                 </div>
 
                 <div class="controls">
-                  <button type="submit" ng-if="inputMode && formData.bps && formData.bpd"><i class="fa fa-floppy-o"></i></button>
-                  <button><i class="fa fa-pencil edit" ng-if="!inputMode" ng-click="edit()"></i></button>
+                  <button type="submit" ng-if="inputModes.bp && formData.bps && formData.bpd"><i class="fa fa-floppy-o"></i></button>
+                  <button><i class="fa fa-pencil edit" ng-if="!inputModes.bp" ng-click="edit('bp')"></i></button>
                 </div>
 
               </form><!-- end blood pressure form -->
@@ -144,63 +144,64 @@
 
               <!-- Food form -->
               <form name="foodForm" role="form" ng-submit='submitAll()'>
+
                 <label for="calories">Calories:</label>
 
                 <div class="data-display-and-input">
-                  <div class="display" ng-if="!inputMode">
+                  <div class="display" ng-if="!inputModes.nutrition">
                     <span class="display">{{ currentDay.calories }}<span class="suffix">kcal</span></span>
                   </div>
 
-                  <div class="input" ng-if="inputMode">
-                    <input name="calories" type="text" class="form-control" id="calories" placeholder="Calories" ng-model="formData.calories"
+                  <div class="input" ng-if="inputModes.nutrition">
+                    <input name="calories" type="number" class="form-control" id="calories" placeholder="Calories" ng-model="formData.calories"
 
                     ng-show="(foodForm.protein.$pristine && foodForm.carbs.$pristine && foodForm.fat.$pristine)
-                    || (formData.protein == 0 && formData.carbs == 0 && formData.fat == 0)">
+                    || (!formData.protein && !formData.carbs && !formData.fat)">
                   </div>
                 </div>
 
                 <label for="protein">Protein:</label>
 
                 <div class="data-display-and-input">
-                  <div class="display" ng-if="!inputMode">
+                  <div class="display" ng-if="!inputModes.nutrition">
                     <span class="display">{{ currentDay.protein }}<span class="suffix">g</span></span>
                   </div>
 
-                  <div class="input" ng-if="inputMode">
-                    <input name="protein" type="text" class="form-control" id="protein" placeholder="Protein in grams" ng-model="formData.protein" ng-change="chartUpdate()"
-                    ng-show="foodForm.calories.$pristine || formData.calories == 0">
+                  <div class="input" ng-if="inputModes.nutrition">
+                    <input name="protein" type="number" class="form-control" id="protein" placeholder="Protein in grams" ng-model="formData.protein" ng-change="chartUpdate()"
+                    ng-show="foodForm.calories.$pristine || !formData.calories">
                   </div>
                 </div>
 
                 <label for="carbs">Carbs:</label>
 
                 <div class="data-display-and-input">
-                  <div class="display" ng-if="!inputMode">
+                  <div class="display" ng-if="!inputModes.nutrition">
                     <span class="display">{{ currentDay.carbs }}<span class="suffix">g</span></span>
                   </div>
 
-                  <div class="input" ng-if="inputMode">
-                    <input name="carbs" type="text" class="form-control" id="protein" placeholder="Carbs in grams" ng-model="formData.carbs" ng-change="chartUpdate()"
-                    ng-show="foodForm.calories.$pristine || formData.calories == 0">
+                  <div class="input" ng-if="inputModes.nutrition">
+                    <input name="carbs" type="number" class="form-control" id="carbs" placeholder="Carbs in grams" ng-model="formData.carbs" ng-change="chartUpdate()"
+                    ng-show="foodForm.calories.$pristine || !formData.calories">
                   </div>
                 </div>
 
                 <label for="fat">Fat:</label>
 
                 <div class="data-display-and-input">
-                  <div class="display" ng-if="!inputMode">
+                  <div class="display" ng-if="!inputModes.nutrition">
                     <span class="display">{{ currentDay.fat }}<span class="suffix">g</span></span>
                   </div>
 
-                  <div class="input" ng-if="inputMode">
-                    <input name="fat" type="text" class="form-control" id="fat" placeholder="Fat in grams" ng-model="formData.fat" ng-change="chartUpdate()"
-                    ng-show="foodForm.calories.$pristine || formData.calories == 0">
+                  <div class="input" ng-if="inputModes.nutrition">
+                    <input name="fat" type="number" class="form-control" id="fat" placeholder="Fat in grams" ng-model="formData.fat" ng-change="chartUpdate()"
+                    ng-show="foodForm.calories.$pristine || !formData.calories">
                   </div>
                 </div>
 
                 <div class="controls">
-                  <button type="submit" ng-if="inputMode && formData.calories && formData.protein && formData.carbs && formData.fat"><i class="fa fa-floppy-o"></i></button>
-                  <button><i class="fa fa-pencil edit" ng-if="!inputMode" ng-click="edit()"></i></button>
+                  <button type="submit" ng-if="inputModes.nutrition && formData.calories && formData.protein && formData.carbs && formData.fat"><i class="fa fa-floppy-o"></i></button>
+                  <button><i class="fa fa-pencil edit" ng-if="!inputModes.nutrition" ng-click="edit('nutrition')"></i></button>
                 </div>
 
               <div style="margin: 0 auto 0;">

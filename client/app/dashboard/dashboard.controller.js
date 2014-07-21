@@ -2,26 +2,30 @@
 
 angular.module('fitStatsApp')
 
-  .controller('DashboardCtrl', function ($scope, $http, $filter, FormFunctions, $stateParams, $state) {
-    /**
-     * $scope.currentDay = Object with all current Day's data - in filtered format
-     * $scope.formData = pre-built submittion data - in raw format:
-     */
-    $scope.currentDay = {};
-    $scope.formData = {};
+  .controller('DashboardCtrl', function ($scope, $filter, FormFunctions, $stateParams, $state, $http) {
 
-    $scope.getMfpData = function(){
-      var mfpUserId = window.prompt('What is is your MFP user ID?');
-      return $http.get('/api/mfp/' + mfpUserId + '/' + $scope.urlDate)
-      .success(function(data){
-        console.log(data);
-      });
-    };
+    /* $scope.currentDay = Object with all current Day's data - in filtered format */
+    $scope.currentDay = {};
+    /* $scope.formData = pre-built submittion data - in raw format */
+    $scope.currentDayRawClone = {};
+    $scope.formData = {};
+    /* stores which inputs are in active ( true = visible) states */
+    $scope.inputModes = {};
 
     $scope.loadViewItem = function(data, field) {
+      $scope.currentDayRawClone[field] = data;
+      $scope.formData[field] = data;
       var decimals = (field === 'weight' || field === 'bf') ? 1 : 0;
       var filteredData = $filter('number')(data, decimals);
       $scope.currentDay[field] = filteredData;
+
+      if (field === 'bps' || field === 'bpd'){
+        $scope.inputModes.bp = false;
+      } else if (field === 'calories' || field === 'protein' || field === 'cabs' || field === 'fat') {
+        $scope.inputModes.nutrition = false;
+      } else {
+        $scope.inputModes[field] = false;
+      }
     };
 
     $scope.retrieveWholeDaysStats = function () {
@@ -39,6 +43,7 @@ angular.module('fitStatsApp')
     };
 
     $scope.findCurrentDate = function () {
+
       if ($stateParams.date === 'today') {
         /**
          * Set the date to present,
@@ -50,6 +55,7 @@ angular.module('fitStatsApp')
         FormFunctions.rawDate = $scope.date;
         $scope.urlDate = $filter('date')(FormFunctions.rawDate, 'yyyyMMdd');
         $scope.retrieveWholeDaysStats();
+
       } else if (FormFunctions.rawDate instanceof Date) {
         /**
          * Set the date to the stored raw reference;
@@ -58,14 +64,40 @@ angular.module('fitStatsApp')
          */
         var currentCalendarDay =  $filter('date')(new Date(), 'yyyyMMdd');
         var dateToDisplay = $filter('date')(FormFunctions.rawDate, 'yyyyMMdd');
+
         $scope.mainTitle = currentCalendarDay === dateToDisplay  ? 'Today':'Date';
         $scope.date = FormFunctions.rawDate;
         $scope.urlDate = $stateParams.date;
         $scope.retrieveWholeDaysStats();
-      } else {
+
+      } else if (!isNaN(Number($stateParams.date) %1)) {
         /**
         * For when the page is reloaded by client.
         */
+        var presentDate = new Date();
+        var presentDateFiltered = $filter('date')(presentDate, 'yyyyMMdd');
+        var refreshedDate = $stateParams.date;
+
+        if (presentDateFiltered === refreshedDate) {
+
+          $scope.mainTitle = 'Today';
+          $scope.date = presentDate;
+          FormFunctions.rawDate = $scope.date;
+          $scope.urlDate = refreshedDate;
+          $scope.retrieveWholeDaysStats();
+
+        } else {
+          var year = refreshedDate.slice(0, 4);
+          var month = (refreshedDate.slice(4, 6) -1);
+          var day = refreshedDate.slice(6);
+
+          $scope.mainTitle = 'Date';
+          $scope.date = new Date(year, month, day);
+          FormFunctions.rawDate = $scope.date;
+          $scope.urlDate = refreshedDate;
+          $scope.retrieveWholeDaysStats();
+        }
+      } else {
         $state.go('dashboard', {date: 'today'} );
       }
     };
@@ -87,62 +119,76 @@ angular.module('fitStatsApp')
       $state.go('dashboard', {date: 'today'} );
     };
 
+    $scope.edit = function(field) {
+      $scope.inputModes[field] = true;
+    };
+
+    $scope.submit = function(value, field) {
+      FormFunctions.submitFieldValue(value, field, $scope.loadViewItem, $scope.urlDate);
+      $scope.inputModes[field] = false;
+    };
+
+    $scope.getMfpData = function() {
+      var mfpUserId;
+
+      if (typeof FormFunctions.mfpId.data === 'string') {
+        mfpUserId = FormFunctions.mfpId.data;
+      } else {
+        mfpUserId = window.prompt('What is is your MFP user ID?');
+      }
+
+      $http.get('/api/mfp/' + mfpUserId + '/' + $scope.urlDate)
+      .success( function(data) {
+        console.log(data.data);
+        if (!data.data.private) {
+          if (data.data.calories || data.data.protein || data.data.carbs || data.data.fat) {
+
+            data.calories =  ( (Number(data.data.protein) * 4) +
+                                        (Number(data.data.carbs) * 4) +
+                                        (Number(data.data.fat) * 9) ) || undefined;
+
+            FormFunctions.submitMultipleFields([
+              [ data.calories, 'calories', $scope.loadViewItem, $scope.urlDate ],
+              [ data.data.protein, 'protein', $scope.loadViewItem, $scope.urlDate],
+              [ data.data.carbs, 'carbs', $scope.loadViewItem, $scope.urlDate ],
+              [ data.data.fat, 'fat', $scope.loadViewItem, $scope.urlDate ]
+            ]);
+          } else {
+            window.alert('No data for this day');
+          }
+        } else {
+          window.alert('This profile is private');
+        }
+      });
+    };
+  })
+
+
+  /* Children Controllers: */
+
+  .controller('WeightController', function($scope) {
+    $scope.inputModes.weight = $scope.currentDay.weight ? false : true;
   })
 
 
 
-  .controller('WeightController', function($scope, FormFunctions) {
-    $scope.inputMode = false;
-
-    $scope.submit = function(weight, field) {
-      FormFunctions.submitFieldValue(weight, field, $scope.loadViewItem, $scope.urlDate);
-      $scope.inputMode = false;
-    };
-
-    $scope.edit = function(){
-      $scope.inputMode = true;
-    };
+  .controller('BFController', function($scope) {
+    $scope.inputModes.bf = $scope.currentDay.bf ? false : true;
   })
 
 
 
-  .controller('BFController', function($scope, FormFunctions) {
-    $scope.inputMode = false;
-
-    $scope.submit = function (bf, field) {
-      FormFunctions.submitFieldValue(bf, field, $scope.loadViewItem, $scope.urlDate);
-      $scope.inputMode = false;
-    };
-
-    $scope.edit = function(){
-      $scope.inputMode = true;
-    };
-  })
-
-
-
-  .controller('HRController', function($scope, FormFunctions) {
-    $scope.inputMode = false;
-
-    $scope.submit = function (hr, field) {
-      FormFunctions.submitFieldValue(hr, field, $scope.loadViewItem, $scope.urlDate);
-      $scope.inputMode = false;
-    };
-
-    $scope.edit = function(){
-      $scope.inputMode = true;
-    };
+  .controller('HRController', function($scope) {
+    $scope.inputModes.hr = $scope.currentDay.hr ? false : true;
   })
 
 
 
   .controller('BPController', function($scope, FormFunctions) {
-    $scope.inputMode = false;
+    $scope.inputModes.bp = $scope.currentDay.bps || $scope.currentDay.bpd ? false : true;      // ∆ check for both ???
 
     $scope.submitBoth = function () {
-      $scope.currentDay.bps = $scope.formData.bps;
-      $scope.currentDay.bpd = $scope.formData.bpd;
-      $scope.inputMode = false;
+      $scope.inputModes.bp = false;
 
       FormFunctions.submitMultipleFields([
         [ $scope.formData.bps, 'bps', $scope.loadViewItem, $scope.urlDate ],
@@ -150,24 +196,30 @@ angular.module('fitStatsApp')
       ]);
     };
 
-    $scope.edit = function(){
-      $scope.inputMode = true;
-    };
   })
 
 
 
   .controller('FoodController', function($scope, $timeout, FormFunctions) {
-    $scope.inputMode = false;
+    $scope.inputModes.nutrition = $scope.currentDay.calories || ($scope.currentDay.protein || $scope.currentDay.carbs || $scope.currentDay.fat) ? false : true;
 
     $scope.submitAll = function() {
-      console.log('submit', $scope.foodForm.$pristine);
-      if ($scope.formData.protein || $scope.formData.carbs || $scope.formData.fats) {
+      $scope.inputModes.nutrition = false;
+
+      if ($scope.formData.calories !== $scope.currentDayRawClone.calories &&
+      ($scope.formData.protein === $scope.currentDayRawClone.protein ||
+      $scope.formData.carbs === $scope.currentDayRawClone.carbs ||
+      $scope.formData.fat === $scope.currentDayRawClone.fat ) ) {
+
+        $scope.formData.protein = 0;
+        $scope.formData.carbs = 0;
+        $scope.formData.fat = 0;
+
+      } else {
         $scope.formData.calories =  (Number($scope.formData.protein) * 4) +
                                     (Number($scope.formData.carbs) * 4) +
                                     (Number($scope.formData.fat) * 9);
       }
-      $scope.inputMode = false;
 
       FormFunctions.submitMultipleFields([
         [ $scope.formData.calories, 'calories', $scope.loadViewItem, $scope.urlDate ],
@@ -176,11 +228,6 @@ angular.module('fitStatsApp')
         [ $scope.formData.fat, 'fat', $scope.loadViewItem, $scope.urlDate ]
       ]);
 
-      console.log($scope.foodForm.$pristine);
-    };
-
-    $scope.edit = function() {
-      $scope.inputMode = true;
     };
 
     $scope.chartUpdate = function(){

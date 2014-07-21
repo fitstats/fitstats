@@ -33,7 +33,7 @@ Thing.find({}).remove(function() {
 
 
 /*
-*Create Test user and Admin user model instances 
+*Create Test user and Admin user model instances
 */
 FitnessData.find({}).remove(function() {
 
@@ -44,12 +44,13 @@ FitnessData.find({}).remove(function() {
       provider: 'local',
       name: 'Test User',
       email: 'test@test.com',
-      password: 'test'
+      password: 'test',
+      mfpId: 'arthurzey'
     }, function(err, newUser) {
 
       //UserId holds newUser's id. (Tips: "var userId = newUser.id" works also.)
       var userId = newUser._id
-      
+
       //Create two FinessData model instances
       FitnessData.create({
         userId: userId,
@@ -104,7 +105,7 @@ FitnessData.find({}).remove(function() {
 
       //UserId holds newUser's id. (Tips: "var userId = newUser.id" works also.)
       var userId = newUser._id
-      
+
       //Create two FinessData model instances
       FitnessData.create({
         userId: userId,

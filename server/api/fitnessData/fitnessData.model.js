@@ -19,4 +19,3 @@ var FitnessDataSchema = new Schema({
 });
 
 module.exports = mongoose.model('FitnessData', FitnessDataSchema);
-

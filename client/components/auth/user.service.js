@@ -17,6 +17,12 @@ angular.module('fitStatsApp')
         params: {
           id:'me'
         }
+      },
+      getMFP: {
+        method: 'GET',
+        params: {
+          id:'mfpId'
+        }
       }
 	  });
   });

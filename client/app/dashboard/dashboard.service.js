@@ -2,49 +2,23 @@
 
 angular.module('fitStatsApp')
 
-.factory('FormFunctions', function($filter, $resource, User){
+.factory('FormFunctions', function($filter, $resource, User, $http){
+
 
 
   var retrieveDayStats = function () {
     return $resource('/api/fitnessData/:date', {
-      //id: '@id',
       date: '@date',
     });
   };
 
 
-  var retrieveOneStat = function (queryField, updateControllerFields) {
-    var queryDate = this.date;
-    //var userId = this.userId;
-
-    var InputSubmition = $resource('/api/fitnessData/:date/:field', {
-      //id: '@id',
-      date: '@date',
-      field: '@field'
-    });
-
-    InputSubmition.get({ date: queryDate, field: queryField })
-      .$promise.then(function(response) {
-
-        if (response.$resolved){
-           console.log('Data successfully retrieved:', response.data);
-           var updatedData = response.data;
-           updateControllerFields(updatedData, queryField);
-
-        } else {
-          console.log('Error data does not exist');
-        }
-      });
-  };
 
 
   var submitFieldValue = function(formData, queryField, updateControllerFields, currentDate) {
-
     var queryDate = currentDate;
 
-    /* defining the PUT request */
     var InputSubmition = $resource('/api/fitnessData/:date/:field', {
-      //id: '@userId',
       date: '@date',
       field: '@field'
     }, {
@@ -53,11 +27,9 @@ angular.module('fitStatsApp')
         isArray: false
       }
     });
-
     var inputSubmition = new InputSubmition();
 
     /* populate the request object to be submitted with relevant data */
-    //inputSubmition.userId = this.userId;
     inputSubmition.date = queryDate;
     inputSubmition.field = queryField;
     inputSubmition.data = formData;
@@ -65,18 +37,16 @@ angular.module('fitStatsApp')
     /* action for when the response is returned */
     inputSubmition.$update({}, function (response) {
       updateControllerFields(response.data.data, response.data.field);
-      console.log('Data successfully submitted:', response.data.field);
     });
   };
 
 
-
-  var submitMultipleFields = function (submitionArray) {
+  var submitMultipleFields = function (submitionArray) {debugger;
   /**
-   * SubmitMultipleFields separates the field submitions to db from
-   * html forms that contain multiple 2x input fields
+   * SubmitMultipleFields separates the html form submitions for those that
+   * that contain multiple (2+) input fields.
    * Each index of submitionArray contains all the arguments needed to
-   * invoke this.submit for one specific field
+   * invoke this.submit for one specific field in that form.
    */
     var chainSubmitions = function (index) {
       this.submitFieldValue.apply(this, submitionArray[index]);
@@ -90,27 +60,43 @@ angular.module('fitStatsApp')
   };
 
 
+
+
+
   return {
     userId: User.get(),
+    rawDate: undefined,
     retrieveDayStats: retrieveDayStats,
-    retrieveOneStat: retrieveOneStat,
     submitFieldValue: submitFieldValue,
     submitMultipleFields: submitMultipleFields,
-    rawDate: undefined
+    mfpId: User.getMFP(),
   };
 });
 
 
-/* Object returned from submit to server:
-{
-  $promise: undefined
-  $resolved: true
-  data: "success"
-  __proto__: Resource
-  $delete: function (params, success, error) {}
-  $get: function (params, success, error) {}
-  $query: function (params, success, error) {}
-  $remove: function (params, success, error) {}
-  $save: function (params, success, error) {}
-  $update: function (params, success, error) {}
+
+/*
+=> no longer in use:
+Though may again be needed for the single field timelog graph...
+
+var retrieveOneStat = function (queryField, updateControllerFields) {
+  var queryDate = this.date;
+
+  var InputSubmition = $resource('/api/fitnessData/:date/:field', {
+    date: '@date',
+    field: '@field'
+  });
+
+  InputSubmition.get({ date: queryDate, field: queryField })
+    .$promise.then(function(response) {
+
+      if (response.$resolved){
+        var updatedData = response.data;
+        updateControllerFields(updatedData, queryField);
+
+      } else {
+        console.log('Error data does not exist');
+      }
+    });
+};
 */
