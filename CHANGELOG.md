@@ -1,6 +1,6 @@
 
 <a name="v0.0.12"></a>
-### v0.0.12 (2014-07-20)
+### v0.1.1 (2014-07-20)
 
 #### Features
 * Add accommodation to multi-field submission for dashboard PUT requests
