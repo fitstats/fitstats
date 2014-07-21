@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('fitStatsApp', [
+  'ui.bootstrap',
   'nvd3ChartDirectives',
   'ngCookies',
   'ngResource',
