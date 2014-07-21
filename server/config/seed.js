@@ -42,7 +42,8 @@ FitnessData.find({}).remove(function() {
       provider: 'local',
       name: 'Test User',
       email: 'test@test.com',
-      password: 'test'
+      password: 'test',
+      mfpId: 'azey'
     }, function(err, newUser) {
         var userId = newUser._id;
 

@@ -11,8 +11,14 @@ angular.module('fitStatsApp')
     /* stores which inputs are in active ( true = visible) states */
     $scope.inputModes = {};
 
-    $scope.getMfpData = function() {
-      var mfpUserId = window.prompt('What is is your MFP user ID?');
+    $scope.getMfpData = function() { debugger;
+      var mfpUserId;
+      if (FormFunctions.mfpId) {
+        mfpUserId = FormFunctions.mfpId.data;
+      } else {
+        mfpUserId = window.prompt('What is is your MFP user ID?');
+      }
+
       return $http.get('/api/mfp/' + mfpUserId + '/' + $scope.urlDate)
       .success( function(data) {
         console.log(data.data);
@@ -158,7 +164,7 @@ angular.module('fitStatsApp')
   .controller('WeightController', function($scope, FormFunctions) {
     $scope.inputModes.weight = $scope.currentDay.weight ? false : true;
 
-    $scope.submit = function(weight, field) { debugger;
+    $scope.submit = function(weight, field) {
       FormFunctions.submitFieldValue(weight, field, $scope.loadViewItem, $scope.urlDate);
       $scope.inputModes.weight = false;
     };
@@ -212,7 +218,7 @@ angular.module('fitStatsApp')
   .controller('FoodController', function($scope, $timeout, FormFunctions) {
     $scope.inputModes.nutrition = $scope.currentDay.calories || ($scope.currentDay.protein || $scope.currentDay.carbs || $scope.currentDay.fat) ? false : true;
 
-    $scope.submitAll = function() { debugger;
+    $scope.submitAll = function() {
 
       if ( !$(foodForm.calories).hasClass('ng-pristine') && $(foodForm.protein).hasClass('ng-pristine') && $(foodForm.carbs).hasClass('ng-pristine') && $(foodForm.fat).hasClass('ng-pristine')) {
         $scope.formData.protein = 0;

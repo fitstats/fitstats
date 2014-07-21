@@ -65,6 +65,7 @@ angular.module('fitStatsApp')
     retrieveDayStats: retrieveDayStats,
     submitFieldValue: submitFieldValue,
     submitMultipleFields: submitMultipleFields,
+    mfpId: User.getMFP(),
   };
 });
 
