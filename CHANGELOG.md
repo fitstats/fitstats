@@ -1,5 +1,23 @@
+<<<<<<< HEAD
+
+<a name="v0.0.12"></a>
+### v0.0.12 (2014-07-20)
+
+#### Features
+* Add accommodation to multifield submission for dashboard PUT requests
+
+#### Bug Fixes
+* Fixed: Dates submitted in batch forms would each create new mongodb documents
+* Fixed: Pie graph would not update upon scraping mfp data
+* Fixed: Email error notification on signin
+
+
+<a name="v0.0.11"></a>
+### v0.0.11 (2014-07-20)
+=======
 <a name="v0.1.0"></a>
 ### v0.1.0 (2014-07-20)
+>>>>>>> 445331b8f59e0d3a76e300cd6064d97911676edb
 
 #### Features
 * Add MFP id to user schema and provide accessibility from dashboard

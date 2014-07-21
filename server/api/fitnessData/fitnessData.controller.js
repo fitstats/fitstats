@@ -7,7 +7,6 @@ var User = require('../user/user.model');
 *Function requestOneDayFitnessStat, response ond day fitnessdata from database
 */
 exports.requestOneDayFitnessStat = function(req, res){
-
   var requestDate = req.params.date;
 
   //Find one day's FitnessData based on userId and date.
@@ -22,21 +21,7 @@ exports.requestOneDayFitnessStat = function(req, res){
   });
 };
 
-/*
-*Function requestFitnessStat, response specific field of fitnessdata from database
-*For example: request weight field of Date 07182014
-*/
-exports.requestFitnessStat = function(req, res) {
-  var reqestDate = req.params.date;
-  var data = req.params.data;
 
-  //fetch data from database
-  //your code here....:)
-
-
-  //send response
-  res.json({data: data, field: dataRequested});
-};
 
 /*
 *Function updateFitnessStat, first update database of specific data and then return updated data
@@ -52,28 +37,49 @@ exports.updateFitnessStat = function(req, res) {
   FitnessData.findOne({userId: userId, date: updateDate}, function (err, userFitnessData) {
     if (err) { return res.send(500, err); }
 
-    console.log('Find FitnessData: ', userFitnessData);
+    console.log('Find & update FitnessData: ', userFitnessData);
 
     // if the date exists
     if (userFitnessData) {
 
-      //update userFitnessData model and save
-      userFitnessData[updateField] = newStat;
-      userFitnessData.save();
+      // case for single field input
+      if (updateField !== 'multifields') {
+        // update userFitnessData model and save
+        userFitnessData[updateField] = newStat;
+        userFitnessData.save();
 
-    } else {//if the date does not exist, meaning a new date is being updated
+      // case for multifield input within an object
+      } else {
+        for(var key in newStat) {
+          userFitnessData[key] = newStat[key];
+        }
+        userFitnessData.save();
+      }
+
+    //if the date does not exist, meaning a new date is being created
+    } else {
 
       //create newFitnessObj
       var newFitnessObj = {};
       newFitnessObj.userId = userId;
       newFitnessObj.date   = updateDate;
-      newFitnessObj[updateField] = newStat;
+
+      // update with single field property
+      if (updateField !== 'multifields') {
+        newFitnessObj[updateField] = newStat;
+
+      // extend with multifields passed into request
+      } else {
+        for(var field in newStat) {
+          newFitnessObj[field] = newStat[field];
+        }
+      }
 
       //create a new FitnessData model
       FitnessData.create(newFitnessObj);
-    }
-      //send response and return updated data
-      return res.json({data: data});
 
+    }
+    //send response and return updated data
+    return res.json({data: data});
   });
 };
