@@ -3,7 +3,7 @@
 angular.module('fitStatsApp')
 
   /* PARENT CONTROLLER OF DASHBOARD */
-  .controller('DashboardCtrl', function ($scope, $filter, DashboardFactory, $stateParams, $state, $http, $timeout) {
+  .controller('DashboardCtrl', function ($scope, $filter, DashboardFactory, $stateParams, $state, $http, $timeout, $location) {
 
     /* $scope.currentDay -> how a date's data is presented to the user (filtered format) */
     $scope.currentDay = {};
@@ -119,7 +119,7 @@ angular.module('fitStatsApp')
         }
       } else {
         /* if all else fails, redirect back today's context */
-        $state.go('dashboard', {date: 'today'} );
+        $location.url('/dashboard/today');
       }
     };
     $scope.findCurrentDate();
@@ -130,17 +130,18 @@ angular.module('fitStatsApp')
     $scope.nextDay = function () {
       DashboardFactory.rawDate.setDate(DashboardFactory.rawDate.getDate() + 1);
       var newUrlState = $filter('date')(DashboardFactory.rawDate, 'yyyyMMdd');
-      $state.go('dashboard', {date: newUrlState} );
+      $location.url('/dashboard/' + newUrlState);
+      // $state.go('dashboard', {date: newUrlState} );
     };
 
     $scope.previousDay = function() {
       DashboardFactory.rawDate.setDate(DashboardFactory.rawDate.getDate() - 1);
       var newUrlState = $filter('date')(DashboardFactory.rawDate, 'yyyyMMdd');
-      $state.go('dashboard', {date: newUrlState} );
+      $location.url('/dashboard/' + newUrlState);
     };
 
     $scope.resetDate = function () {
-      $state.go('dashboard', {date: 'today'} );
+      $location.url('/dashboard/' + newUrlState);
     };
 
 
