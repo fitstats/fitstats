@@ -1,10 +1,10 @@
 # FitStats
 
-> Tired of tracking your fitness data on lots of separate services? Use FitStats to collect all your fitness info from apps you already use, so you can track your progress and gain new insights in one convenient dashboard.
+> Tired of tracking your fitness data on lots of separate services? Use FitStats to collect all your fitness measures from apps you already use, so you can track your progress and gain new insights in one convenient dashboard.
 
 ## Table of Contents
 
-1. [Usage](#Usage)
+1. [Usage](#usage)
 1. [Requirements](#requirements)
 1. [Development](#development)
     1. [Installing Dependencies](#installing-dependencies)
@@ -50,7 +50,8 @@ From within the root directory:
 sudo npm install -g bower
 npm install
 bower install
-#google-chart dependency will ask for Angular 1.3.x. Ignore it, and use Angular 1.2.x instead.
+#google-chart dependency will ask for Angular 1.3.x.
+#Ignore it and use Angular 1.2.x instead.
 ```
 
 ### Environment Variables

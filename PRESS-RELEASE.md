@@ -13,4 +13,4 @@ Getting started is easy. Just sign up for a free FitStats account, link up your 
 
 *“As a professional figure competitor, I need to be able to correlate different types of data so I can make sure I get the best results possible. Before FitStats, I logged all my food in MyFitnessPal, copied my calorie totals and nutrient information into a spreadsheet, and logged all my weight and body fat numbers in another. With FitStats, I can now collect all my data and analyze it in one place and spend my time training instead of typing!” - Jane Doe, Figure Competitor*
 
-Visit [www.fitstats.co]((http://www.fitstats.co) to sign up for a free account, and unify your fit life.
+Visit [www.fitstats.co](http://www.fitstats.co) to sign up for a free account, and unify your fit life.

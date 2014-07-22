@@ -17,20 +17,21 @@ angular.module('fitStatsApp')
     $scope.formData = {};
 
     /***
-     * currentDayRawClone -> used in FoodController.submitAll() to identify which fields have been altered
+     * formDataClone -> used in FoodController.submitAll() to identify which fields have been altered
      * calories || (protein, carbs, fat) fields
      */
-    $scope.currentDayRawClone = {};
+    $scope.formDataClone = {};
 
     /* stores which inputs are in active states ( if (inputModes[field]) { dom input === visible } */
     $scope.inputModes = {};
 
-    /* When a child controller's field value has been updated
+    /***
+     * When a child controller's field value has been updated
      * loadViewItem -> updates all the value formats linked to that field.
      * This callback makes a child scope accessible within DashboardFactory's GET PUSH success responses
      */
     $scope.loadViewItem = function(data, field) {
-      $scope.currentDayRawClone[field] = data;
+      $scope.formDataClone[field] = data;
       $scope.formData[field] = data;
 
       var decimals = (field === 'weight' || field === 'bf') ? 1 : 0;
@@ -96,7 +97,7 @@ angular.module('fitStatsApp')
      * Originally located in the nutrition panel - ∆ would not update after MFP data scraping
      * unless invoked following data updating within loadViewItem().
      * Moved here as parent controller does not have access to children scopes.
-    */
+     */
     $scope.chartUpdate = function() {
 
       $scope.macroNutrientData = [
@@ -182,10 +183,10 @@ angular.module('fitStatsApp')
     $scope.submitAll = function() {
       $scope.inputModes.nutrition = false;
 
-      if ($scope.formData.calories !== $scope.currentDayRawClone.calories &&
-      ($scope.formData.protein === $scope.currentDayRawClone.protein ||
-      $scope.formData.carbs === $scope.currentDayRawClone.carbs ||
-      $scope.formData.fat === $scope.currentDayRawClone.fat ) ) {
+      if ($scope.formData.calories !== $scope.formDataClone.calories &&
+      ($scope.formData.protein === $scope.formDataClone.protein ||
+      $scope.formData.carbs === $scope.formDataClone.carbs ||
+      $scope.formData.fat === $scope.formDataClone.fat ) ) {
 
         $scope.formData.protein = 0;
         $scope.formData.carbs = 0;
