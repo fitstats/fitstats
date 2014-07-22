@@ -1,13 +1,16 @@
 'use strict';
 
 angular.module('fitStatsApp')
-  .controller('StatsCtrl', function ($scope, $stateParams, $location) {
+  .controller('StatsCtrl', function ($scope, $stateParams, $location, StatsFactory) {
 
   //todo: replace chartData with live data from server instead of prefilled data
   //expect database helper method to retrieve data in the following format:
   // for 'weight' request, {7-14: 175.2}
   // for 'bf' request, {7-14: 13.2}
   // etc...
+
+  //In stats.service.js file, function retrieveSevenDaysStats() will fetch data
+  //from database according to date and fields 
 
     $scope.fields = {
       'weight': {

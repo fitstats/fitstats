@@ -21,28 +21,6 @@ angular.module('fitStatsApp')
 
   };
 
-
-  //Retrieve seven days data for /stats/:field
-  var retrieveSevenDaysStats = function (queryDate, field) {
-    $resource('/api/fitnessData/:date/:field', {
-      date: '@date',
-      field: '@field'
-    })
-    .get({date: queryDate, field: field})
-    .$promise.then(function(successResponse) {
-
-      //Successfully get data from database
-      console.log('SuccessResponse is :', successResponse);
-    }, function() {
-      console.log('GET request fail for day: '+ queryDate);
-    });
-
-  };
-
-  //testing calls
-  retrieveSevenDaysStats('20140720', 'weight');
-
-
   var updateDatabase = function(dataToUpdate, queryField, updateControllerFields, queryDate) {
     var InputSubmission = $resource('/api/fitnessData/:date/:field', {
       date: '@date',
