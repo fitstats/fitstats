@@ -6,6 +6,6 @@ var auth = require('../../auth/auth.service');
 
 var router = express.Router();
 
-router.get('/:field', auth.isAuthenticated(), controller.retrieveSevenDaysGoogleChart)
+router.get('/:field', auth.isAuthenticated(), controller.retrieveSevenDaysGoogleChart);
 
 module.exports = router;

@@ -11,7 +11,7 @@ angular.module('fitStatsApp')
 
   //In stats.service.js file, function retrieveSevenDaysStats() will fetch data
   //from database according to date and fields 
-
+    
     $scope.fields = {
       'weight': {
         chartTitle: 'Weight Change Over Time',

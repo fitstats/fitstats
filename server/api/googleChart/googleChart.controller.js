@@ -1,22 +1,21 @@
 'use strict';
 
-exports.retrieveSevenDaysGoogleChart = function(req, res){
-	console.log("req.params: ", req.params);
-	  //var requestDate = req.params.date;
-	  var requestField= req.params.field;
+exports.retrieveSevenDaysGoogleChart = function(req, res) {
+  var requestField= req.params.field;
 
-	  //Testing seed.js Test User Seven days fitness data
-	  FitnessData.find({
-	    userId: req.user._id,
-	    date: { $in: [
-	        '20140721',
-	        '20140720',
-	        '20140719', 
-	        '20140718',
-	        '20140717',
-	        '20140716', 
-	        '20140715'
-	    ]}
+  //Testing seed.js Test User Seven days fitness data
+  //***These is only a test***
+  FitnessData.find({
+    userId: req.user._id,
+    date: { $in: [
+        '20140721',
+        '20140720',
+        '20140719', 
+        '20140718',
+        '20140717',
+        '20140716', 
+        '20140715'
+    ]}
 	}, function(err, userFitnessData){
 	    var returnedData = {};
 	    for (var i = 0; i < userFitnessData.length; i++) {
@@ -26,5 +25,6 @@ exports.retrieveSevenDaysGoogleChart = function(req, res){
 	      returnedData[singleDataDate] = singleDataFieldValue;
 	    }
 	    console.log("Find more than one :", returnedData);
+	    res.json(returnedData);
 	});
 };
