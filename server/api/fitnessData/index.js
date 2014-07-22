@@ -8,6 +8,8 @@ var router = express.Router();
 
 router.get('/:date', auth.isAuthenticated(), controller.requestOneDayFitnessStat);
 
+router.get('/:date/:field', auth.isAuthenticated(), controller.requestSevenDaysFitnessStat);
+
 router.put('/:date/*', auth.isAuthenticated(), controller.updateFitnessStat);
 
 
