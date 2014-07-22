@@ -3,6 +3,7 @@
 angular.module('fitStatsApp')
 
   /* PARENT CONTROLLER OF DASHBOARD */
+
   .controller('DashboardCtrl', function ($scope, $filter, DashboardFactory, $stateParams, $state, $http, $timeout, DashboardDateFactory) {
 
     /* holds date's field data in filtered format (for html serving) */
@@ -64,6 +65,7 @@ angular.module('fitStatsApp')
     /* executes when a dashboard page first loads / is refreshed
      * sets the view context to the expected date as defined by the url or date reference in DashboardFactory */
     DashboardDateFactory.findCurrentDate($scope.updateDateContext);
+
 
     $scope.nextDay = DashboardDateFactory.nextDay;
 

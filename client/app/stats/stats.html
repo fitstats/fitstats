@@ -1,4 +1,37 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
-<div>
-	<p>Hello stats page</p>
+
+<div class="container">
+  <div class="row charts">
+    <div class="col-md-3">
+      <div class="panel panel-default fields">
+        <div class="panel-heading">Pick Your Stat</div>
+        <table class="table">
+          <tr><td><a href="/stats/weight" ng-class="{active: isActive('/weight')}">Weight</a></td></tr>
+          <tr><td><a href="/stats/bf" ng-class="{active: isActive('/bf')}">Body Fat %</a></td></tr>
+          <tr><td><a href="/stats/hr" ng-class="{active: isActive('/hr')}">Resting Heart Rate</a></td></tr>
+          <tr><td><a href="/stats/bp" ng-class="{active: isActive('/bp')}">Blood Pressure</a></td></tr>
+          <tr><td><a href="/stats/calories" ng-class="{active: isActive('/calories')}">Calories</a></td></tr>
+          <tr><td><a href="/stats/protein" ng-class="{active: isActive('/protein')}">Protein</a></td></tr>
+          <tr><td><a href="/stats/carbs" ng-class="{active: isActive('/carbs')}">Carbs</a></td></tr>
+          <tr><td><a href="/stats/fat" ng-class="{active: isActive('/fat')}">Fat</a></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+      <div class="panel panel-default">
+        <div class="panel-heading" style="text-align: center;">{{ chartTitle }}</div>
+
+        <!-- factor out into separate nested view -->
+        <div class="panel-body chart-wrap">
+          <div google-chart chart="googleChart" class="chart"></div>
+        </div>
+
+        <!-- factor out into separate nested view -->
+
+      </div>
+    </div>
+  </div>
 </div>
+
+<div ng-include="'components/footer/footer.html'"></div>
