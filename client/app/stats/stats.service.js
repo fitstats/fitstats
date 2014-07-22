@@ -8,7 +8,7 @@ angular.module('fitStatsApp')
   var retrieveSevenDaysStats = function (today, field) {
     
   	//TODO:
-  	//Retrieve seven days data for /stats/:field
+  	//Retrieve seven days data for /googleChart/:field
 	  //according to today's date.
 
   };
