@@ -17,8 +17,8 @@
   - (test) ...
   - (doc) ...
 1. When you've finished with your fix or feature, merge upstream changes into your branch.
-1. if you are a member of the development team, follow the deployment instructions [here](DEPLOYMENT.md) to deploy to a staging server
-1. submit a [pull request][] directly to master. Include a description of your changes, and a link to the deployed version.
+1. If you are a member of the development team, follow the deployment instructions [here](DEPLOYMENT.md) to deploy to a staging server
+1. Submit a [pull request](#detailed-workflow) directly to master. Include a description of your changes, and a link to the deployed version.
 1. Your pull request will be reviewed by another maintainer. The point of code
    reviews is to help keep the codebase clean and of high quality and, equally
    as important, to help you grow as a programmer. If your code reviewer
