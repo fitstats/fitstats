@@ -1,7 +1,32 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="container">
-  <p>Hello world. We are inside the stats route</p>
+  <div class="row charts">
+    <div class="col-md-3">
+      <div class="panel panel-default fields">
+        <div class="panel-heading">Pick Your Stat</div>
+        <table class="table">
+          <tr><td ng-click="">Weight</td></tr>
+          <tr><td ng-click="">Body Fat %</td></tr>
+          <tr><td ng-click="">Resting Heart Rate</td></tr>
+          <tr><td ng-click="">Blood Pressure</td></tr>
+          <tr><td ng-click="">Calories</td></tr>
+          <tr><td ng-click="">Protein</td></tr>
+          <tr><td ng-click="">Carbs</td></tr>
+          <tr><td ng-click="">Fat</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+      <div class="panel panel-default">
+        <div class="panel-heading" style="text-align: center;">{{ chart.title }}</div>
+        <div class="panel-body chart-wrap">
+          <div google-chart chart="weightLossChart" class="chart"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div ng-include="'components/footer/footer.html'"></div>

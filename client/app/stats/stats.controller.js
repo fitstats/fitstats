@@ -1,18 +1,53 @@
 'use strict';
 
 angular.module('fitStatsApp')
-  .controller('StatsCtrl', function ($scope, $http, Auth, User) {
-
-    $http.get('/api/users').success(function(users) {
-      $scope.users = users;
-    });
-
-    $scope.delete = function(user) {
-      User.remove({ id: user._id });
-      angular.forEach($scope.users, function(u, i) {
-        if (u === user) {
-          $scope.users.splice(i, 1);
+  .controller('StatsCtrl', function ($scope) {
+    $scope.chart = {};
+    $scope.chart.title = 'Weight Loss Over Time';
+    $scope.weightLossChart = {
+      'type': 'LineChart',
+      'displayed': true,
+      'data': {
+        'cols': [
+          {
+            'id': 'month',
+            'label': 'Month',
+            'type': 'string',
+            'p': {}
+          },
+          {
+            'id': 'weight-id',
+            'label': 'Weight',
+            'type': 'number',
+            'p': {}
+          }
+        ],
+        'rows': [
+          {'c': [ {'v': '7-13'}, {'v': 175.0, 'f': '175.0 lbs'} ] },
+          {'c': [ {'v': '7-14'}, {'v': 175.2, 'f': '175.2 lbs'} ] },
+          {'c': [ {'v': '7-15'}, {'v': 174.6, 'f': '174.6 lbs'} ] },
+          {'c': [ {'v': '7-16'}, {'v': 174.2, 'f': '174.2 lbs'} ] },
+          {'c': [ {'v': '7-17'}, {'v': 174.6, 'f': '174.6 lbs'} ] },
+          {'c': [ {'v': '7-18'}, {'v': 173.8, 'f': '173.8 lbs'} ] }
+        ]
+      },
+      /* more chart options: https://developers.google.com/chart/interactive/docs/gallery/linechart */
+      'options': {
+        // 'title': 'Weight Loss Over Time',
+        'isStacked': 'true',
+        'fill': 20,
+        'displayExactValues': true,
+        'vAxis': {
+          'title': 'Weight',
+          'gridlines': {
+            'count': 10
+          }
+        },
+        'hAxis': {
+          'title': 'Date'
         }
-      });
+      },
+      'formatters': {},
+      'view': {}
     };
   });
