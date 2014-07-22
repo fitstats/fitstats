@@ -39,25 +39,11 @@
 
 /********* BLOCKS ********/
 
-.panel {
-  border-radius: 0px;
-  border: 0px;
-  box-shadow: 0px 1px 1px 0px rgba(50, 50, 50, 0.25);
-}
-
-.panel .panel-heading {
-  border-radius: 0px;
-  border: 0px;
-  color: white;
-  margin-bottom: 1px;
-}
-
 .panel.weight .panel-heading { background-color: #ad78cc; }
 .panel.heart .panel-heading { background-color: #d57272; }
 .panel.food .panel-heading { background-color: #61ce5c; }
 .panel.exercise .panel-heading { background-color: #d9bc6c; }
 .panel.water .panel-heading { background-color: #59c2e6; }
-
 
 .panel form {
   margin-bottom: 15px;

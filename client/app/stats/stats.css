@@ -1,0 +1,48 @@
+.row.charts {
+  padding-top: 35px;
+  padding-bottom: 20px;
+}
+
+.row.charts .panel-heading {
+  background-color: #737e8b;
+  margin-bottom: 0;
+  z-index: 999;
+}
+
+.panel.fields table {
+}
+
+.panel.fields td {
+  padding: 0;
+}
+
+.panel.fields a {
+  text-decoration: none;
+  display: block;
+  height: 100%;
+  padding: 12px 15px;
+}
+
+.panel.fields a:hover {
+  background-color: #fafafa;
+}
+
+.panel.fields a:active {
+  background-color: #dee2e5;
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+}
+
+.panel.fields a.active {
+  background-color: #dee2e5;
+}
+
+.charts .chart-wrap {
+  overflow: hidden;
+}
+
+.charts .chart {
+  margin-top: -50px;
+  margin-bottom: -20px;
+  height: 500px;
+  width: 100%;
+}

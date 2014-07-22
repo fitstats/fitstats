@@ -25,8 +25,9 @@ angular.module('fitStatsApp')
     $scope.isActive = function(route) {
       if ( route === '/dashboard' && $location.path().indexOf('/dashboard') !== -1 ) {
         return '/dashboard';
+      } else if ( route === '/stats' && $location.path().indexOf('/stats') !== -1 ) {
+        return '/stats';
       }
-
       return route === $location.path();
     };
   });
