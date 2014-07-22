@@ -3,10 +3,12 @@
 var FitnessData = require('./fitnessData.model');
 var User = require('../user/user.model');
 
+
 /*
 *Function requestOneDayFitnessStat, response ond day fitnessdata from database
 */
-exports.requestOneDayFitnessStat = function(req, res){
+exports.requestOneDayFitnessStat = function(req, res) {
+
   var requestDate = req.params.date;
 
   //Find one day's FitnessData based on userId and date.
@@ -20,8 +22,6 @@ exports.requestOneDayFitnessStat = function(req, res){
 
   });
 };
-
-
 
 /*
 *Function updateFitnessStat, first update database of specific data and then return updated data

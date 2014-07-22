@@ -53,6 +53,7 @@ angular.module('fitStatsApp')
       DashboardFactory.retrieveDayStats($scope.loadViewItem, $scope.urlDate);
     };
 
+
     $scope.updateDateContext = function (title, date, rawDate, urlDate) {
       $scope.mainTitle = title;
       $scope.date = date;

@@ -21,8 +21,6 @@ angular.module('fitStatsApp')
 
   };
 
-
-
   var updateDatabase = function(dataToUpdate, queryField, updateControllerFields, queryDate) {
     var InputSubmission = $resource('/api/fitnessData/:date/:field', {
       date: '@date',
