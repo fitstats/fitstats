@@ -1,35 +1,14 @@
 'use strict';
 
-// describe('Main View', function() {
-//   var page;
-//
-//   beforeEach(function() {
-//     browser.get('/');
-//     page = require('./main.po');
-//   });
-//
-//   it('should include jumbotron with correct data', function() {
-//     expect(page.h1El.getText()).toBe('\'Allo, \'Allo!');
-//     expect(page.imgEl.getAttribute('src')).toMatch(/assets\/images\/yeoman.png$/);
-//     expect(page.imgEl.getAttribute('alt')).toBe('I\'m Yeoman');
-//   });
-//
-//   it('should render awesomeThings', function() {
-//     expect(page.firstAwesomeThingNameEl.getText()).toContain('Development Tools');
-//     page.awesomeThingsCount.then(function(count) {
-//       expect(count).toBe(6);
-//     });
-//   });
-// });
-
-describe('Main View', function() {
-  var test;
+describe('Home page', function() {
+  var ptor;
 
   beforeEach(function() {
-    test = true;
+    ptor = protractor.getInstance();
+    browser.get( 'http://127.0.0.1:9000' );
   });
 
-  it('should have a dummy test', function {
-    expect(test).toBe(true);
+  it( 'should load the home page', function() {
+    expect( element( by.tagName( "h1" ) ).getText() ).toBe( "Unify your Fit Life" );
   });
 });
