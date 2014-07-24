@@ -204,24 +204,9 @@
                   <button><i class="fa fa-pencil edit" ng-if="!inputModes.nutrition" ng-click="edit('nutrition')"></i></button>
                 </div>
 
-            </form><!-- end food form -->
-              <div style="margin: 0 auto 0;">
-                <nvd3-pie-chart
-                  data="macroNutrientData"
-                  id="macroNutrient"
-                  height="300"
-                  margin="{left:0,top:15,bottom:0,right:0}"
-                  x="xFunction()"
-                  y="yFunction()"
-                  showLabels="true"
-                  color="colorFunction()"
-                  noData="No data to populate">
-                  <svg height="300"></svg>
-                </nvd3-pie-chart>
-              </div>
-
-
-
+              </form><!-- end food form -->
+              
+              <div google-chart chart="nutritionChart" style="{{nutritionChart.cssStyle}}"></div>
 
             </div>
 

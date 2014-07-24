@@ -99,42 +99,30 @@ angular.module('fitStatsApp')
      * Moved here as parent controller does not have access to children scopes.
      */
     $scope.chartUpdate = function() {
+      $scope.nutritionChart = {};
 
-      $scope.macroNutrientData = [
-          { key: 'Protein',
-            y: $scope.formData.protein
-          },
-          {
-            key: 'Carbs',
-             y: $scope.formData.carbs
-          },
-          {
-            key: 'Fat',
-             y: $scope.formData.fat
-          }
-      ];
-      var colorArray = ['#61ce5c', '#59c2e6', '#d57272'];
-
-      $scope.colorFunction = function() {
-        return function(d, i) {
-            return colorArray[i];
-          };
+      $scope.nutritionChart.data = {
+        'cols': [
+          {id: 'n', label: 'nutrient', type: 'string'},
+          {id: 'a', label: 'amount', type: 'number'}
+        ],
+        'rows': [
+          {c: [{v: 'Protein'}, {v: $scope.formData.protein}]},
+          {c: [{v: 'Carbs'}, {v: $scope.formData.carbs}]},
+          {c: [{v: 'Fat'}, {v: $scope.formData.fat}]}
+        ]
       };
-      $scope.xFunction = function(){
-          return function(d) {
-              return d.key;
-          };
+      
+      $scope.nutritionChart.cssStyle = 'margin: 0 auto; padding-bottom: 15px;';
+      $scope.nutritionChart.type = 'PieChart';
+      $scope.nutritionChart.options = {
+        colors: ['#61ce5c', '#59c2e6', '#d57272'],
+        chartArea: {left: 0, top: 8, width: '100%', height: '92%'},
+        fontName: 'Cabin',
+        pieSliceText: 'label',
+        legend: {position: 'none'}
       };
-      $scope.yFunction = function(){
-          return function(d) {
-              return d.y;
-          };
-      };
-      $scope.descriptionFunction = function(){
-          return function(d){
-              return d.key;
-          };
-      };
+      $scope.nutritionChart.displayed = true;
     };
 
     $timeout(function(){
