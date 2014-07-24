@@ -2,7 +2,6 @@
 
 angular.module('fitStatsApp', [
   'ui.bootstrap',
-  'nvd3ChartDirectives',
   'ngCookies',
   'ngResource',
   'ngSanitize',

@@ -15,9 +15,6 @@
     "font-awesome": ">=4.1.0",
     "lodash": "~2.4.1",
     "angular-ui-router": "~0.2.10",
-    "d3": "~3.4.10",
-    "nvd3": "~1.1.15-beta",
-    "angularjs-nvd3-directives": "~0.0.7",
     "angular-google-chart": "~0.0.10"
   },
   "devDependencies": {

@@ -113,16 +113,14 @@ angular.module('fitStatsApp')
         ]
       };
       
-      $scope.nutritionChart.cssStyle = 'margin: 0 auto; padding: 10px 10px 10px 10px;';
+      $scope.nutritionChart.cssStyle = 'margin: 0 auto; padding-bottom: 15px;';
       $scope.nutritionChart.type = 'PieChart';
       $scope.nutritionChart.options = {
         colors: ['#61ce5c', '#59c2e6', '#d57272'],
-        chartArea: {left: 0, bottom: 10, width: '100%', height: '100%'},
-        width: 260,
+        chartArea: {left: 0, top: 8, width: '100%', height: '92%'},
         fontName: 'Cabin',
         pieSliceText: 'label',
         legend: {position: 'none'}
-
       };
       $scope.nutritionChart.displayed = true;
     };
