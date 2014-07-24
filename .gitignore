@@ -7,3 +7,5 @@ dist
 /server/config/local.env.js
 .floo
 .flooignore
+.DS_Store
+server/.DS_store
