@@ -37,7 +37,7 @@
                   </div>
 
                   <div class="input" ng-if="inputModes.weight">
-                    <input type="number" step="any" class="form-control" id="weight" placeholder="Weight in lbs" ng-model="formData.weight">
+                    <input type="number" min="0" step="any" class="form-control" id="weight" placeholder="Weight in lbs" ng-model="formData.weight">
                   </div>
                 </div>
 
@@ -58,7 +58,7 @@
                   </div>
 
                   <div class="input" ng-if="inputModes.bf">
-                    <input type="number" class="form-control" id="bf" placeholder="Body Fat as %" ng-model="formData.bf">
+                    <input type="number" min="0" class="form-control" id="bf" placeholder="Body Fat as %" ng-model="formData.bf">
 
                   </div>
                 </div>
@@ -91,7 +91,7 @@
                   </div>
 
                   <div class="input" ng-if="inputModes.hr">
-                    <input type="number" class="form-control" id="hr" placeholder="Heart Rate in BPM" ng-model="formData.hr">
+                    <input type="number" min="0" class="form-control" id="hr" placeholder="Heart Rate in BPM" ng-model="formData.hr">
 
                   </div>
                 </div>
@@ -113,8 +113,8 @@
                   </div>
 
                   <div class="input" ng-if="inputModes.bp">
-                    <input type="number" class="form-control" id="bps" placeholder="Systolic" ng-model="formData.bps">
-                    <input type="number" class="form-control" id="bpd" placeholder="Diastolic" ng-model="formData.bpd">
+                    <input type="number" min="0" class="form-control" id="bps" placeholder="Systolic" ng-model="formData.bps">
+                    <input type="number" min="0" class="form-control" id="bpd" placeholder="Diastolic" ng-model="formData.bpd">
 
                   </div>
                 </div>
@@ -153,7 +153,7 @@
                   </div>
 
                   <div class="input" ng-if="inputModes.nutrition">
-                    <input name="calories" type="number" class="form-control" id="calories" placeholder="Calories" ng-model="formData.calories"
+                    <input name="calories" type="number" min="0" class="form-control" id="calories" placeholder="Calories" ng-model="formData.calories"
 
                     ng-show="(foodForm.protein.$pristine && foodForm.carbs.$pristine && foodForm.fat.$pristine)
                     || (!formData.protein && !formData.carbs && !formData.fat)">
@@ -168,7 +168,7 @@
                   </div>
 
                   <div class="input" ng-if="inputModes.nutrition">
-                    <input name="protein" type="number" class="form-control" id="protein" placeholder="Protein in grams" ng-model="formData.protein" ng-change="chartUpdate()"
+                    <input name="protein" type="number" min="0" class="form-control" id="protein" placeholder="Protein in grams" ng-model="formData.protein" ng-change="chartUpdate()"
                     ng-show="foodForm.calories.$pristine || !formData.calories">
                   </div>
                 </div>
@@ -181,7 +181,7 @@
                   </div>
 
                   <div class="input" ng-if="inputModes.nutrition">
-                    <input name="carbs" type="number" class="form-control" id="carbs" placeholder="Carbs in grams" ng-model="formData.carbs" ng-change="chartUpdate()"
+                    <input name="carbs" type="number" min="0" class="form-control" id="carbs" placeholder="Carbs in grams" ng-model="formData.carbs" ng-change="chartUpdate()"
                     ng-show="foodForm.calories.$pristine || !formData.calories">
                   </div>
                 </div>
@@ -194,7 +194,7 @@
                   </div>
 
                   <div class="input" ng-if="inputModes.nutrition">
-                    <input name="fat" type="number" class="form-control" id="fat" placeholder="Fat in grams" ng-model="formData.fat" ng-change="chartUpdate()"
+                    <input name="fat" type="number" min="0" class="form-control" id="fat" placeholder="Fat in grams" ng-model="formData.fat" ng-change="chartUpdate()"
                     ng-show="foodForm.calories.$pristine || !formData.calories">
                   </div>
                 </div>
