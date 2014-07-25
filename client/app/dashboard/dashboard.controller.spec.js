@@ -101,28 +101,62 @@ describe('Controller: DashboardCtrl', function () {
       scope.urlDate = 'date';
       scope.submit('value', 'field');
       expect(DashboardFactoryMock.updateDatabase).toHaveBeenCalledWith('value', 'field', cb, 'date')
-    })
+    });
   });
 
+  // TODO: method name mismatch
+  // getMfpData vs. fetchMfpData
   describe('scope.getMfpData()', function () {
-
+    it('calls DashboardFactory.fetchMfpData with the correct arguments', function () {
+      var cb = scope.loadViewItem;
+      scope.urlDate = 'date';
+      scope.getMfpData();
+      expect(DashboardFactoryMock.fetchMfpData).toHaveBeenCalledWith(cb, 'date');
+    });
   });
 
   describe('scope.chartUpdate()', function () {
+    it('builds scope.macroNutrientData from scope.formData', function () {
+      scope.formData = {
+        protein: "100",
+        carbs: "200",
+        fat: "300"
+      };
+      scope.chartUpdate();
+      expect(JSON.stringify(scope.macroNutrientData)).toEqual(JSON.stringify(
+         [{ key: 'Protein', y: "100" },
+          { key: 'Carbs', y: "200" },
+          { key: 'Fat', y: "300" }]));
+    });
+    it('sets up functions for d3 on scope', function () {
+      scope.chartUpdate();
+      expect(typeof scope.colorFunction).toEqual('function');
+      expect(typeof scope.xFunction).toEqual('function');
+      expect(typeof scope.yFunction).toEqual('function');
+      expect(typeof scope.descriptionFunction).toEqual('function');
+    });
     
   });
 
-  describe('scope.colorFunction()', function () {
-    
-  });
-
-  describe('scope.xFunction()', function () {
-    
-  });
-
-  describe('scope.descriptionFunction()', function () {
-    
-  });
 });
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+describe('Child Controllers', function () {
+
+
+});

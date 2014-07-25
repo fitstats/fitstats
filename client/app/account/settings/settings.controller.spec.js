@@ -1,32 +1,71 @@
 'use strict';
 
-describe('Controller: MainCtrl', function () {
+describe('Controller: SettingsCtrl', function () {
 
-  // load the controller's module
+  var makeController;
+  var scope;
+  var AuthMock
+  var q;
+
   beforeEach(module('fitStatsApp'));
+  beforeEach(inject(function ($injector, $controller, $rootScope, $q) {
 
-  // var MainCtrl,
-  //     scope,
-  //     $httpBackend;
-  //
-  // // Initialize the controller and a mock scope
-  // beforeEach(inject(function (_$httpBackend_, $controller, $rootScope) {
-  //   $httpBackend = _$httpBackend_;
-  //   $httpBackend.expectGET('/api/things')
-  //     .respond(['HTML5 Boilerplate', 'AngularJS', 'Karma', 'Express']);
-  //
-  //   scope = $rootScope.$new();
-  //   MainCtrl = $controller('MainCtrl', {
-  //     $scope: scope
-  //   });
-  // }));
+    scope = $rootScope.$new();
+    q = $q;
 
-  // it('should attach a list of things to the scope', function () {
-  //   $httpBackend.flush();
-  //   expect(scope.awesomeThings.length).toBe(4);
-  // });
+    var makeAuthMock = function( arg ) {
+      AuthMock = {
+        changePassword: function (o, n) {
+          var dfd = $q.defer()
+          setTimeout(function () {
+            dfd[arg]();
+          },1);
+          return dfd.promise;
+        }
+      };
+      return AuthMock;
+    }
 
-  it('should have a dummy test', function () {
-    expect(true).toBe(true);
+    makeController = function (resolveOrReject) {
+      return $controller('SettingsCtrl', {
+        Auth: makeAuthMock(resolveOrReject),
+        $scope: scope 
+      });
+    };
+
+  }));
+
+  it('creates an errors object', function () {
+    var controller = makeController();
+    expect(scope.errors).not.toBe(undefined);
   });
+
+  it('scope.changePassword calls Auth.changePassword if form valid', function () {
+    var controller = makeController('resolve');
+    scope.user = {
+      oldPassword: 'old',
+      newPassword: 'new'
+    };
+    spyOn(AuthMock, 'changePassword').andCallThrough();
+    scope.changePassword({$valid: true});
+    setTimeout(function () {
+      expect(AuthMock.changePassword).toHaveBeenCalledWith('old', 'new');
+      expect(scope.message).toEqual('Password successfully changed.');
+    }, 5);
+  });
+
+  it('scope.changePassword to set errors when form invalid', function () {
+    var controller = makeController('reject');
+    spyOn(AuthMock, 'changePassword').andCallThrough();
+    scope.user = {
+      oldPassword: 'old',
+      newPassword: 'new'
+    };
+    scope.changePassword({$valid: false});
+    setTimeout(function () {
+      expect(scope.message).toEqual('');
+      expect(scope.errors.other).toEqual('Incorrect password');
+    }, 5)
+  });
+
 });
