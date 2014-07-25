@@ -5,13 +5,31 @@ describe('Controller: DashboardCtrl', function () {
   // load the controller's module
   beforeEach(module('fitStatsApp'));
 
-  var DashboardCtrl, scope;
+  var DashboardCtrl;
+  var scope;
+  var DashboardFactoryMock;
+
+  function makeDashboardFactoryMock () {
+    return {
+      retrieveDayStats: function () {},
+      findCurrentDate: function () {},
+      updateDatabase: function () {},
+      fetchMfpData: function () {}
+    };
+  }
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
+    // DashboardFactoryMock = makeDashboardFactoryMock();
+    DashboardFactoryMock = jasmine.createSpyObj('DashboardFactory', [
+      "retrieveDayStats",
+      "findCurrentDate",
+      "updateDatabase",
+      "fetchMfpData"]);
     DashboardCtrl = $controller('DashboardCtrl', {
-      $scope: scope
+      $scope: scope,
+      DashboardFactory: DashboardFactoryMock
     });
   }));
 
@@ -30,13 +48,14 @@ describe('Controller: DashboardCtrl', function () {
     });
 
     ['bps', 'bpd'].forEach( function (bpType) {
-      it('correctly handles ' + bpType + ' input', function () {
+      it('correctly handle™s ' + bpType + ' input', function () {
         scope.loadViewItem('100', bpType);
         expect(scope.inputModes.bp).toEqual(false);
       });
     });
   
-    ['calories', 'protein', 'carbs', 'fat'].forEach( function (nutrient) {
+    // TODO CABS
+    ['calories', 'protein', 'cabs', 'fat'].forEach( function (nutrient) {
       it('correctly handles ' + nutrient + ' input', function () {
         spyOn(scope, 'chartUpdate');
         scope.loadViewItem('100', nutrient);
@@ -47,4 +66,63 @@ describe('Controller: DashboardCtrl', function () {
 
   });
 
+  describe('scope.retrieveWholeDaysStats()', function () {
+    it('calls DashboardFactory.retrieveDayStats', function () {
+      scope.retrieveWholeDaysStats();
+      expect(DashboardFactoryMock.retrieveDayStats).toHaveBeenCalled();
+    });
+  });
+
+  describe('scope.updateDateContext()', function () {
+    it('sets mainTitle, date, and urlDate on scope', function () {
+      scope.updateDateContext('a', 'b', '', 'c');
+      expect(scope.mainTitle).toEqual('a');
+      expect(scope.date).toEqual('b');
+      expect(scope.urlDate).toEqual('c');
+    });
+    it('sets rawTitle on DashboardFactory', function() {
+      scope.updateDateContext('', '', 'd', '');
+      expect(DashboardFactoryMock.rawDate).toEqual('d');
+    });
+  });
+
+  describe('scope.edit()', function () {
+    it('sets the appropriate $scope.inputModes to true', function () {
+      scope.edit('thing');
+      scope.edit('otherThing');
+      expect(scope.inputModes.thing).toEqual(true);
+      expect(scope.inputModes.otherThing).toEqual(true);
+    });
+  });
+
+  describe('scope.submit()', function () {
+    it('calls DashboardFactory.updateDatabase with the correct arguments', function () {
+      var cb = scope.loadViewItem;
+      scope.urlDate = 'date';
+      scope.submit('value', 'field');
+      expect(DashboardFactoryMock.updateDatabase).toHaveBeenCalledWith('value', 'field', cb, 'date')
+    })
+  });
+
+  describe('scope.getMfpData()', function () {
+
+  });
+
+  describe('scope.chartUpdate()', function () {
+    
+  });
+
+  describe('scope.colorFunction()', function () {
+    
+  });
+
+  describe('scope.xFunction()', function () {
+    
+  });
+
+  describe('scope.descriptionFunction()', function () {
+    
+  });
 });
+
+
