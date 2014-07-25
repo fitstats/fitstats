@@ -94,6 +94,10 @@
   margin-left: 15px;
 }
 
+.navbar-left:first-child {
+  margin-left: -15px;
+}
+
 .navbar-toggle {
   line-height: 35px;
   height: 35px;
