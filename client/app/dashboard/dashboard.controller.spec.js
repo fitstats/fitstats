@@ -9,15 +9,6 @@ describe('Controller: DashboardCtrl', function () {
   var scope;
   var DashboardFactoryMock;
 
-  function makeDashboardFactoryMock () {
-    return {
-      retrieveDayStats: function () {},
-      findCurrentDate: function () {},
-      updateDatabase: function () {},
-      fetchMfpData: function () {}
-    };
-  }
-
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
@@ -139,22 +130,6 @@ describe('Controller: DashboardCtrl', function () {
   });
 
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 describe('Child Controllers', function () {
 
