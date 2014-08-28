@@ -51,12 +51,14 @@
 }
 
 .hero-unit a:visited {
-  color: #8fc1d9;
+  /*color: #8fc1d9;*/
+  color: #ddd;
 }
 
 .hero-unit a:hover {
   text-decoration: none;
-  color: #badae9;
+  color: #ddd;
+  /*color: #badae9;*/
 }
 
 .hero-chart {

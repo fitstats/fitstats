@@ -7,12 +7,12 @@
       <form class="form-account-auth" name="form" role="form" ng-submit="login(form)" novalidate>
         <h2 class="form-account-auth-heading">Log In</h2>
 
-        <div class="oauth-buttons" style="display: block; text-align: center;">
+        <!-- <div class="oauth-buttons" style="display: block; text-align: center;">
           <a class="btn btn-lg btn-fitbit" ng-click="loginOauth('facebook')"><img src="/assets/images/icon-fitbit.png">Login with Fitbit</a>
           <a class="btn btn-lg btn-facebook" ng-click="loginOauth('facebook')"><i class="fa fa-facebook"></i>Login with Facebook</a>
-        </div>
+        </div> -->
 
-        <p class="separator">or</p>
+        <!-- <p class="separator">or</p> -->
         <input type="email" name="email" class="form-control" placeholder="Email address" required autofocus ng-model="user.email">
         <input type="password" name="password" class="form-control" placeholder="Password" required ng-model="user.password">
         <div class="form-group has-error">
@@ -26,9 +26,9 @@
 
         <a class="register" href="/signup">Don't Have an Account?</a>
 
-        <p>Accounts are reset on server restart from <code>server/config/seed.js</code>.</p>
+        <!-- <p>Accounts are reset on server restart from <code>server/config/seed.js</code>.</p>
         <p>Default account is <code>test@test.com</code> / <code>test</code></p>
-        <p>Admin account is <code>admin@admin.com</code> / <code>admin</code></p>
+        <p>Admin account is <code>admin@admin.com</code> / <code>admin</code></p> -->
       </form>
     </div>
 

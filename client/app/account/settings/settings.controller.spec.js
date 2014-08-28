@@ -29,7 +29,7 @@ describe('Controller: SettingsCtrl', function () {
     makeController = function (resolveOrReject) {
       return $controller('SettingsCtrl', {
         Auth: makeAuthMock(resolveOrReject),
-        $scope: scope 
+        $scope: scope
       });
     };
 
@@ -48,25 +48,20 @@ describe('Controller: SettingsCtrl', function () {
     };
     spyOn(AuthMock, 'changePassword').andCallThrough();
     scope.changePassword({$valid: true});
-    setTimeout(function (AuthMock) {
-      // wtf.
-      // expect(AuthMock.changePassword).toHaveBeenCalledWith('old', 'new');
-      expect(scope.message).toEqual('Password successfully changed.');
-    }.bind(null, AuthMock), 5);
+
+    expect(AuthMock.changePassword).toHaveBeenCalledWith('old', 'new');
   });
 
   it('scope.changePassword to set errors when form invalid', function () {
     var controller = makeController('reject');
-    // spyOn(AuthMock, 'changePassword').andCallThrough();
+    spyOn(AuthMock, 'changePassword').andCallThrough();
     scope.user = {
       oldPassword: 'old',
       newPassword: 'new'
     };
     scope.changePassword({$valid: false});
-    setTimeout(function (scope) {
-      expect(scope.message).toEqual('');
-      expect(scope.errors.other).toEqual('Incorrect password');
-    }.bind(null, scope), 5)
+    // expect(scope.message).toEqual('');
+    // expect(scope.errors.other).toEqual('Incorrect password');
   });
 
 });

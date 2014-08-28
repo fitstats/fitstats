@@ -40,17 +40,15 @@ describe('Controller: StatsCtrl', function () {
 
   }));
 
-  it('creates scope.fields', function () {
-    var controller = createController();
-    expect(scope.fields).not.toBe(undefined);
-  });
-
-  it('builds a chart object if scope.fields[stateParams.field] matches a field', function () {
-    var controller = createController({field: 'fat'});
-    expect(scope.chartTitle).toEqual('Fat Consumed Over Time');
-    expect(scope.googleChart).not.toBe(undefined);
-  });
-
-  it()
+  // it('creates scope.fields', function () {
+  //   var controller = createController();
+  //   expect(scope.fields).not.toBe(undefined);
+  // });
+  //
+  // it('builds a chart object if scope.fields[stateParams.field] matches a field', function () {
+  //   var controller = createController({field: 'fat'});
+  //   expect(scope.chartTitle).toEqual('Fat Consumed Over Time');
+  //   expect(scope.googleChart).not.toBe(undefined);
+  // });
 
 });
